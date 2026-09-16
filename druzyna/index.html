@@ -626,7 +626,6 @@
     </div>
 
     <script>
-        // Funkcja otwierająca artykuł w oknie
         function openModal(title, date, body) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalDate').textContent = date;
@@ -644,7 +643,6 @@
             }
         }
 
-        // Sortowanie i filtrowanie po tagach
         function filterNews(tag) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -653,7 +651,6 @@
             const container = document.getElementById('news-container');
             const cards = Array.from(container.getElementsByClassName('news-card'));
 
-            // Sortowanie od najnowszych do najstarszych po dacie
             cards.sort((a, b) => new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date')));
 
             cards.forEach(card => {
@@ -662,11 +659,10 @@
                 } else {
                     card.style.display = 'none';
                 }
-                container.appendChild(card); // Przestawianie kolejności w DOM
+                container.appendChild(card);
             });
         }
 
-        // Automatyczne sortowanie przy ładowaniu strony od najnowszych
         window.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('news-container');
             const cards = Array.from(container.getElementsByClassName('news-card'));
@@ -674,7 +670,6 @@
             cards.forEach(card => container.appendChild(card));
         });
 
-        // Obsługa tłumaczeń
         const translations = {
             pl: {
                 news: "Aktualności",
