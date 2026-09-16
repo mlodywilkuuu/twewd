@@ -417,7 +417,7 @@
         <main class="admin-content">
             <div class="success-banner" id="successBanner">Zmiany zostały zapisane pomyślnie!</div>
 
-            <!-- ZAKŁADKA: ARTYKUŁY / AKTUALNOŚCI -->
+            <!-- ZAKŁADKA: ARTYKUŁY -->
             <div class="panel-section" id="sec-news">
                 <div class="section-header-row">
                     <h2 class="section-heading">Zarządzanie Artykułami</h2>
@@ -475,7 +475,7 @@
             <div class="panel-section" id="sec-people">
                 <div class="section-header-row">
                     <h2 class="section-heading">Ludzie Legionu</h2>
-                    <button class="btn-add" onclick="openEditModal('people_board', null)">+ Dodaj wiceprezesa</button>
+                    <button class="btn-add" onclick="openEditModal('people_board', null)">+ Dodaj pracownika / wiceprezesa</button>
                 </div>
                 <div id="list-people"></div>
             </div>
@@ -799,10 +799,10 @@
 
         // --- LUDZIE LEGIONU ---
         const defaultPeople = {
-            president: { id: "p-1", name: "Mateusz", roleKey: "president" },
+            president: { id: "p-1", name: "Mateusz", position: "Prezes Klubu" },
             board: [
-                { id: "b-1", name: "Wojciech Nawrocki", roleKey: "vice" },
-                { id: "b-2", name: "Andrey Gabrusevich", roleKey: "vice" }
+                { id: "b-1", name: "Wojciech Nawrocki", position: "Wiceprezes" },
+                { id: "b-2", name: "Andrey Gabrusevich", position: "Wiceprezes" }
             ]
         };
         function loadPeople() {
@@ -814,7 +814,8 @@
                 container.innerHTML += `
                     <div class="item-row" style="border-color:rgba(255,215,0,0.4);">
                         <div>
-                            <div class="item-info">[Prezes] ${data.president.name}</div>
+                            <div class="item-info">${data.president.name}</div>
+                            <div class="item-subinfo">Stanowisko: ${data.president.position || 'Prezes'}</div>
                         </div>
                         <div class="item-actions">
                             <button class="btn-sm btn-edit" onclick="openEditModal('people_pres', '${data.president.id}')">Edytuj</button>
@@ -822,18 +823,21 @@
                     </div>`;
             }
 
-            data.board.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">[Wiceprezes] ${item.name}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('people_board', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('people_board', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
+            if (data.board) {
+                data.board.forEach(item => {
+                    container.innerHTML += `
+                        <div class="item-row">
+                            <div>
+                                <div class="item-info">${item.name}</div>
+                                <div class="item-subinfo">Stanowisko: ${item.position}</div>
+                            </div>
+                            <div class="item-actions">
+                                <button class="btn-sm btn-edit" onclick="openEditModal('people_board', '${item.id}')">Edytuj</button>
+                                <button class="btn-sm btn-del" onclick="deleteItem('people_board', '${item.id}')">Usuń</button>
+                            </div>
+                        </div>`;
+                });
+            }
         }
 
         // --- UŻYTKOWNICY ---
@@ -918,16 +922,21 @@
                     <div class="form-group"><label class="form-label">Tytuł sekcji</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
                     <div class="form-group"><label class="form-label">Treść</label><textarea id="mText" class="form-input" style="height:100px;">${item ? item.text : ''}</textarea></div>
                 `;
-            } else if (type === 'people_pres' || type === 'people_board') {
+            } else if (type === 'people_pres') {
                 fields.innerHTML = `
                     <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
+                    <div class="form-group"><label class="form-label">Stanowisko</label><input type="text" id="mPosition" class="form-input" value="${item ? (item.position || 'Prezes Klubu') : 'Prezes Klubu'}"></div>
+                `;
+            } else if (type === 'people_board') {
+                fields.innerHTML = `
+                    <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
+                    <div class="form-group"><label class="form-label">Stanowisko</label><input type="text" id="mPosition" class="form-input" value="${item ? (item.position || 'Wiceprezes') : 'Wiceprezes'}"></div>
                 `;
             }
 
             modal.style.display = 'flex';
         }
 
-        // Pasek narzędzi formatowania w edytorze artykułów
         function formatText(tag) {
             const textarea = document.getElementById('mContent');
             if (!textarea) return;
@@ -1030,15 +1039,19 @@
             } else if (type === 'people_pres' || type === 'people_board') {
                 let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
                 const name = document.getElementById('mName').value;
+                const position = document.getElementById('mPosition').value;
 
                 if (type === 'people_pres') {
                     data.president.name = name;
+                    data.president.position = position;
                 } else {
                     if (id) {
                         let obj = data.board.find(x => x.id === id);
                         obj.name = name;
+                        obj.position = position;
                     } else {
-                        data.board.push({ id: 'b-' + Date.now(), name, roleKey: 'vice' });
+                        if (!data.board) data.board = [];
+                        data.board.push({ id: 'b-' + Date.now(), name, position });
                     }
                 }
                 localStorage.setItem('legion_people', JSON.stringify(data));
