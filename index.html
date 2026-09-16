@@ -10,7 +10,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 body{
@@ -19,14 +19,14 @@ body{
   color:white;
 }
 
-/* ===== ANIMOWANY GRADIENT ===== */
+/* ===== TŁO ===== */
 .bg{
   position:fixed;
   width:100%;
   height:100%;
-  background: linear-gradient(-45deg, #0b0f14, #1a2a44, #0b0f14, #162033);
+  background: linear-gradient(-45deg, #0b0f14, #162033, #0b0f14, #1a2a44);
   background-size:400% 400%;
-  animation: gradient 10s ease infinite;
+  animation: gradient 12s ease infinite;
   z-index:-1;
 }
 
@@ -36,27 +36,52 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* ===== MAINTENANCE SCREEN ===== */
+/* ===== MAINTENANCE ===== */
 .maintenance{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
+  max-width:400px;
 }
 
 .logo{
-  width:120px;
-  margin-bottom:20px;
+  width:110px;
+  margin-bottom:25px;
 }
 
-.maintenance h1{
+/* NAZWA KLUBU */
+.club{
   font-size:28px;
+  font-weight:600;
+  letter-spacing:1px;
   margin-bottom:10px;
 }
 
-.maintenance p{
-  color:#ccc;
+/* NAPIS TECHNICZNY */
+.status{
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  color:#00aaff;
+  margin-bottom:15px;
+}
+
+/* OPIS */
+.desc{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* DELIKATNA LINIA */
+.line{
+  width:60px;
+  height:2px;
+  background:#00aaff;
+  margin:15px auto;
+  opacity:0.7;
 }
 
 /* ===== UKRYTY PRZYCISK ===== */
@@ -64,17 +89,55 @@ body{
   position:fixed;
   top:0;
   right:0;
-  width:60px;
-  height:60px;
+  width:70px;
+  height:70px;
   opacity:0;
   cursor:pointer;
 }
 
-/* ===== PRAWDZIWA STRONA ===== */
+/* ===== STRONA ===== */
 .main-site{
   display:none;
-  padding:40px;
+  padding:100px 40px;
 }
+
+nav{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(20,25,35,0.7);
+  padding:10px 20px;
+  border-radius:40px;
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+nav a{
+  color:#ccc;
+  margin:0 10px;
+  text-decoration:none;
+  font-size:14px;
+}
+
+nav a:hover{
+  color:white;
+}
+
+/* HERO */
+.hero{
+  margin-top:80px;
+}
+
+.hero h1{
+  font-size:42px;
+}
+
+.hero p{
+  color:#aaa;
+  margin-top:10px;
+}
+
 </style>
 </head>
 
@@ -88,20 +151,41 @@ body{
 <!-- MAINTENANCE -->
 <div class="maintenance" id="maintenance">
   <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
-  <h1>Legion Białystok</h1>
-  <p>Prace techniczne</p>
+  
+  <div class="club">Legion Białystok</div>
+  
+  <div class="line"></div>
+  
+  <div class="status">Prace techniczne</div>
+  
+  <div class="desc">
+    Strona jest chwilowo niedostępna.<br>
+    Trwają prace nad nową wersją.
+  </div>
 </div>
 
 <!-- PRAWDZIWA STRONA -->
 <div class="main-site" id="mainSite">
-  <h1>Strona działa 🔥</h1>
-  <p>Tu później wrzucisz swoją normalną stronę</p>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">News</a>
+    <a href="#">Matches</a>
+    <a href="#">Team</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Legion Białystok</h1>
+    <p>Oficjalna strona klubu</p>
+  </div>
+
 </div>
 
 <script>
 function showSite(){
   document.getElementById("maintenance").style.display = "none";
   document.getElementById("mainSite").style.display = "block";
+  document.body.style.overflow = "auto";
 }
 </script>
 
