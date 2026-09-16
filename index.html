@@ -14,11 +14,12 @@
 }
 
 body {
-  background:#0b0f14;
   color:#fff;
+  min-height:100vh;
+  background: radial-gradient(circle at top, #1a2a44, #0b0f14 60%);
 }
 
-/* ===== MENU WYSPA ===== */
+/* ===== MENU WYSPA (TRANSPARENT) ===== */
 .nav-wrapper {
   position:fixed;
   top:20px;
@@ -31,48 +32,69 @@ nav {
   display:flex;
   align-items:center;
   gap:25px;
-  padding:12px 25px;
-  background:#111821;
-  border:1px solid #1e2a38;
+  padding:10px 20px;
   border-radius:50px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+
+  background: rgba(20,25,35,0.6);
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255,255,255,0.08);
 }
 
-/* linki */
-nav a {
-  color:#aaa;
-  text-decoration:none;
-  font-size:14px;
-  transition:0.2s;
-}
-
-nav a:hover {
-  color:#fff;
-}
-
-/* logo po LEWEJ */
+/* logo */
 .logo {
-  width:35px;
-  height:35px;
+  width:32px;
 }
 
-/* push logo na lewo */
+/* logo left */
 .logo-wrapper {
   margin-right:auto;
 }
 
+/* linki */
+nav a {
+  color:#ccc;
+  text-decoration:none;
+  font-size:14px;
+  padding:6px 10px;
+  border-radius:20px;
+  transition:0.2s;
+}
+
+nav a:hover {
+  background: rgba(255,255,255,0.1);
+  color:#fff;
+}
+
 /* HERO */
 .hero {
-  padding:120px 40px 60px;
+  padding:120px 40px 50px;
 }
 
 .hero h1 {
-  font-size:42px;
+  font-size:44px;
+  margin-bottom:10px;
 }
 
 .hero p {
-  margin-top:10px;
   color:#aaa;
+}
+
+/* BUTTON */
+.btn {
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 18px;
+  border-radius:25px;
+  text-decoration:none;
+  font-size:14px;
+  background: linear-gradient(135deg, #00aaff, #0066ff);
+  color:white;
+  transition:0.2s;
+}
+
+.btn:hover {
+  transform:translateY(-2px);
+  opacity:0.9;
 }
 
 /* SEKCJE */
@@ -95,15 +117,16 @@ h2 {
 
 /* KARTY */
 .card {
-  background:#111821;
+  background: rgba(20,25,35,0.7);
+  border-radius:12px;
   padding:20px;
-  border-radius:10px;
-  border:1px solid #1e2a38;
+  border:1px solid rgba(255,255,255,0.05);
   transition:0.2s;
 }
 
 .card:hover {
   border-color:#00aaff;
+  transform:translateY(-3px);
 }
 
 /* MECZE */
@@ -121,7 +144,6 @@ footer {
   text-align:center;
   padding:20px;
   color:#777;
-  border-top:1px solid #1e2a38;
 }
 </style>
 
@@ -132,15 +154,14 @@ footer {
 <div class="nav-wrapper">
   <nav>
 
-    <!-- LOGO (LEWA STRONA) -->
     <div class="logo-wrapper">
       <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
     </div>
 
-    <a href="#">Strona główna</a>
-    <a href="#">Aktualności</a>
-    <a href="#">Mecze</a>
-    <a href="#">Drużyna</a>
+    <a href="#">Home</a>
+    <a href="#">News</a>
+    <a href="#">Matches</a>
+    <a href="#">Team</a>
 
   </nav>
 </div>
@@ -149,6 +170,7 @@ footer {
 <div class="hero">
   <h1>Legion Białystok</h1>
   <p>Oficjalna strona klubu</p>
+  <a href="#" class="btn">Zobacz więcej</a>
 </div>
 
 <section>
