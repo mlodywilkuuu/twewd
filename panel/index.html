@@ -187,26 +187,35 @@
             border-left-color: #ffd700;
         }
 
-        .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid rgba(255, 215, 0, 0.1);
-        }
-
-        .logout-btn {
-            background: rgba(255, 77, 77, 0.1);
-            border: 1px solid rgba(255, 77, 77, 0.3);
-            color: #ff4d4d;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 77, 77, 0.2);
-            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2);
-        }
-
         .admin-content {
             margin-left: 280px;
-            padding: 40px;
+            padding: 30px 40px 40px 40px;
             max-width: 1200px;
+        }
+
+        /* Górny pasek w panelu głównym (wylogowanie po prawej) */
+        .admin-topbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .logout-top-btn {
+            background: rgba(255, 77, 77, 0.15);
+            border: 1px solid rgba(255, 77, 77, 0.4);
+            color: #ff4d4d;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .logout-top-btn:hover {
+            background: rgba(255, 77, 77, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2);
         }
 
         .panel-section {
@@ -409,12 +418,14 @@
             <ul class="sidebar-nav" id="sidebarNav">
                 <!-- Generowane dynamicznie -->
             </ul>
-            <div class="sidebar-footer">
-                <button class="btn logout-btn" onclick="handleLogout()">Wyloguj się</button>
-            </div>
         </aside>
 
         <main class="admin-content">
+            <!-- Pasek górny z przyciskiem wylogowania po prawej -->
+            <div class="admin-topbar">
+                <button class="logout-top-btn" onclick="handleLogout()">Wyloguj się</button>
+            </div>
+
             <div class="success-banner" id="successBanner">Zmiany zostały zapisane pomyślnie!</div>
 
             <!-- ZAKŁADKA: ARTYKUŁY -->
@@ -451,24 +462,6 @@
                     <button class="btn-add" onclick="openEditModal('schedule', null)">+ Dodaj mecz</button>
                 </div>
                 <div id="list-schedule"></div>
-            </div>
-
-            <!-- ZAKŁADKA: HISTORIA -->
-            <div class="panel-section" id="sec-history">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Historia Klubu</h2>
-                    <button class="btn-add" onclick="openEditModal('history', null)">+ Dodaj wydarzenie</button>
-                </div>
-                <div id="list-history"></div>
-            </div>
-
-            <!-- ZAKŁADKA: O KLUBIE -->
-            <div class="panel-section" id="sec-about">
-                <div class="section-header-row">
-                    <h2 class="section-heading">O Klubie</h2>
-                    <button class="btn-add" onclick="openEditModal('about', null)">+ Dodaj sekcję</button>
-                </div>
-                <div id="list-about"></div>
             </div>
 
             <!-- ZAKŁADKA: LUDZIE LEGIONU -->
@@ -542,8 +535,6 @@
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="squad"> Pierwsza Drużyna</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="academy"> Akademia</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="schedule"> Terminarz</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="history"> Historia</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="about"> O Klubie</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="people"> Ludzie Legionu</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="users"> Użytkownicy</label>
             </div>
@@ -560,7 +551,7 @@
                 login: "mpiotrowski",
                 pass: "Jaga1920",
                 fullAdmin: true,
-                perms: ["news", "squad", "academy", "schedule", "history", "about", "people", "users"]
+                perms: ["news", "squad", "academy", "schedule", "people", "users"]
             }
         ];
 
@@ -572,8 +563,6 @@
             { id: 'squad', label: 'Pierwsza Drużyna', perm: 'squad' },
             { id: 'academy', label: 'Akademia', perm: 'academy' },
             { id: 'schedule', label: 'Terminarz', perm: 'schedule' },
-            { id: 'history', label: 'Historia', perm: 'history' },
-            { id: 'about', label: 'O Klubie', perm: 'about' },
             { id: 'people', label: 'Ludzie Legionu', perm: 'people' },
             { id: 'users', label: 'Użytkownicy', perm: 'users' },
             { id: 'password', label: 'Zmiana Hasła', perm: 'always' }
@@ -653,8 +642,6 @@
             loadSquad();
             loadAcademy();
             loadSchedule();
-            loadHistory();
-            loadAbout();
             loadPeople();
             loadUsersList();
         }
@@ -751,52 +738,6 @@
             });
         }
 
-        // --- HISTORIA ---
-        const defaultHistory = [
-            { id: "hist-1", date: "Październik 2024", title: "Utworzenie Klubu Sportowego Legion Białystok" }
-        ];
-        function loadHistory() {
-            let data = JSON.parse(localStorage.getItem('legion_history')) || defaultHistory;
-            const container = document.getElementById('list-history');
-            container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">${item.title}</div>
-                            <div class="item-subinfo">Data: ${item.date}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('history', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('history', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        // --- O KLUBIE ---
-        const defaultAbout = [
-            { id: "sec-1", title: "Kim jesteśmy?", text: "Legion Białystok to klub sportowy..." }
-        ];
-        function loadAbout() {
-            let data = JSON.parse(localStorage.getItem('legion_about')) || defaultAbout;
-            const container = document.getElementById('list-about');
-            container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">${item.title}</div>
-                            <div class="item-subinfo">${item.text.substring(0, 50)}...</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('about', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('about', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
         // --- LUDZIE LEGIONU ---
         const defaultPeople = {
             president: { id: "p-1", name: "Mateusz", position: "Prezes Klubu" },
@@ -874,8 +815,6 @@
                 if (type === 'squad') item = (JSON.parse(localStorage.getItem('legion_players')) || defaultSquad).find(x => x.id === id);
                 if (type === 'academy') item = (JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy).find(x => x.id === id);
                 if (type === 'schedule') item = (JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule).find(x => x.id === id);
-                if (type === 'history') item = (JSON.parse(localStorage.getItem('legion_history')) || defaultHistory).find(x => x.id === id);
-                if (type === 'about') item = (JSON.parse(localStorage.getItem('legion_about')) || defaultAbout).find(x => x.id === id);
                 if (type === 'people_pres') item = (JSON.parse(localStorage.getItem('legion_people')) || defaultPeople).president;
                 if (type === 'people_board') item = (JSON.parse(localStorage.getItem('legion_people')) || defaultPeople).board.find(x => x.id === id);
             }
@@ -911,16 +850,6 @@
                     <div class="form-group"><label class="form-label">Gospodarz</label><input type="text" id="mHome" class="form-input" value="${item ? item.homeTeam : ''}"></div>
                     <div class="form-group"><label class="form-label">Gość</label><input type="text" id="mAway" class="form-input" value="${item ? item.awayTeam : ''}"></div>
                     <div class="form-group"><label class="form-label">Wynik (np. 2 : 1 lub VS)</label><input type="text" id="mScore" class="form-input" value="${item ? item.score : 'VS'}"></div>
-                `;
-            } else if (type === 'history') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Data / Okres</label><input type="text" id="mDate" class="form-input" value="${item ? item.date : ''}"></div>
-                    <div class="form-group"><label class="form-label">Tytuł wydarzenia</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
-                `;
-            } else if (type === 'about') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Tytuł sekcji</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
-                    <div class="form-group"><label class="form-label">Treść</label><textarea id="mText" class="form-input" style="height:100px;">${item ? item.text : ''}</textarea></div>
                 `;
             } else if (type === 'people_pres') {
                 fields.innerHTML = `
@@ -1010,32 +939,6 @@
                 }
                 localStorage.setItem('legion_schedule', JSON.stringify(data));
                 loadSchedule();
-            } else if (type === 'history') {
-                let data = JSON.parse(localStorage.getItem('legion_history')) || defaultHistory;
-                const date = document.getElementById('mDate').value;
-                const title = document.getElementById('mTitle').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.date = date; obj.title = title;
-                } else {
-                    data.push({ id: 'hist-' + Date.now(), date, title });
-                }
-                localStorage.setItem('legion_history', JSON.stringify(data));
-                loadHistory();
-            } else if (type === 'about') {
-                let data = JSON.parse(localStorage.getItem('legion_about')) || defaultAbout;
-                const title = document.getElementById('mTitle').value;
-                const text = document.getElementById('mText').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.title = title; obj.text = text;
-                } else {
-                    data.push({ id: 'sec-' + Date.now(), title, text });
-                }
-                localStorage.setItem('legion_about', JSON.stringify(data));
-                loadAbout();
             } else if (type === 'people_pres' || type === 'people_board') {
                 let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
                 const name = document.getElementById('mName').value;
@@ -1080,16 +983,6 @@
                 data = data.filter(x => x.id !== id);
                 localStorage.setItem('legion_schedule', JSON.stringify(data));
                 loadSchedule();
-            } else if (type === 'history') {
-                let data = JSON.parse(localStorage.getItem('legion_history')) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem('legion_history', JSON.stringify(data));
-                loadHistory();
-            } else if (type === 'about') {
-                let data = JSON.parse(localStorage.getItem('legion_about')) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem('legion_about', JSON.stringify(data));
-                loadAbout();
             } else if (type === 'people_board') {
                 let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
                 data.board = data.board.filter(x => x.id !== id);
