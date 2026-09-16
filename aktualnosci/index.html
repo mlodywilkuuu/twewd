@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktualności - Legion Białystok</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #060606;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animowane tło */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #040404, #0f0f0f, #1a1402);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Górny pasek nawigacyjny z efektem szkła */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4%;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* Menu hamburgerowe */
+        .menu-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-toggle-btn {
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .menu-toggle-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .side-menu-dropdown {
+            position: absolute;
+            left: 0;
+            top: calc(100% + 12px);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            list-style: none;
+            padding: 12px 0;
+            min-width: 260px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            transition-delay: 0.2s;
+        }
+
+        html[dir="rtl"] .side-menu-dropdown {
+            left: auto;
+            right: 0;
+        }
+
+        .menu-dropdown:hover .side-menu-dropdown,
+        .side-menu-dropdown:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+
+        .side-menu-dropdown li {
+            position: relative;
+        }
+
+        .side-menu-dropdown li a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 22px;
+            color: #dddddd;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        html[dir="rtl"] .side-menu-dropdown li a {
+            border-left: none;
+            border-right: 3px solid transparent;
+        }
+
+        .side-menu-dropdown li a:hover {
+            background: rgba(255, 215, 0, 0.08);
+            color: #ffd700;
+            border-left-color: #ffd700;
+            padding-left: 26px;
+        }
+
+        html[dir="rtl"] .side-menu-dropdown li a:hover {
+            border-right-color: #ffd700;
+            padding-left: 22px;
+            padding-right: 26px;
+        }
+
+        .side-menu-dropdown li a::after {
+            content: '›';
+            font-size: 1.2rem;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        html[dir="rtl"] .side-menu-dropdown li a::after {
+            content: '‹';
+        }
+
+        .side-menu-dropdown li a:hover::after {
+            color: #ffd700;
+        }
+
+        /* Podmenu dla zakładki Klub */
+        .submenu-club {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            list-style: none;
+            padding: 10px 0;
+            min-width: 200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+
+        html[dir="rtl"] .submenu-club {
+            left: auto;
+            right: 100%;
+            transform: translateX(-10px);
+        }
+
+        .has-submenu:hover .submenu-club {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        /* Logo kierujące na główną */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-container:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Przełącznik języków */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-btn {
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .lang-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            list-style: none;
+            padding: 8px 0;
+            min-width: 150px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            transition-delay: 0.25s;
+        }
+
+        .lang-dropdown:hover .lang-menu,
+        .lang-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+
+        .lang-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .lang-menu li a:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+
+        /* Główna treść strony – Aktualności */
+        main {
+            margin-top: 130px;
+            padding: 20px 5% 80px 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
+        }
+
+        /* Siatka aktualności */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Kafelki newsów z efektem szkła */
+        .news-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 215, 0, 0.45);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        .news-img-placeholder {
+            width: 100%;
+            height: 180px;
+            background: rgba(255, 215, 0, 0.05);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .news-content {
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .news-date {
+            font-size: 0.8rem;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .news-desc {
+            font-size: 0.95rem;
+            color: #aaaaaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .news-btn {
+            align-self: flex-start;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+            padding: 8px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .news-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+            border-color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="header-left">
+            <!-- Rozwijane menu boczne -->
+            <div class="menu-dropdown">
+                <button class="menu-toggle-btn">☰</button>
+                <ul class="side-menu-dropdown">
+                    <li><a href="../aktualnosci" data-translate="news">Aktualności</a></li>
+                    <li><a href="../druzyna" data-translate="team">Pierwsza drużyna</a></li>
+                    <li><a href="../akademia" data-translate="academy">Akademia</a></li>
+                    <li><a href="../terminarz" data-translate="schedule">Terminarz</a></li>
+                    
+                    <li class="has-submenu">
+                        <a href="#" data-translate="club">Klub ›</a>
+                        <ul class="submenu-club">
+                            <li><a href="../historia" data-translate="history">Historia</a></li>
+                            <li><a href="../o-klubie" data-translate="about">O klubie</a></li>
+                            <li><a href="../ludzie-legionu" data-translate="people">Ludzie Legionu</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Logo kierujące na główną -->
+            <a href="../index.html" class="logo-container">
+                <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
+            </a>
+        </div>
+
+        <!-- Przełącznik języków -->
+        <div class="lang-dropdown">
+            <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
+            <ul class="lang-menu">
+                <li><a href="#" onclick="setLanguage('pl', '🇵🇱 Polski')">🇵🇱 Polski</a></li>
+                <li><a href="#" onclick="setLanguage('en', '🇬🇧 English')">🇬🇧 English</a></li>
+                <li><a href="#" onclick="setLanguage('es', '🇪🇸 Español')">🇪🇸 Español</a></li>
+                <li><a href="#" onclick="setLanguage('ru', '🇷🇺 Русский')">🇷🇺 Русский</a></li>
+                <li><a href="#" onclick="setLanguage('ar', '🇸🇦 العربية')">🇸🇦 العربية</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="section-title" data-translate="section_title">Aktualności</h1>
+
+        <!-- Siatka kafelków aktualności -->
+        <div class="news-grid">
+            
+            <div class="news-card">
+                <div class="news-img-placeholder" data-translate="img_placeholder">GRAFIKA / ZDJĘCIE</div>
+                <div class="news-content">
+                    <div class="news-date">15 Marca 2026</div>
+                    <div class="news-title" data-translate="news_1_title">Przygotowania do nowego sezonu ruszą już wkrótce!</div>
+                    <div class="news-desc" data-translate="news_1_desc">Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.</div>
+                    <a href="#" class="news-btn" data-translate="read_more">Czytaj dalej ›</a>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <div class="news-img-placeholder" data-translate="img_placeholder">GRAFIKA / ZDJĘCIE</div>
+                <div class="news-content">
+                    <div class="news-date">10 Marca 2026</div>
+                    <div class="news-title" data-translate="news_2_title">Podsumowanie ostatniego meczu ligowego</div>
+                    <div class="news-desc" data-translate="news_2_desc">Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.</div>
+                    <a href="#" class="news-btn" data-translate="read_more">Czytaj dalej ›</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            pl: {
+                news: "Aktualności",
+                team: "Pierwsza drużyna",
+                academy: "Akademia",
+                schedule: "Terminarz",
+                club: "Klub ›",
+                history: "Historia",
+                about: "O klubie",
+                people: "Ludzie Legionu",
+                section_title: "Aktualności",
+                img_placeholder: "GRAFIKA / ZDJĘCIE",
+                news_1_title: "Przygotowania do nowego sezonu ruszą już wkrótce!",
+                news_1_desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.",
+                news_2_title: "Podsumowanie ostatniego meczu ligowego",
+                news_2_desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.",
+                read_more: "Czytaj dalej ›"
+            },
+            en: {
+                news: "News",
+                team: "First Team",
+                academy: "Academy",
+                schedule: "Schedule",
+                club: "Club ›",
+                history: "History",
+                about: "About Club",
+                people: "Legion People",
+                section_title: "News",
+                img_placeholder: "IMAGE / GRAPHIC",
+                news_1_title: "Pre-season preparations starting soon!",
+                news_1_desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.",
+                news_2_title: "Summary of the latest league match",
+                news_2_desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.",
+                read_more: "Read more ›"
+            },
+            es: {
+                news: "Noticias",
+                team: "Primer Equipo",
+                academy: "Academia",
+                schedule: "Calendario",
+                club: "Club ›",
+                history: "Historia",
+                about: "Sobre el Club",
+                people: "Gente del Legion",
+                section_title: "Noticias",
+                img_placeholder: "IMAGEN / GRÁFICO",
+                news_1_title: "¡Los preparativos para la preemporada comienzan pronto!",
+                news_1_desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario de amistosos.",
+                news_2_title: "Resumen del último partido de liga",
+                news_2_desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.",
+                read_more: "Leer más ›"
+            },
+            ru: {
+                news: "Новости",
+                team: "Первая команда",
+                academy: "Академия",
+                schedule: "Расписание",
+                club: "Клуб ›",
+                history: "История",
+                about: "О клубе",
+                people: "Люди Легиона",
+                section_title: "Новости",
+                img_placeholder: "ИЗОБРАЖЕНИЕ",
+                news_1_title: "Подготовка к новому сезону скоро начнется!",
+                news_1_desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием товарищеских встреч.",
+                news_2_title: "Итоги последнего матча чемпионата",
+                news_2_desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.",
+                read_more: "Читать далее ›"
+            },
+            ar: {
+                news: "الأخبار",
+                team: "الفريق الأول",
+                academy: "الأكاديمية",
+                schedule: "الجدول",
+                club: "النادي ›",
+                history: "التاريخ",
+                about: "عن النادي",
+                people: "أعضاء النادي",
+                section_title: "الأخبار",
+                img_placeholder: "صورة / تصميم",
+                news_1_title: "التحضيرات للموسم الجديد تبدأ قريباً!",
+                news_1_desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات الودية.",
+                news_2_title: "ملخص مباراتنا الأخيرة في الدوري",
+                news_2_desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.",
+                read_more: "اقرأ المزيد ›"
+            }
+        };
+
+        function setLanguage(lang, label) {
+            document.getElementById('current-lang-btn').innerHTML = label;
+
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.documentElement.dir = 'ltr';
+            }
+
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
