@@ -291,11 +291,11 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – Terminarz */
+        /* Główna treść strony – Terminarz w siatce 3 kolumnowej */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
-            max-width: 1000px;
+            max-width: 1300px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -311,11 +311,23 @@
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Lista meczów */
-        .schedule-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Siatka 3 kolumny */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 1024px) {
+            .schedule-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .match-card {
@@ -324,7 +336,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 25px 30px;
+            padding: 25px 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -360,10 +372,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #888888;
             border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -375,54 +387,30 @@
 
         .match-body {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
         }
 
         .team {
-            flex: 1;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .team.home {
-            justify-content: flex-end;
-            text-align: right;
-        }
-
-        .team.away {
-            justify-content: flex-start;
-            text-align: left;
         }
 
         .score-box {
             background: rgba(255, 215, 0, 0.1);
             border: 1px solid rgba(255, 215, 0, 0.3);
             color: #ffd700;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 1.3rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 1.2rem;
             font-weight: 800;
             letter-spacing: 2px;
-            min-width: 100px;
+            min-width: 90px;
             text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .match-body {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            .team.home, .team.away {
-                justify-content: center;
-                text-align: center;
-            }
         }
     </style>
 </head>
@@ -471,8 +459,8 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Terminarz i Wyniki</h1>
 
-        <div class="schedule-list" id="schedule-container">
-            <!-- Renderowane dynamicznie -->
+        <div class="schedule-grid" id="schedule-container">
+            <!-- Renderowane dynamicznie w siatce -->
         </div>
     </main>
 
@@ -507,16 +495,20 @@
             { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" }
         ];
 
-        // Funkcja pomocnicza do konwersji daty tekstowej na obiekt Date w celu dokładnego sortowania
+        // Inteligentne parsowanie daty z uwzględnieniem roku, miesiąca i dnia (obsługa braku roku domyślnie na rok bieżący)
         function parseDate(dateStr) {
             if (!dateStr) return new Date(0);
-            // Przykładowy format: "22.03.2026, 15:00" lub "22.03.2026"
-            const cleanStr = dateStr.split(',')[0].trim();
+            const cleanStr = dateStr.split(',')[0].trim(); // np. "11.09" lub "25.10.2026"
             const parts = cleanStr.split('.');
-            if (parts.length === 3) {
-                return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
-            }
-            return new Date(0);
+            
+            let day = parseInt(parts[0], 10) || 1;
+            let month = parseInt(parts[1], 10) - 1 || 0; // miesiące w JS Date są 0-11
+            let year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
+
+            // Jeśli rok wpisano dwucyfrowo, poprawiamy
+            if (year < 100) year += 2000;
+
+            return new Date(year, month, day);
         }
 
         function renderSchedule() {
@@ -525,7 +517,7 @@
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // Sortowanie: od najnowszych do najstarszych (malejąco po dacie)
+            // Dokładne sortowanie malejące: od najnowszych do najstarszych dat
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
             data.forEach(item => {
