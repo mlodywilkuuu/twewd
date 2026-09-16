@@ -10,16 +10,16 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family:'Segoe UI', Arial, sans-serif;
 }
 
+/* ===== TŁO ===== */
 body{
   height:100vh;
   overflow:hidden;
   color:white;
 }
 
-/* ===== TŁO ===== */
 .bg{
   position:fixed;
   width:100%;
@@ -43,20 +43,12 @@ body{
   left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
-  max-width:400px;
+  max-width:420px;
 }
 
-.logo{
+.logo-maintenance{
   width:110px;
-  margin-bottom:25px;
-}
-
-.status{
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:3px;
-  color:#00aaff;
-  margin-bottom:15px;
+  margin-bottom:20px;
 }
 
 .line{
@@ -64,10 +56,17 @@ body{
   height:2px;
   background:#00aaff;
   margin:15px auto;
-  opacity:0.7;
+}
+
+.status{
+  font-size:14px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#00aaff;
 }
 
 .desc{
+  margin-top:10px;
   color:#aaa;
   font-size:14px;
 }
@@ -89,42 +88,68 @@ body{
   padding-top:80px;
 }
 
-/* ===== MENU (TOP BAR) ===== */
+/* ===== NAV ===== */
 nav{
   position:fixed;
   top:0;
   left:0;
   width:100%;
+
   display:flex;
-  justify-content:center;
-  gap:30px;
-  padding:15px;
-  background:rgba(10,15,20,0.5);
-  backdrop-filter:blur(8px);
+  justify-content:space-between;
+  align-items:center;
+
+  padding:12px 30px;
+
+  background:rgba(10,15,20,0.55);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+
   transition:0.3s;
   z-index:1000;
 }
 
-/* ukrywanie menu */
 nav.hide{
   transform:translateY(-100%);
 }
 
-nav a{
-  color:#ccc;
+/* LOGO */
+.nav-left img{
+  width:38px;
+}
+
+/* MENU */
+.nav-center{
+  display:flex;
+  gap:25px;
+}
+
+.nav-center a{
+  color:#cfcfcf;
   text-decoration:none;
   font-size:14px;
+  padding:6px 10px;
+  border-radius:8px;
   transition:0.2s;
 }
 
-nav a:hover{
+.nav-center a:hover{
+  background:rgba(255,255,255,0.08);
   color:white;
 }
 
-/* SEKCJA DEMO */
-.section{
-  height:100vh;
-  padding:40px;
+/* ===== HERO ===== */
+.hero{
+  padding:120px 40px;
+}
+
+.hero h1{
+  font-size:42px;
+}
+
+.hero p{
+  color:#aaa;
+  margin-top:10px;
 }
 
 </style>
@@ -134,30 +159,48 @@ nav a:hover{
 
 <div class="bg"></div>
 
-<!-- UKRYTY PRZYCISK -->
+<!-- UKRYTY START -->
 <div class="hidden-btn" onclick="showSite()"></div>
 
 <!-- MAINTENANCE -->
 <div class="maintenance" id="maintenance">
-  <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
+
+  <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png"
+       class="logo-maintenance">
+
   <div class="line"></div>
+
   <div class="status">Prace techniczne</div>
-  <div class="desc">Strona jest chwilowo niedostępna</div>
+
+  <div class="desc">
+    Strona chwilowo niedostępna<br>
+    Trwają prace modernizacyjne
+  </div>
+
 </div>
 
 <!-- STRONA -->
 <div class="main-site" id="mainSite">
 
   <nav id="navbar">
-    <a href="#">Home</a>
-    <a href="#">News</a>
-    <a href="#">Matches</a>
-    <a href="#">Team</a>
+
+    <div class="nav-left">
+      <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png">
+    </div>
+
+    <div class="nav-center">
+      <a href="#">Home</a>
+      <a href="#">News</a>
+      <a href="#">Matches</a>
+      <a href="#">Team</a>
+    </div>
+
   </nav>
 
-  <div class="section"></div>
-  <div class="section"></div>
-  <div class="section"></div>
+  <div class="hero">
+    <h1>Legion Białystok</h1>
+    <p>Nowa era klubu</p>
+  </div>
 
 </div>
 
@@ -168,20 +211,20 @@ function showSite(){
   document.body.style.overflow = "auto";
 }
 
-/* ===== SCROLL HIDE MENU ===== */
+/* scroll hide navbar */
 let lastScroll = 0;
 const nav = document.getElementById("navbar");
 
 window.addEventListener("scroll", () => {
-  const currentScroll = window.pageYOffset;
+  const current = window.pageYOffset;
 
-  if(currentScroll > lastScroll){
-    nav.classList.add("hide"); // scroll w dół
+  if(current > lastScroll){
+    nav.classList.add("hide");
   } else {
-    nav.classList.remove("hide"); // scroll w górę
+    nav.classList.remove("hide");
   }
 
-  lastScroll = currentScroll;
+  lastScroll = current;
 });
 </script>
 
