@@ -311,31 +311,30 @@
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Siatka kafelków akademii */
-        .academy-grid {
+        /* Nowoczesna siatka kafelków zawodników akademii */
+        .squad-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 30px;
         }
 
-        /* Kafelki grup wiekowych */
-        .academy-card {
+        /* Kafelki zawodników (klikalne) */
+        .player-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 35px 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
             position: relative;
             overflow: hidden;
             cursor: pointer;
         }
 
-        .academy-card::before {
+        .player-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -347,61 +346,47 @@
             transition: opacity 0.35s ease;
         }
 
-        .academy-card:hover {
+        .player-card:hover {
             transform: translateY(-8px);
             border-color: rgba(255, 215, 0, 0.45);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
         }
 
-        .academy-card:hover::before {
+        .player-card:hover::before {
             opacity: 1;
         }
 
-        .academy-group-title {
-            font-size: 1.5rem;
-            font-weight: 800;
+        .player-number {
+            font-size: 3rem;
+            font-weight: 900;
             color: #ffd700;
             margin-bottom: 12px;
+            line-height: 1;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .player-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
             letter-spacing: 0.5px;
         }
 
-        .academy-coach {
+        .player-position {
             font-size: 0.85rem;
-            color: #aaaaaa;
+            color: #999999;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 15px;
             font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .academy-desc {
-            font-size: 0.95rem;
-            color: #cccccc;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            flex-grow: 1;
-        }
-
-        .academy-btn {
-            align-self: flex-start;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: #ffd700;
-            padding: 8px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .academy-btn:hover {
-            background: rgba(255, 215, 0, 0.25);
-            border-color: #ffd700;
-        }
-
-        /* Modal / Okno wyskakujące dla szczegółów grupy */
+        /* Modal / Okno wyskakujące z informacjami o zawodniku */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -429,14 +414,13 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
             border-radius: 20px;
             padding: 40px;
-            max-width: 700px;
+            max-width: 500px;
             width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
             position: relative;
             box-shadow: 0 25px 50px rgba(0,0,0,0.9);
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         .modal-overlay.active .modal-content {
@@ -465,27 +449,49 @@
             background: rgba(255, 215, 0, 0.2);
         }
 
-        .modal-subtitle {
-            font-size: 0.85rem;
+        .modal-player-number {
+            font-size: 3.5rem;
+            font-weight: 900;
             color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
             margin-bottom: 10px;
-            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
-        .modal-title {
+        .modal-player-name {
             font-size: 1.8rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            margin-bottom: 25px;
         }
 
-        .modal-body {
-            font-size: 1.05rem;
+        .modal-info-list {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .modal-info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
             color: #cccccc;
-            line-height: 1.8;
+        }
+
+        .modal-info-label {
+            color: #888888;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .modal-info-value {
+            color: #ffffff;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -535,21 +541,36 @@
     </header>
 
     <main>
-        <h1 class="section-title" data-translate="section_title">Akademia Legionu</h1>
+        <!-- Sam napis Akademia -->
+        <h1 class="section-title" data-translate="section_title">Akademia</h1>
 
-        <!-- Siatka kafelków akademii -->
-        <div class="academy-grid" id="academy-container">
-            <!-- Renderowane dynamicznie przez skrypt -->
+        <!-- Siatka kafelków zawodników akademii z obsługą localStorage (pod przyszły panel) -->
+        <div class="squad-grid" id="academy-players-container">
+            <!-- Dynamicznie renderowane kafelki -->
         </div>
     </main>
 
-    <!-- Okno wyskakujące (Modal) dla szczegółów grupy -->
-    <div class="modal-overlay" id="academyModal" onclick="closeModalOutside(event)">
+    <!-- Okno wyskakujące (Modal) z informacjami o zawodniku -->
+    <div class="modal-overlay" id="playerModal" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-subtitle" id="modalCoach"></div>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-player-number" id="modalNumber"></div>
+            <div class="modal-player-name" id="modalName"></div>
+            
+            <div class="modal-info-list">
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_position">Pozycja</span>
+                    <span class="modal-info-value" id="modalPosition"></span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_nationality">Narodowość</span>
+                    <span class="modal-info-value" id="modalNationality"></span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_birthdate">Data urodzenia</span>
+                    <span class="modal-info-value" id="modalBirthdate"></span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -557,106 +578,100 @@
         const translations = {
             pl: {
                 news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
-                section_title: "Akademia Legionu",
-                details_btn: "Szczegóły grupy ›",
-                groups: {
-                    "group-1": { title: "Juniorzy Młodsi (U-17)", coach: "Trener: Marek Kowalczyk", desc: "Intensywne szkolenie piłkarskie przygotowujące zawodników do gry w seniorskiej piłce nożnej.", body: "Grupa U-17 skupia się na zaawansowanej taktyce meczowej, motoryce oraz przygotowaniu mentalnym do rywalizacji na poziomie lig wojewódzkich i ogólnokrajowych." },
-                    "group-2": { title: "Trampkarze (U-15)", coach: "Trener: Tomasz Zieliński", desc: "Rozwój techniki indywidualnej, świadomości boiskowej oraz zasad fair play.", body: "W grupie trampkarzy kładziemy nacisk na opanowanie fundamentów technicznych, naukę gry kombinacyjnej oraz budowanie ducha zespołowego." }
-                }
+                section_title: "Akademia",
+                label_position: "Pozycja",
+                label_nationality: "Narodowość",
+                label_birthdate: "Data urodzenia",
+                positions: { gk: "Bramkarz", def: "Obrońca", mid: "Pomocnik", fwd: "Napastnik" }
             },
             en: {
                 news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
-                section_title: "Legion Academy",
-                details_btn: "Group details ›",
-                groups: {
-                    "group-1": { title: "Junior Youth (U-17)", coach: "Coach: Marek Kowalczyk", desc: "Intensive football training preparing players for senior football competition.", body: "The U-17 group focuses on advanced match tactics, motor skills, and mental preparation for regional and national leagues." },
-                    "group-2": { title: "Youth Squad (U-15)", coach: "Coach: Tomasz Zieliński", desc: "Development of individual technique, pitch awareness, and fair play principles.", body: "In the U-15 group, we emphasize mastering technical fundamentals, combinatorial play, and building team spirit." }
-                }
+                section_title: "Academy",
+                label_position: "Position",
+                label_nationality: "Nationality",
+                label_birthdate: "Birth Date",
+                positions: { gk: "Goalkeeper", def: "Defender", mid: "Midfielder", fwd: "Forward" }
             },
             es: {
                 news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
-                section_title: "Academia Legion",
-                details_btn: "Detalles del grupo ›",
-                groups: {
-                    "group-1": { title: "Juvenil (U-17)", coach: "Entrenador: Marek Kowalczyk", desc: "Entrenamiento intensivo de fútbol preparando a los jugadores para el fútbol sénior.", body: "El grupo U-17 se centra en tácticas avanzadas, habilidades motoras y preparación mental." },
-                    "group-2": { title: "Cadete (U-15)", coach: "Entrenador: Tomasz Zieliński", desc: "Desarrollo de la técnica individual, conciencia táctica y juego limpio.", body: "En el grupo U-15 enfatizamos el dominio de los fundamentos técnicos y el juego combinativo." }
-                }
+                section_title: "Academia",
+                label_position: "Posición",
+                label_nationality: "Nacionalidad",
+                label_birthdate: "Fecha de Nacimiento",
+                positions: { gk: "Portero", def: "Defensa", mid: "Centrocampista", fwd: "Delantero" }
             },
             ru: {
                 news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
-                section_title: "Академия Легиона",
-                details_btn: "Детали группы ›",
-                groups: {
-                    "group-1": { title: "Юниоры (U-17)", coach: "Тренер: Марек Ковальчик", desc: "Интенсивная подготовка игроков к выступлениям во взрослом футболе.", body: "Группа U-17 фокусируется на продвинутой тактике, физической подготовке и психологии." },
-                    "group-2": { title: "Младшие юноши (U-15)", coach: "Тренер: Томаш Зелинский", desc: "Развитие индивидуальной техники, видения поля и принципов честной игры.", body: "В группе U-15 мы делаем акцент на освоении технических основ и командном взаимодействии." }
-                }
+                section_title: "Академия",
+                label_position: "Позиция",
+                label_nationality: "Национальность",
+                label_birthdate: "Дата рождения",
+                positions: { gk: "Вратарь", def: "Защитник", mid: "Полузащитник", fwd: "Нападающий" }
             },
             ar: {
                 news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
-                section_title: "أكاديمية ليجيون",
-                details_btn: "تفاصيل المجموعة ›",
-                groups: {
-                    "group-1": { title: "الناشئون (U-17)", coach: "المدرب: ماريك كوفالчик", desc: "تدريب مكثف لكرة القدم لإعداد اللاعبين للمنافسة في فئة الفريق الأول.", body: "تركز مجموعة U-17 على التكتيكات المتقدمة والمهارات الحركية والاستعداد الذهني للبطولات." },
-                    "group-2": { title: "الشباب (U-15)", coach: "المدرب: توماش زيلينسكي", desc: "تطوير المهارات الفردية، والوعي بالملعب، ومبادئ اللعب النظيف.", body: "في مجموعة U-15، نؤكد على إتقان الأساسيات الفنية واللعب الجماعي." }
-                }
+                section_title: "الأكاديمية",
+                label_position: "المركز",
+                label_nationality: "الجنسية",
+                label_birthdate: "تاريخ الميلاد",
+                positions: { gk: "حارس مرمى", def: "مدافع", mid: "لاعب خط وسط", fwd: "مهاجم" }
             }
         };
 
         let currentLang = 'pl';
 
-        const defaultAcademyGroups = [
-            { id: "group-1" },
-            { id: "group-2" }
+        // Przykładowi zawodnicy z akademii
+        const defaultAcademyPlayers = [
+            { id: "acad-1", number: "12", name: "Jakub Zalewski", positionKey: "gk", nationality: "Polska", birthdate: "14.05.2008" },
+            { id: "acad-2", number: "3", name: "Kacper Szymański", positionKey: "def", nationality: "Polska", birthdate: "22.09.2009" },
+            { id: "acad-3", number: "17", name: "Filip Kamiński", positionKey: "mid", nationality: "Polska", birthdate: "03.11.2008" },
+            { id: "acad-4", number: "9", name: "Bartosz Lewandowski", positionKey: "fwd", nationality: "Polska", birthdate: "15.01.2010" }
         ];
 
-        function renderAcademy() {
-            const container = document.getElementById('academy-container');
+        function renderAcademyPlayers() {
+            const container = document.getElementById('academy-players-container');
             container.innerHTML = '';
 
-            let savedGroups = JSON.parse(localStorage.getItem('legion_academy')) || defaultAcademyGroups;
+            // Klucz w localStorage to "legion_academy_players", dzięki czemu nie miesza się z pierwszą drużyną ("legion_players")
+            let savedPlayers = JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademyPlayers;
             const langData = translations[currentLang] || translations['pl'];
-            const tGroups = langData.groups || {};
-            const detailsBtnText = langData.details_btn || "Szczegóły grupy ›";
+            const tPositions = langData.positions || {};
 
-            savedGroups.forEach(item => {
-                const groupData = tGroups[item.id] || {
-                    title: item.title || "Grupa treningowa",
-                    coach: item.coach || "",
-                    desc: item.desc || "",
-                    body: item.body || ""
-                };
+            savedPlayers.forEach(player => {
+                const positionName = tPositions[player.positionKey] || player.positionKey;
 
                 const card = document.createElement('div');
-                card.className = 'academy-card';
-                card.id = item.id;
-                card.setAttribute('data-academy-id', item.id);
+                card.className = 'player-card';
+                card.id = player.id;
+                card.setAttribute('data-player-id', player.id);
 
-                card.onclick = () => openModal(groupData.title, groupData.coach, groupData.body);
+                card.onclick = () => openModal(player.number, player.name, positionName, player.nationality, player.birthdate);
 
                 card.innerHTML = `
-                    <div class="academy-group-title">${groupData.title}</div>
-                    <div class="academy-coach">${groupData.coach}</div>
-                    <div class="academy-desc">${groupData.desc}</div>
-                    <button class="academy-btn">${detailsBtnText}</button>
+                    <div class="player-number">${player.number}</div>
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-position">${positionName}</div>
                 `;
 
                 container.appendChild(card);
             });
         }
 
-        function openModal(title, coach, body) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalCoach').textContent = coach;
-            document.getElementById('modalBody').textContent = body;
-            document.getElementById('academyModal').classList.add('active');
+        function openModal(number, name, position, nationality, birthdate) {
+            document.getElementById('modalNumber').textContent = number;
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalPosition').textContent = position;
+            document.getElementById('modalNationality').textContent = nationality;
+            document.getElementById('modalBirthdate').textContent = birthdate;
+            document.getElementById('playerModal').classList.add('active');
         }
 
         function closeModal() {
-            document.getElementById('academyModal').classList.remove('active');
+            document.getElementById('playerModal').classList.remove('active');
         }
 
         function closeModalOutside(event) {
-            if (event.target === document.getElementById('academyModal')) {
+            if (event.target === document.getElementById('playerModal')) {
                 closeModal();
             }
         }
@@ -679,11 +694,11 @@
                 }
             });
 
-            renderAcademy();
+            renderAcademyPlayers();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderAcademy();
+            renderAcademyPlayers();
         });
     </script>
 
