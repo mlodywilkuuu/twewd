@@ -148,16 +148,23 @@
             color: #ffd700;
         }
 
+        /* Klikalne logo kierujące na stronę główną */
         .logo-container {
             display: flex;
             align-items: center;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .logo-container img {
             height: 50px;
             width: auto;
             object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-container:hover img {
+            transform: scale(1.05);
         }
 
         /* Rozwijane menu językowe z flagami po prawej stronie */
@@ -237,19 +244,19 @@
         <div class="header-left">
             <!-- Rozwijane menu boczne (hamburger) przed logo -->
             <div class="menu-dropdown">
-                <button class="menu-toggle-btn">☰</button>
+                <button class="spec-btn menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
-                    <li><a href="#">Pierwsza drużyna</a></li>
-                    <li><a href="#">Akademia</a></li>
-                    <li><a href="#">Terminarz</a></li>
-                    <li><a href="#">Klub</a></li>
-                    <li><a href="#">Bilety</a></li>
-                    <li><a href="#">Sklep</a></li>
+                    <li><a href="druzyna.html">Pierwsza drużyna</a></li>
+                    <li><a href="akademia.html">Akademia</a></li>
+                    <li><a href="terminarz.html">Terminarz</a></li>
+                    <li><a href="klub.html">Klub</a></li>
+                    <li><a href="bilety.html">Bilety</a></li>
+                    <li><a href="sklep.html">Sklep</a></li>
                 </ul>
             </div>
 
-            <!-- Logo Legionu Białystok -->
-            <a href="#" class="logo-container">
+            <!-- Logo Legionu Białystok przekierowujące na główną -->
+            <a href="index.html" class="logo-container">
                 <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
