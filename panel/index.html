@@ -193,7 +193,6 @@
             max-width: 1200px;
         }
 
-        /* Górny pasek w panelu głównym (wylogowanie po prawej) */
         .admin-topbar {
             display: flex;
             justify-content: flex-end;
@@ -247,7 +246,6 @@
             text-transform: uppercase;
         }
 
-        /* Tabele i itemy w panelu */
         .item-row {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 215, 0, 0.1);
@@ -359,7 +357,6 @@
             font-weight: 600;
         }
 
-        /* Pasek narzędzi formatowania tekstu */
         .editor-toolbar {
             display: flex;
             gap: 5px;
@@ -421,7 +418,6 @@
         </aside>
 
         <main class="admin-content">
-            <!-- Pasek górny z przyciskiem wylogowania po prawej -->
             <div class="admin-topbar">
                 <button class="logout-top-btn" onclick="handleLogout()">Wyloguj się</button>
             </div>
@@ -435,6 +431,15 @@
                     <button class="btn-add" onclick="openEditModal('news', null)">+ Dodaj artykuł</button>
                 </div>
                 <div id="list-news"></div>
+            </div>
+
+            <!-- ZAKŁADKA: MATCH CENTER -->
+            <div class="panel-section" id="sec-matchcenter">
+                <div class="section-header-row">
+                    <h2 class="section-heading">Match Center (Centrum Meczowe)</h2>
+                    <button class="btn-add" onclick="openEditModal('matchcenter', null)">+ Dodaj relację meczową</button>
+                </div>
+                <div id="list-matchcenter"></div>
             </div>
 
             <!-- ZAKŁADKA: PIERWSZA DRUŻYNA -->
@@ -532,6 +537,7 @@
                 </label>
                 <hr style="border-color:rgba(255,215,0,0.1); margin:5px 0;">
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="news"> Artykuły</label>
+                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="matchcenter"> Match Center</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="squad"> Pierwsza Drużyna</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="academy"> Akademia</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="schedule"> Terminarz</label>
@@ -551,7 +557,7 @@
                 login: "mpiotrowski",
                 pass: "Jaga1920",
                 fullAdmin: true,
-                perms: ["news", "squad", "academy", "schedule", "people", "users"]
+                perms: ["news", "matchcenter", "squad", "academy", "schedule", "people", "users"]
             }
         ];
 
@@ -560,6 +566,7 @@
 
         const navItems = [
             { id: 'news', label: 'Artykuły', perm: 'news' },
+            { id: 'matchcenter', label: 'Match Center', perm: 'matchcenter' },
             { id: 'squad', label: 'Pierwsza Drużyna', perm: 'squad' },
             { id: 'academy', label: 'Akademia', perm: 'academy' },
             { id: 'schedule', label: 'Terminarz', perm: 'schedule' },
@@ -639,6 +646,7 @@
 
         function loadAllSections() {
             loadNews();
+            loadMatchCenter();
             loadSquad();
             loadAcademy();
             loadSchedule();
@@ -646,9 +654,9 @@
             loadUsersList();
         }
 
-        // --- ARTYKUŁY ---
+        // --- ARTYKUŁY Z TAGAMI ---
         const defaultNews = [
-            { id: "news-1", title: "Rozpoczęcie przygotowań do sezonu", date: "20.03.2026", content: "<p>Drużyna rozpoczęła intensywne treningi...</p>" }
+            { id: "news-1", title: "Rozpoczęcie przygotowań do sezonu", date: "20.03.2026", tags: "Drużyna, Sezon", content: "<p>Drużyna rozpoczęła intensywne treningi...</p>" }
         ];
         function loadNews() {
             let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
@@ -659,11 +667,34 @@
                     <div class="item-row">
                         <div>
                             <div class="item-info">${item.title}</div>
-                            <div class="item-subinfo">Data: ${item.date}</div>
+                            <div class="item-subinfo">Data: ${item.date} | Tagi: ${item.tags || 'Brak'}</div>
                         </div>
                         <div class="item-actions">
                             <button class="btn-sm btn-edit" onclick="openEditModal('news', '${item.id}')">Edytuj</button>
                             <button class="btn-sm btn-del" onclick="deleteItem('news', '${item.id}')">Usuń</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- MATCH CENTER ---
+        const defaultMatchCenter = [
+            { id: "mc-1", matchTitle: "Legion Białystok vs Iskra Narew", score: "2 : 1", status: "Zakończony", details: "Bramki: Jan Kowalski, Piotr Nowak" }
+        ];
+        function loadMatchCenter() {
+            let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter;
+            const container = document.getElementById('list-matchcenter');
+            container.innerHTML = '';
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <div>
+                            <div class="item-info">${item.matchTitle} (${item.score})</div>
+                            <div class="item-subinfo">Status: ${item.status} | ${item.details}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-sm btn-edit" onclick="openEditModal('matchcenter', '${item.id}')">Edytuj</button>
+                            <button class="btn-sm btn-del" onclick="deleteItem('matchcenter', '${item.id}')">Usuń</button>
                         </div>
                     </div>`;
             });
@@ -812,6 +843,7 @@
             let item = null;
             if (id) {
                 if (type === 'news') item = (JSON.parse(localStorage.getItem('legion_news')) || defaultNews).find(x => x.id === id);
+                if (type === 'matchcenter') item = (JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter).find(x => x.id === id);
                 if (type === 'squad') item = (JSON.parse(localStorage.getItem('legion_players')) || defaultSquad).find(x => x.id === id);
                 if (type === 'academy') item = (JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy).find(x => x.id === id);
                 if (type === 'schedule') item = (JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule).find(x => x.id === id);
@@ -823,6 +855,7 @@
                 fields.innerHTML = `
                     <div class="form-group"><label class="form-label">Tytuł artykułu</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
                     <div class="form-group"><label class="form-label">Data</label><input type="text" id="mDate" class="form-input" value="${item ? item.date : new Date().toLocaleDateString()}"></div>
+                    <div class="form-group"><label class="form-label">Tagi (rozdzielone przecinkami)</label><input type="text" id="mTags" class="form-input" value="${item ? (item.tags || '') : ''}" placeholder="np. Drużyna, Zarząd"></div>
                     <div class="form-group">
                         <label class="form-label">Treść artykułu (z formatowaniem)</label>
                         <div class="editor-toolbar">
@@ -834,6 +867,13 @@
                         </div>
                         <textarea id="mContent" class="form-input" style="height:150px; border-top-left-radius:0; border-top-right-radius:0;">${item ? item.content : ''}</textarea>
                     </div>
+                `;
+            } else if (type === 'matchcenter') {
+                fields.innerHTML = `
+                    <div class="form-group"><label class="form-label">Nazwa meczu (np. Legion vs Iskra)</label><input type="text" id="mMatchTitle" class="form-input" value="${item ? item.matchTitle : ''}"></div>
+                    <div class="form-group"><label class="form-label">Wynik (np. 2 : 1)</label><input type="text" id="mScore" class="form-input" value="${item ? item.score : ''}"></div>
+                    <div class="form-group"><label class="form-label">Status (np. Zakończony / Na żywo)</label><input type="text" id="mStatus" class="form-input" value="${item ? item.status : 'Zakończony'}"></div>
+                    <div class="form-group"><label class="form-label">Szczegóły / Składy / Bramki</label><textarea id="mDetails" class="form-input" style="height:100px;">${item ? item.details : ''}</textarea></div>
                 `;
             } else if (type === 'squad' || type === 'academy') {
                 fields.innerHTML = `
@@ -895,16 +935,32 @@
                 let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
                 const title = document.getElementById('mTitle').value;
                 const date = document.getElementById('mDate').value;
+                const tags = document.getElementById('mTags').value;
                 const content = document.getElementById('mContent').value;
 
                 if (id) {
                     let obj = data.find(x => x.id === id);
-                    obj.title = title; obj.date = date; obj.content = content;
+                    obj.title = title; obj.date = date; obj.tags = tags; obj.content = content;
                 } else {
-                    data.unshift({ id: 'news-' + Date.now(), title, date, content });
+                    data.unshift({ id: 'news-' + Date.now(), title, date, tags, content });
                 }
                 localStorage.setItem('legion_news', JSON.stringify(data));
                 loadNews();
+            } else if (type === 'matchcenter') {
+                let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter;
+                const matchTitle = document.getElementById('mMatchTitle').value;
+                const score = document.getElementById('mScore').value;
+                const status = document.getElementById('mStatus').value;
+                const details = document.getElementById('mDetails').value;
+
+                if (id) {
+                    let obj = data.find(x => x.id === id);
+                    obj.matchTitle = matchTitle; obj.score = score; obj.status = status; obj.details = details;
+                } else {
+                    data.unshift({ id: 'mc-' + Date.now(), matchTitle, score, status, details });
+                }
+                localStorage.setItem('legion_matchcenter', JSON.stringify(data));
+                loadMatchCenter();
             } else if (type === 'squad' || type === 'academy') {
                 let storageKey = type === 'squad' ? 'legion_players' : 'legion_academy_players';
                 let data = JSON.parse(localStorage.getItem(storageKey)) || (type === 'squad' ? defaultSquad : defaultAcademy);
@@ -972,6 +1028,11 @@
                 data = data.filter(x => x.id !== id);
                 localStorage.setItem('legion_news', JSON.stringify(data));
                 loadNews();
+            } else if (type === 'matchcenter') {
+                let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || [];
+                data = data.filter(x => x.id !== id);
+                localStorage.setItem('legion_matchcenter', JSON.stringify(data));
+                loadMatchCenter();
             } else if (type === 'squad' || type === 'academy') {
                 let key = type === 'squad' ? 'legion_players' : 'legion_academy_players';
                 let data = JSON.parse(localStorage.getItem(key)) || [];
