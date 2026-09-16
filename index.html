@@ -18,26 +18,52 @@ body {
   color:#fff;
 }
 
-/* NAV */
-nav {
-  background:#111821;
-  padding:15px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:2px solid #1e2a38;
+/* ===== MENU WYSPA ===== */
+.nav-wrapper {
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1000;
 }
 
+nav {
+  display:flex;
+  align-items:center;
+  gap:25px;
+  padding:12px 25px;
+  background:#111821;
+  border:1px solid #1e2a38;
+  border-radius:50px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* linki */
+nav a {
+  color:#aaa;
+  text-decoration:none;
+  font-size:14px;
+  transition:0.2s;
+}
+
+nav a:hover {
+  color:#fff;
+}
+
+/* logo po LEWEJ */
 .logo {
-  font-size:22px;
-  font-weight:bold;
-  color:#00aaff;
+  width:35px;
+  height:35px;
+}
+
+/* push logo na lewo */
+.logo-wrapper {
+  margin-right:auto;
 }
 
 /* HERO */
 .hero {
-  padding:60px 40px;
-  background: linear-gradient(to right, #111821, #0b0f14);
+  padding:120px 40px 60px;
 }
 
 .hero h1 {
@@ -102,10 +128,24 @@ footer {
 </head>
 <body>
 
-<nav>
-  <div class="logo">Legion Białystok</div>
-</nav>
+<!-- MENU -->
+<div class="nav-wrapper">
+  <nav>
 
+    <!-- LOGO (LEWA STRONA) -->
+    <div class="logo-wrapper">
+      <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
+    </div>
+
+    <a href="#">Strona główna</a>
+    <a href="#">Aktualności</a>
+    <a href="#">Mecze</a>
+    <a href="#">Drużyna</a>
+
+  </nav>
+</div>
+
+<!-- HERO -->
 <div class="hero">
   <h1>Legion Białystok</h1>
   <p>Oficjalna strona klubu</p>
