@@ -11,7 +11,6 @@
             box-sizing: border-box;
         }
 
-        /* Nowoczesny, elegancki, ciemno-złoty animowany gradient w tle */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(-45deg, #0b0b0b, #141414, #26210f, #1a160a, #0b0b0b);
@@ -28,22 +27,21 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Pasek menu całkowicie przezroczysty – gradient przechodzi swobodnie pod spodem */
+        /* Przezroczysty pasek menu – gradient przechodzi bezpośrednio pod nim */
         header {
             width: 100%;
-            background-color: transparent;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 40px;
+            padding: 0 50px;
             height: 90px;
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             z-index: 1000;
         }
 
-        /* Lewa strona: Logo + Minimalistyczne przyciski */
         .left-section {
             display: flex;
             align-items: center;
@@ -56,7 +54,6 @@
             object-fit: contain;
         }
 
-        /* Minimalistyczne przyciski menu */
         nav {
             display: flex;
             gap: 30px;
@@ -79,7 +76,7 @@
             text-shadow: 0 0 12px rgba(230, 198, 135, 0.7);
         }
 
-        /* Prawa strona: Menu tłumaczeń z pełną widocznością tła */
+        /* Menu tłumaczeń */
         .lang-dropdown {
             position: relative;
             height: 100%;
@@ -123,7 +120,6 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             z-index: 1000;
             overflow: hidden;
-            
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -159,12 +155,77 @@
             object-fit: cover;
             border-radius: 2px;
         }
+
+        /* Sekcja Match Center tuż pod menu */
+        .match-center {
+            max-width: 900px;
+            margin: 130px auto 40px auto; /* Odstęp od góry uwzględniający absolutne menu */
+            padding: 0 20px;
+        }
+
+        .match-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(230, 198, 135, 0.2);
+            border-radius: 12px;
+            padding: 25px 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #e6c687;
+            font-weight: 600;
+        }
+
+        .match-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .team-name {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            width: 35%;
+        }
+
+        .match-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            width: 30%;
+        }
+
+        .match-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #e6c687;
+            letter-spacing: 2px;
+        }
+
+        .match-status {
+            font-size: 11px;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Przezroczysty pasek menu -->
     <header>
-        <!-- Lewa strona: Logo + Minimalistyczne przyciski -->
         <div class="left-section">
             <div class="logo-container">
                 <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
@@ -179,7 +240,6 @@
             </nav>
         </div>
 
-        <!-- Prawa strona: Rozwijane menu tłumaczeń -->
         <div class="lang-dropdown">
             <div class="lang-btn">
                 <img src="https://flagcdn.com/w40/pl.png" alt="PL" id="currentFlag" style="width:20px; height:14px; border-radius:2px;">
@@ -206,13 +266,31 @@
         </div>
     </header>
 
+    <!-- Moduł Match Center pod menu -->
+    <main class="match-center">
+        <div class="match-card">
+            <div class="match-header">
+                <span data-i18n="matchCenterTitle">Centrum Meczowe</span>
+                <span>IV Liga • Kolejka 14</span>
+            </div>
+            <div class="match-body">
+                <div class="team-name">Legion Białystok</div>
+                <div class="match-info">
+                    <div class="match-score">VS</div>
+                    <div class="match-status" data-i18n="matchTime">Sobota, 18:00</div>
+                </div>
+                <div class="team-name">Jagiellonia II</div>
+            </div>
+        </div>
+    </main>
+
     <script>
         const translations = {
-            pl: { home: "Strona Główna", team: "Drużyna", fixtures: "Terminarz", results: "Wyniki", tickets: "Bilety", contact: "Kontakt" },
-            en: { home: "Home", team: "Team", fixtures: "Fixtures", results: "Results", tickets: "Tickets", contact: "Contact" },
-            ru: { home: "Главная", team: "Команда", fixtures: "Матчи", results: "Результаты", tickets: "Билеты", contact: "Контакты" },
-            es: { home: "Inicio", team: "Equipo", fixtures: "Calendario", results: "Resultados", tickets: "Entradas", contact: "Contacto" },
-            ar: { home: "الرئيسية", team: "الفريق", fixtures: "المباريات", results: "النتائج", tickets: "التذاكر", contact: "اتصل بنا" }
+            pl: { home: "Strona Główna", team: "Drużyna", fixtures: "Terminarz", results: "Wyniki", tickets: "Bilety", contact: "Kontakt", matchCenterTitle: "Najbliższy Mecz", matchTime: "Sobota, 18:00" },
+            en: { home: "Home", team: "Team", fixtures: "Fixtures", results: "Results", tickets: "Tickets", contact: "Contact", matchCenterTitle: "Next Match", matchTime: "Saturday, 18:00" },
+            ru: { home: "Главная", team: "Команда", fixtures: "Матчи", results: "Результаты", tickets: "Билеты", contact: "Контакты", matchCenterTitle: "Ближайший матч", matchTime: "Суббота, 18:00" },
+            es: { home: "Inicio", team: "Equipo", fixtures: "Calendario", results: "Resultados", tickets: "Entradas", contact: "Contacto", matchCenterTitle: "Próximo partido", matchTime: "Sábado, 18:00" },
+            ar: { home: "الرئيسية", team: "الفريق", fixtures: "المباريات", results: "النتائج", tickets: "التذاكر", contact: "اتصل بنا", matchCenterTitle: "المباراة القادمة", matchTime: "السبت، 18:00" }
         };
 
         function changeLanguage(langCode, langName, flagUrl, dir) {
