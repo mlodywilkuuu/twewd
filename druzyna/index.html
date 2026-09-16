@@ -117,6 +117,10 @@
             transition-delay: 0s;
         }
 
+        .side-menu-dropdown li {
+            position: relative;
+        }
+
         .side-menu-dropdown li a {
             display: flex;
             justify-content: space-between;
@@ -141,9 +145,40 @@
             content: '›';
             font-size: 1.2rem;
             color: #666;
+            transition: color 0.2s;
         }
 
-        /* Logo kierujące na główną */
+        .side-menu-dropdown li a:hover::after {
+            color: #ffd700;
+        }
+
+        /* Podmenu dla zakładki Klub */
+        .submenu-club {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            list-style: none;
+            padding: 10px 0;
+            min-width: 200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+        }
+
+        .has-submenu:hover .submenu-club {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        /* Logo kierujące na główną (zwróć uwagę na '../' bo jesteśmy w podfolderze) */
         .logo-container {
             display: flex;
             align-items: center;
@@ -257,7 +292,7 @@
             gap: 30px;
         }
 
-        /* Wyjątkowo elegancki kafelek zawodnika z efektem szkła (Glassmorphism) */
+        /* Kafelki zawodników */
         .player-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
@@ -272,7 +307,6 @@
             overflow: hidden;
         }
 
-        /* Subtelny złoty pasek akcentowy na górze kafelka */
         .player-card::before {
             content: '';
             position: absolute;
@@ -332,20 +366,27 @@
 
     <header>
         <div class="header-left">
-            <!-- Rozwijane menu boczne -->
+            <!-- Rozwijane menu boczne z nowymi opcjami -->
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
-                    <li><a href="../druzyna/">Pierwsza drużyna</a></li>
-                    <li><a href="../akademia/">Akademia</a></li>
-                    <li><a href="../terminarz/">Terminarz</a></li>
-                    <li><a href="../klub/">Klub</a></li>
-                    <li><a href="../bilety/">Bilety</a></li>
-                    <li><a href="../sklep/">Sklep</a></li>
+                    <li><a href="../aktualnosci">Aktualności</a></li>
+                    <li><a href="../druzyna">Pierwsza drużyna</a></li>
+                    <li><a href="../akademia">Akademia</a></li>
+                    <li><a href="../terminarz">Terminarz</a></li>
+                    
+                    <li class="has-submenu">
+                        <a href="#">Klub ›</a>
+                        <ul class="submenu-club">
+                            <li><a href="../historia">Historia</a></li>
+                            <li><a href="../o-klubie">O klubie</a></li>
+                            <li><a href="../ludzie-legionu">Ludzie Legionu</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną (zwróć uwagę na '../' bo jesteśmy w podfolderze) -->
+            <!-- Logo kierujące na główną -->
             <a href="../index.html" class="logo-container">
                 <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
