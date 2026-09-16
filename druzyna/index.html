@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skład Drużyny - Legion Białystok</title>
+    <title>Legion Białystok</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #060606;
+            background-color: #080808;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -27,7 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #040404, #0f0f0f, #1a1402);
+            background: linear-gradient(135deg, #050505, #111111, #1a1504);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
@@ -45,7 +45,7 @@
             left: 0;
             width: 100%;
             height: 75px;
-            background: rgba(10, 10, 10, 0.7);
+            background: rgba(12, 12, 12, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 215, 0, 0.12);
@@ -62,7 +62,7 @@
             gap: 25px;
         }
 
-        /* Menu hamburgerowe */
+        /* Styl przycisku menu (hamburger) i rozwijanej listy */
         .menu-dropdown {
             position: relative;
             display: inline-block;
@@ -204,7 +204,7 @@
             transform: translateX(0);
         }
 
-        /* Logo kierujące na główną */
+        /* Klikalne logo kierujące na stronę główną */
         .logo-container {
             display: flex;
             align-items: center;
@@ -223,7 +223,7 @@
             transform: scale(1.05);
         }
 
-        /* Przełącznik języków */
+        /* Rozwijane menu językowe z flagami po prawej stronie */
         .lang-dropdown {
             position: relative;
             display: inline-block;
@@ -291,7 +291,7 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – Skład */
+        /* Główna treść strony głównej */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
@@ -311,14 +311,13 @@
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Nowoczesna siatka kafelków */
+        /* Siatka kafelków */
         .squad-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 30px;
         }
 
-        /* Kafelki zawodników (z atrybutami data-player-id gotowymi pod przyszły panel) */
         .player-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
@@ -331,6 +330,7 @@
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .player-card::before {
@@ -384,6 +384,114 @@
             display: inline-block;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
+        /* Modal / Okno wyskakujące z informacjami o zawodniku */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .modal-player-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-player-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 25px;
+        }
+
+        .modal-info-list {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .modal-info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            color: #cccccc;
+        }
+
+        .modal-info-label {
+            color: #888888;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .modal-info-value {
+            color: #ffffff;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -396,25 +504,25 @@
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
-                    <li><a href="../aktualnosci" data-translate="news">Aktualności</a></li>
-                    <li><a href="../druzyna" data-translate="team">Pierwsza drużyna</a></li>
-                    <li><a href="../akademia" data-translate="academy">Akademia</a></li>
-                    <li><a href="../terminarz" data-translate="schedule">Terminarz</a></li>
+                    <li><a href="aktualnosci" data-translate="news">Aktualności</a></li>
+                    <li><a href="druzyna" data-translate="team">Pierwsza drużyna</a></li>
+                    <li><a href="akademia" data-translate="academy">Akademia</a></li>
+                    <li><a href="terminarz" data-translate="schedule">Terminarz</a></li>
                     
                     <li class="has-submenu">
                         <a href="#" data-translate="club">Klub ›</a>
                         <ul class="submenu-club">
-                            <li><a href="../historia" data-translate="history">Historia</a></li>
-                            <li><a href="../o-klubie" data-translate="about">O klubie</a></li>
-                            <li><a href="../ludzie-legionu" data-translate="people">Ludzie Legionu</a></li>
+                            <li><a href="historia" data-translate="history">Historia</a></li>
+                            <li><a href="o-klubie" data-translate="about">O klubie</a></li>
+                            <li><a href="ludzie-legionu" data-translate="people">Ludzie Legionu</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną -->
-            <a href="../index.html" class="logo-container">
-                <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
+            <!-- Logo kierujące na stronę główną -->
+            <a href="index.html" class="logo-container">
+                <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
 
@@ -434,116 +542,138 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Pierwsza Drużyna</h1>
 
-        <!-- Siatka kafelków zawodników z unikalnymi ID pod przyszły panel administracyjny -->
+        <!-- Siatka kafelków zawodników z obsługą localStorage -->
         <div class="squad-grid" id="squad-container">
-            
-            <div class="player-card" id="player-1" data-player-id="1">
-                <div class="player-number">1</div>
-                <div class="player-name">Jan Kowalski</div>
-                <div class="player-position" data-translate="pos_gk">Bramkarz</div>
-            </div>
-
-            <div class="player-card" id="player-2" data-player-id="2">
-                <div class="player-number">4</div>
-                <div class="player-name">Piotr Nowak</div>
-                <div class="player-position" data-translate="pos_def">Obrońca</div>
-            </div>
-
-            <div class="player-card" id="player-3" data-player-id="3">
-                <div class="player-number">8</div>
-                <div class="player-name">Michał Wiśniewski</div>
-                <div class="player-position" data-translate="pos_mid">Pomocnik</div>
-            </div>
-
-            <div class="player-card" id="player-4" data-player-id="4">
-                <div class="player-number">10</div>
-                <div class="player-name">Kamil Wójcik</div>
-                <div class="player-position" data-translate="pos_FWD">Napastnik</div>
-            </div>
-
+            <!-- Dynamicznie renderowane kafelki -->
         </div>
     </main>
+
+    <!-- Okno wyskakujące (Modal) z informacjami o zawodniku -->
+    <div class="modal-overlay" id="playerModal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-player-number" id="modalNumber"></div>
+            <div class="modal-player-name" id="modalName"></div>
+            
+            <div class="modal-info-list">
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_position">Pozycja</span>
+                    <span class="modal-info-value" id="modalPosition"></span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_nationality">Narodowość</span>
+                    <span class="modal-info-value" id="modalNationality"></span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label" data-translate="label_birthdate">Data urodzenia</span>
+                    <span class="modal-info-value" id="modalBirthdate"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         const translations = {
             pl: {
-                news: "Aktualności",
-                team: "Pierwsza drużyna",
-                academy: "Akademia",
-                schedule: "Terminarz",
-                club: "Klub ›",
-                history: "Historia",
-                about: "O klubie",
-                people: "Ludzie Legionu",
+                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
                 section_title: "Pierwsza Drużyna",
-                pos_gk: "Bramkarz",
-                pos_def: "Obrońca",
-                pos_mid: "Pomocnik",
-                pos_FWD: "Napastnik"
+                label_position: "Pozycja",
+                label_nationality: "Narodowość",
+                label_birthdate: "Data urodzenia",
+                positions: { gk: "Bramkarz", def: "Obrońca", mid: "Pomocnik", fwd: "Napastnik" }
             },
             en: {
-                news: "News",
-                team: "First Team",
-                academy: "Academy",
-                schedule: "Schedule",
-                club: "Club ›",
-                history: "History",
-                about: "About Club",
-                people: "Legion People",
+                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
                 section_title: "First Team",
-                pos_gk: "Goalkeeper",
-                pos_def: "Defender",
-                pos_mid: "Midfielder",
-                pos_FWD: "Forward"
+                label_position: "Position",
+                label_nationality: "Nationality",
+                label_birthdate: "Birth Date",
+                positions: { gk: "Goalkeeper", def: "Defender", mid: "Midfielder", fwd: "Forward" }
             },
             es: {
-                news: "Noticias",
-                team: "Primer Equipo",
-                academy: "Academia",
-                schedule: "Calendario",
-                club: "Club ›",
-                history: "Historia",
-                about: "Sobre el Club",
-                people: "Gente del Legion",
+                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
                 section_title: "Primer Equipo",
-                pos_gk: "Portero",
-                pos_def: "Defensa",
-                pos_mid: "Centrocampista",
-                pos_FWD: "Delantero"
+                label_position: "Posición",
+                label_nationality: "Nacionalidad",
+                label_birthdate: "Fecha de Nacimiento",
+                positions: { gk: "Portero", def: "Defensa", mid: "Centrocampista", fwd: "Delantero" }
             },
             ru: {
-                news: "Новости",
-                team: "Первая команда",
-                academy: "Академия",
-                schedule: "Расписание",
-                club: "Клуб ›",
-                history: "История",
-                about: "О клубе",
-                people: "Люди Легиона",
+                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
                 section_title: "Первая Команда",
-                pos_gk: "Вратарь",
-                pos_def: "Защитник",
-                pos_mid: "Полузащитник",
-                pos_FWD: "Нападающий"
+                label_position: "Позиция",
+                label_nationality: "Национальность",
+                label_birthdate: "Дата рождения",
+                positions: { gk: "Вратарь", def: "Защитник", mid: "Полузащитник", fwd: "Нападающий" }
             },
             ar: {
-                news: "الأخبار",
-                team: "الفريق الأول",
-                academy: "الأكاديمية",
-                schedule: "الجدول",
-                club: "النادي ›",
-                history: "التاريخ",
-                about: "عن النادي",
-                people: "أعضاء النادي",
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
                 section_title: "الفريق الأول",
-                pos_gk: "حارس مرمى",
-                pos_def: "مدافع",
-                pos_mid: "لاعب خط وسط",
-                pos_FWD: "مهاجم"
+                label_position: "المركز",
+                label_nationality: "الجنسية",
+                label_birthdate: "تاريخ الميلاد",
+                positions: { gk: "حارس مرمى", def: "مدافع", mid: "لاعب خط وسط", fwd: "مهاجم" }
             }
         };
 
+        let currentLang = 'pl';
+
+        const defaultPlayers = [
+            { id: "player-1", number: "1", name: "Jan Kowalski", positionKey: "gk", nationality: "Polska", birthdate: "12.05.1998" },
+            { id: "player-2", number: "4", name: "Piotr Nowak", positionKey: "def", nationality: "Polska", birthdate: "23.09.2001" },
+            { id: "player-3", number: "8", name: "Michał Wiśniewski", positionKey: "mid", nationality: "Polska", birthdate: "04.01.1999" },
+            { id: "player-4", number: "10", name: "Kamil Wójcik", positionKey: "fwd", nationality: "Polska", birthdate: "18.11.2000" }
+        ];
+
+        function renderSquad() {
+            const container = document.getElementById('squad-container');
+            container.innerHTML = '';
+
+            let savedPlayers = JSON.parse(localStorage.getItem('legion_players')) || defaultPlayers;
+            const langData = translations[currentLang] || translations['pl'];
+            const tPositions = langData.positions || {};
+
+            savedPlayers.forEach(player => {
+                const positionName = tPositions[player.positionKey] || player.positionKey;
+
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.id = player.id;
+                card.setAttribute('data-player-id', player.id);
+
+                card.onclick = () => openModal(player.number, player.name, positionName, player.nationality, player.birthdate);
+
+                card.innerHTML = `
+                    <div class="player-number">${player.number}</div>
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-position">${positionName}</div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function openModal(number, name, position, nationality, birthdate) {
+            document.getElementById('modalNumber').textContent = number;
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalPosition').textContent = position;
+            document.getElementById('modalNationality').textContent = nationality;
+            document.getElementById('modalBirthdate').textContent = birthdate;
+            document.getElementById('playerModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('playerModal').classList.remove('active');
+        }
+
+        function closeModalOutside(event) {
+            if (event.target === document.getElementById('playerModal')) {
+                closeModal();
+            }
+        }
+
         function setLanguage(lang, label) {
+            currentLang = lang;
             document.getElementById('current-lang-btn').innerHTML = label;
 
             if (lang === 'ar') {
@@ -559,7 +689,13 @@
                     el.textContent = translations[lang][key];
                 }
             });
+
+            renderSquad();
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderSquad();
+        });
     </script>
 
 </body>
