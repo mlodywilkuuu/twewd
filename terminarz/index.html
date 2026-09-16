@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminarz - Legion Białystok</title>
+    <title>Terminarz i Wyniki - Legion Białystok</title>
     <style>
         * {
             margin: 0;
@@ -295,7 +295,7 @@
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
-            max-width: 1400px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -311,25 +311,25 @@
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Siatka kafelków terminarza */
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 30px;
+        /* Lista meczów */
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        /* Kafelki meczu z efektem szkła */
         .match-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 30px 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
@@ -347,7 +347,7 @@
         }
 
         .match-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             border-color: rgba(255, 215, 0, 0.45);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
         }
@@ -360,70 +360,69 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
+            font-size: 0.85rem;
+            color: #888888;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .match-league {
-            font-size: 0.75rem;
-            background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
-            padding: 5px 12px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-            white-space: nowrap;
+            font-weight: 700;
         }
 
-        .match-date {
-            font-size: 0.8rem;
-            color: #aaaaaa;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-align: right;
-        }
-
-        .match-teams-box {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+        .match-body {
+            display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 15px 0;
-            padding: 15px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-        .team-name {
-            font-size: 1rem;
+        .team {
+            flex: 1;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #ffffff;
-            word-break: break-word;
-            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .team-name.home {
+        .team.home {
+            justify-content: flex-end;
             text-align: right;
         }
 
-        .team-name.away {
+        .team.away {
+            justify-content: flex-start;
             text-align: left;
         }
 
-        .match-score {
-            font-size: 1.4rem;
-            font-weight: 900;
+        .score-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             color: #ffd700;
-            background: rgba(255, 215, 0, 0.08);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            padding: 6px 12px;
+            padding: 10px 20px;
             border-radius: 12px;
-            letter-spacing: 1.5px;
-            white-space: nowrap;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .match-body {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .team.home, .team.away {
+                justify-content: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -433,7 +432,6 @@
 
     <header>
         <div class="header-left">
-            <!-- Rozwijane menu boczne -->
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
@@ -453,13 +451,11 @@
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną -->
             <a href="../index.html" class="logo-container">
                 <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
 
-        <!-- Przełącznik języków -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
@@ -475,9 +471,8 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Terminarz i Wyniki</h1>
 
-        <!-- Siatka kafelków terminarza z obsługą localStorage (pod przyszły panel) -->
-        <div class="schedule-grid" id="schedule-container">
-            <!-- Renderowane dynamicznie przez skrypt -->
+        <div class="schedule-list" id="schedule-container">
+            <!-- Renderowane dynamicznie -->
         </div>
     </main>
 
@@ -485,80 +480,68 @@
         const translations = {
             pl: {
                 news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
-                section_title: "Terminarz i Wyniki",
-                leagues: {
-                    "Liga Okręgowa": "Liga Okręgowa",
-                    "Puchar Polski": "Puchar Polski"
-                }
+                section_title: "Terminarz i Wyniki"
             },
             en: {
                 news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
-                section_title: "Schedule & Results",
-                leagues: {
-                    "Liga Okręgowa": "District League",
-                    "Puchar Polski": "Polish Cup"
-                }
+                section_title: "Schedule & Results"
             },
             es: {
                 news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
-                section_title: "Calendario y Resultados",
-                leagues: {
-                    "Liga Okręgowa": "Liga de Distrito",
-                    "Puchar Polski": "Copa de Polonia"
-                }
+                section_title: "Calendario y Resultados"
             },
             ru: {
                 news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
-                section_title: "Расписание и Результаты",
-                leagues: {
-                    "Liga Okręgowa": "Окружная лига",
-                    "Puchar Polski": "Кубок Польши"
-                }
+                section_title: "Расписание и результаты"
             },
             ar: {
                 news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
-                section_title: "الجدول والنتائج",
-                leagues: {
-                    "Liga Okręgowa": "دوري المنطقة",
-                    "Puchar Polski": "كأس بولندا"
-                }
+                section_title: "الجدول والنتائج"
             }
         };
 
         let currentLang = 'pl';
 
-        const defaultMatches = [
+        const defaultSchedule = [
             { id: "match-1", league: "Liga Okręgowa", date: "22.03.2026, 15:00", homeTeam: "Legion Białystok", awayTeam: "Iskra Narew", score: "2 : 1" },
-            { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" },
-            { id: "match-3", league: "Puchar Polski", date: "05.04.2026, 14:00", homeTeam: "Legion Białystok", awayTeam: "Tur Bielsk Podlaski", score: "VS" }
+            { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" }
         ];
+
+        // Funkcja pomocnicza do konwersji daty tekstowej na obiekt Date w celu dokładnego sortowania
+        function parseDate(dateStr) {
+            if (!dateStr) return new Date(0);
+            // Przykładowy format: "22.03.2026, 15:00" lub "22.03.2026"
+            const cleanStr = dateStr.split(',')[0].trim();
+            const parts = cleanStr.split('.');
+            if (parts.length === 3) {
+                return new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+            }
+            return new Date(0);
+        }
 
         function renderSchedule() {
             const container = document.getElementById('schedule-container');
             container.innerHTML = '';
 
-            let savedMatches = JSON.parse(localStorage.getItem('legion_schedule')) || defaultMatches;
-            const langData = translations[currentLang] || translations['pl'];
-            const tLeagues = langData.leagues || {};
+            let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            savedMatches.forEach(match => {
-                // Tłumaczenie nazwy ligi/turnieju, jeśli istnieje w słowniku
-                const leagueName = tLeagues[match.league] || match.league;
+            // Sortowanie: od najnowszych do najstarszych (malejąco po dacie)
+            data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
+            data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'match-card';
-                card.id = match.id;
-                card.setAttribute('data-match-id', match.id);
+                card.id = item.id;
 
                 card.innerHTML = `
                     <div class="match-header">
-                        <span class="match-league">${leagueName}</span>
-                        <span class="match-date">${match.date}</span>
+                        <span class="match-league">${item.league || 'Mecz ligowy'}</span>
+                        <span class="match-date">${item.date}</span>
                     </div>
-                    <div class="match-teams-box">
-                        <span class="team-name home">${match.homeTeam}</span>
-                        <span class="match-score">${match.score}</span>
-                        <span class="team-name away">${match.awayTeam}</span>
+                    <div class="match-body">
+                        <div class="team home">${item.homeTeam}</div>
+                        <div class="score-box">${item.score || 'VS'}</div>
+                        <div class="team away">${item.awayTeam}</div>
                     </div>
                 `;
 
@@ -583,8 +566,6 @@
                     el.textContent = translations[lang][key];
                 }
             });
-
-            renderSchedule();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
