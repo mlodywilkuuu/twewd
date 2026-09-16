@@ -2,21 +2,119 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Legion Białystok</title>
+
 <style>
-body { font-family: Arial; background:#111; color:#fff; }
-.card { border:1px solid #444; padding:10px; margin:10px; }
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height:100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color:white;
+}
+
+/* NAV */
+nav {
+  display:flex;
+  justify-content:space-between;
+  padding:20px 40px;
+}
+
+.logo {
+  font-size:24px;
+  font-weight:bold;
+}
+
+/* HERO */
+.hero {
+  text-align:center;
+  padding:80px 20px;
+}
+
+.hero h1 {
+  font-size:48px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero p {
+  margin-top:10px;
+  opacity:0.8;
+}
+
+/* GLASS CARD */
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.2);
+  padding:20px;
+  transition:0.3s;
+}
+
+.glass:hover {
+  transform: translateY(-5px);
+  background: rgba(255,255,255,0.12);
+}
+
+/* SECTIONS */
+section {
+  padding:40px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap:20px;
+}
+
+/* MATCH */
+.match {
+  font-size:20px;
+  text-align:center;
+}
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:20px;
+  opacity:0.6;
+}
+
 </style>
 </head>
+
 <body>
 
-<h1>Legion Białystok</h1>
+<nav>
+  <div class="logo">Legion Białystok</div>
+</nav>
 
-<h2>📰 Aktualności</h2>
-<div id="articles"></div>
+<div class="hero">
+  <h1>Legion Białystok</h1>
+  <p>Oficjalna strona klubu</p>
+</div>
 
-<h2>⚽ Mecze</h2>
-<div id="matches"></div>
+<section>
+  <h2>📰 Aktualności</h2>
+  <div class="grid" id="articles"></div>
+</section>
+
+<section>
+  <h2>⚽ Mecze</h2>
+  <div class="grid" id="matches"></div>
+</section>
+
+<footer>
+  © 2026 Legion Białystok
+</footer>
 
 <script>
 function loadData() {
@@ -31,7 +129,7 @@ function loadData() {
 
   articles.forEach(a => {
     artDiv.innerHTML += `
-      <div class="card">
+      <div class="glass">
         <h3>${a.title}</h3>
         <p>${a.content}</p>
       </div>
@@ -40,8 +138,8 @@ function loadData() {
 
   matches.forEach(m => {
     matchDiv.innerHTML += `
-      <div class="card">
-        ${m.team1} ${m.score1} : ${m.score2} ${m.team2}
+      <div class="glass match">
+        ${m.team1} <b>${m.score1} : ${m.score2}</b> ${m.team2}
       </div>
     `;
   });
