@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Legion Białystok</title>
+<style>
+body { font-family: Arial; background:#111; color:#fff; }
+.card { border:1px solid #444; padding:10px; margin:10px; }
+</style>
+</head>
+<body>
+
+<h1>Legion Białystok</h1>
+
+<h2>📰 Aktualności</h2>
+<div id="articles"></div>
+
+<h2>⚽ Mecze</h2>
+<div id="matches"></div>
+
+<script>
+function loadData() {
+  const articles = JSON.parse(localStorage.getItem("articles")) || [];
+  const matches = JSON.parse(localStorage.getItem("matches")) || [];
+
+  const artDiv = document.getElementById("articles");
+  const matchDiv = document.getElementById("matches");
+
+  artDiv.innerHTML = "";
+  matchDiv.innerHTML = "";
+
+  articles.forEach(a => {
+    artDiv.innerHTML += `
+      <div class="card">
+        <h3>${a.title}</h3>
+        <p>${a.content}</p>
+      </div>
+    `;
+  });
+
+  matches.forEach(m => {
+    matchDiv.innerHTML += `
+      <div class="card">
+        ${m.team1} ${m.score1} : ${m.score2} ${m.team2}
+      </div>
+    `;
+  });
+}
+
+loadData();
+</script>
+
+</body>
+</html>
