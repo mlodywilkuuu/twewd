@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" id="htmlRoot">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,214 +9,175 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(-45deg, #0b0b0b, #141414, #26210f, #1a160a, #0b0b0b);
-            background-size: 400% 400%;
-            animation: gradientAnimation 18s ease infinite;
+            background-color: #0b0b0b;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        @keyframes gradientAnimation {
+        /* Animowane tło */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #050505, #141414, #1f1905);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Przezroczysty pasek menu – gradient przechodzi bezpośrednio pod nim */
+        /* Górny pasek nawigacyjny */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: transparent;
+            height: 70px;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 50px;
-            height: 90px;
-            position: absolute;
-            top: 0;
-            left: 0;
+            padding: 0 5%;
             z-index: 1000;
         }
 
-        .left-section {
+        .logo-container {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 12px;
+            text-decoration: none;
         }
 
         .logo-container img {
-            height: 52px;
+            height: 45px;
             width: auto;
             object-fit: contain;
         }
 
-        nav {
+        .club-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
             display: flex;
             gap: 30px;
+            list-style: none;
+            align-items: center;
         }
 
-        nav a {
-            color: #e6c687;
+        .nav-links a {
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: none;
-            border: none;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
+            color: #cccccc;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        nav a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 12px rgba(230, 198, 135, 0.7);
+        .nav-links a:hover {
+            color: #ffd700;
         }
 
-        /* Menu tłumaczeń */
-        .lang-dropdown {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(230, 198, 135, 0.3);
-            border-radius: 6px;
-            color: #e6c687;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 14px;
-            transition: all 0.3s ease;
-        }
-
-        .lang-dropdown:hover .lang-btn {
-            background: rgba(230, 198, 135, 0.1);
-            border-color: #e6c687;
-            color: #ffffff;
-        }
-
-        .lang-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(230, 198, 135, 0.3);
-            border-radius: 6px;
-            width: 180px;
+        /* Sekcja główna */
+        main {
+            margin-top: 110px;
+            padding: 0 5% 50px 5%;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            z-index: 1000;
-            overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-        }
-
-        .lang-dropdown:hover .lang-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .lang-option {
-            padding: 12px 16px;
-            display: flex;
             align-items: center;
-            gap: 12px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        .lang-option:hover {
-            background-color: rgba(230, 198, 135, 0.2);
-            color: #e6c687;
-        }
-
-        .lang-option img {
-            width: 20px;
-            height: 14px;
-            object-fit: cover;
-            border-radius: 2px;
-        }
-
-        /* Sekcja Match Center tuż pod menu */
+        /* Centrum Meczowe - wersja pełna szerokość */
         .match-center {
-            max-width: 900px;
-            margin: 130px auto 40px auto; /* Odstęp od góry uwzględniający absolutne menu */
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(18, 18, 18, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            padding: 35px 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+        .match-center h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .match-subtitle {
+            font-size: 0.95rem;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .match-info-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px 20px;
+        }
+
+        .team {
+            flex: 1;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .match-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 0 20px;
         }
 
-        .match-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(230, 198, 135, 0.2);
-            border-radius: 12px;
-            padding: 25px 35px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #e6c687;
-            font-weight: 600;
-        }
-
-        .match-body {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: center;
-        }
-
-        .team-name {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            width: 35%;
-        }
-
-        .match-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            width: 30%;
-        }
-
-        .match-score {
-            font-size: 28px;
+        .score {
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #e6c687;
+            color: #ffd700;
             letter-spacing: 2px;
+            background: rgba(255, 215, 0, 0.05);
+            padding: 5px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        .match-status {
-            font-size: 11px;
-            color: #aaaaaa;
+        .match-date {
+            font-size: 0.85rem;
+            color: #888888;
+            margin-top: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -224,91 +185,36 @@
 </head>
 <body>
 
-    <!-- Przezroczysty pasek menu -->
-    <header>
-        <div class="left-section">
-            <div class="logo-container">
-                <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
-            </div>
-            <nav>
-                <a href="#" data-i18n="home">Strona Główna</a>
-                <a href="#" data-i18n="team">Drużyna</a>
-                <a href="#" data-i18n="fixtures">Terminarz</a>
-                <a href="#" data-i18n="results">Wyniki</a>
-                <a href="#" data-i18n="tickets">Bilety</a>
-                <a href="#" data-i18n="contact">Kontakt</a>
-            </nav>
-        </div>
+    <div class="bg-animation"></div>
 
-        <div class="lang-dropdown">
-            <div class="lang-btn">
-                <img src="https://flagcdn.com/w40/pl.png" alt="PL" id="currentFlag" style="width:20px; height:14px; border-radius:2px;">
-                <span id="currentLangText">PL</span>
-                <span>▼</span>
-            </div>
-            <div class="lang-menu">
-                <div class="lang-option" onclick="changeLanguage('pl', 'PL', 'https://flagcdn.com/w40/pl.png', 'ltr')">
-                    <img src="https://flagcdn.com/w40/pl.png" alt="PL"> Polski
-                </div>
-                <div class="lang-option" onclick="changeLanguage('en', 'EN', 'https://flagcdn.com/w40/gb.png', 'ltr')">
-                    <img src="https://flagcdn.com/w40/gb.png" alt="EN"> English
-                </div>
-                <div class="lang-option" onclick="changeLanguage('ru', 'RU', 'https://flagcdn.com/w40/ru.png', 'ltr')">
-                    <img src="https://flagcdn.com/w40/ru.png" alt="RU"> Русский
-                </div>
-                <div class="lang-option" onclick="changeLanguage('es', 'ES', 'https://flagcdn.com/w40/es.png', 'ltr')">
-                    <img src="https://flagcdn.com/w40/es.png" alt="ES"> Español
-                </div>
-                <div class="lang-option" onclick="changeLanguage('ar', 'AR', 'https://flagcdn.com/w40/sa.png', 'rtl')">
-                    <img src="https://flagcdn.com/w40/sa.png" alt="AR"> العربية
-                </div>
-            </div>
-        </div>
+    <header>
+        <a href="#" class="logo-container">
+            <img src="logo.png" alt="Legion Białystok Logo" onerror="this.style.display='none'">
+            <span class="club-name">Legion Białystok</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Aktualności</a></li>
+            <li><a href="#">Drużyna</a></li>
+            <li><a href="#">Mecze</a></li>
+            <li><a href="#">Klub</a></li>
+        </ul>
     </header>
 
-    <!-- Moduł Match Center pod menu -->
-    <main class="match-center">
-        <div class="match-card">
-            <div class="match-header">
-                <span data-i18n="matchCenterTitle">Centrum Meczowe</span>
-                <span>IV Liga • Kolejka 14</span>
-            </div>
-            <div class="match-body">
-                <div class="team-name">Legion Białystok</div>
-                <div class="match-info">
-                    <div class="match-score">VS</div>
-                    <div class="match-status" data-i18n="matchTime">Sobota, 18:00</div>
+    <main>
+        <div class="match-center">
+            <h2>Centrum Meczowe</h2>
+            <div class="match-subtitle">IV Liga • Kolejka 14</div>
+            
+            <div class="match-info-box">
+                <div class="team">Legion Białystok</div>
+                <div class="match-details">
+                    <div class="score">0 : 0</div>
+                    <div class="match-date">Sobota, 18:00</div>
                 </div>
-                <div class="team-name">Jagiellonia II</div>
+                <div class="team">Przeciwnik</div>
             </div>
         </div>
     </main>
-
-    <script>
-        const translations = {
-            pl: { home: "Strona Główna", team: "Drużyna", fixtures: "Terminarz", results: "Wyniki", tickets: "Bilety", contact: "Kontakt", matchCenterTitle: "Najbliższy Mecz", matchTime: "Sobota, 18:00" },
-            en: { home: "Home", team: "Team", fixtures: "Fixtures", results: "Results", tickets: "Tickets", contact: "Contact", matchCenterTitle: "Next Match", matchTime: "Saturday, 18:00" },
-            ru: { home: "Главная", team: "Команда", fixtures: "Матчи", results: "Результаты", tickets: "Билеты", contact: "Контакты", matchCenterTitle: "Ближайший матч", matchTime: "Суббота, 18:00" },
-            es: { home: "Inicio", team: "Equipo", fixtures: "Calendario", results: "Resultados", tickets: "Entradas", contact: "Contacto", matchCenterTitle: "Próximo partido", matchTime: "Sábado, 18:00" },
-            ar: { home: "الرئيسية", team: "الفريق", fixtures: "المباريات", results: "النتائج", tickets: "التذاكر", contact: "اتصل بنا", matchCenterTitle: "المباراة القادمة", matchTime: "السبت، 18:00" }
-        };
-
-        function changeLanguage(langCode, langName, flagUrl, dir) {
-            document.getElementById('currentFlag').src = flagUrl;
-            document.getElementById('currentLangText').innerText = langName;
-            
-            document.getElementById('htmlRoot').setAttribute('lang', langCode);
-            document.getElementById('htmlRoot').setAttribute('dir', dir);
-
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[langCode] && translations[langCode][key]) {
-                    el.innerText = translations[langCode][key];
-                }
-            });
-        }
-    </script>
 
 </body>
 </html>
