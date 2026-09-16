@@ -56,6 +56,98 @@
             z-index: 1000;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* Styl przycisku menu (hamburger) i rozwijanej listy w stylu Realu */
+        .menu-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-toggle-btn {
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .menu-toggle-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .side-menu-dropdown {
+            position: absolute;
+            left: 0;
+            top: calc(100% + 12px);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            list-style: none;
+            padding: 12px 0;
+            min-width: 260px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            transition-delay: 0.2s; /* Zapobiega zbyt szybkiemu schowaniu */
+        }
+
+        .menu-dropdown:hover .side-menu-dropdown,
+        .side-menu-dropdown:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+
+        .side-menu-dropdown li a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 22px;
+            color: #dddddd;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .side-menu-dropdown li a:hover {
+            background: rgba(255, 215, 0, 0.08);
+            color: #ffd700;
+            border-left-color: #ffd700;
+            padding-left: 26px;
+        }
+
+        .side-menu-dropdown li a::after {
+            content: '›';
+            font-size: 1.2rem;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .side-menu-dropdown li a:hover::after {
+            color: #ffd700;
+        }
+
         .logo-container {
             display: flex;
             align-items: center;
@@ -68,7 +160,7 @@
             object-fit: contain;
         }
 
-        /* Wyśrodkowane przyciski nawigacyjne */
+        /* Wyśrodkowane przyciski główne */
         .nav-links {
             display: flex;
             gap: 30px;
@@ -158,94 +250,6 @@
             background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
         }
-
-        /* Sekcja główna */
-        main {
-            margin-top: 130px;
-            padding: 0 4% 50px 4%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        /* Centrum Meczowe jako pełna sekcja od końca do końca z efektem szkła */
-        .match-center {
-            width: 100%;
-            background: rgba(18, 18, 18, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 215, 0, 0.18);
-            border-radius: 20px;
-            padding: 45px 30px;
-            text-align: center;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
-        .match-center h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 12px rgba(255, 215, 0, 0.25);
-        }
-
-        .match-subtitle {
-            font-size: 1.05rem;
-            color: #b0b0b0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 35px;
-            font-weight: 600;
-        }
-
-        .match-info-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(12, 12, 12, 0.45);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            border-radius: 14px;
-            padding: 35px 25px;
-        }
-
-        .team {
-            flex: 1;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .match-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 25px;
-        }
-
-        .score {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #ffd700;
-            letter-spacing: 4px;
-            background: rgba(255, 215, 0, 0.06);
-            padding: 4px 28px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .match-date {
-            font-size: 0.95rem;
-            color: #aaaaaa;
-            margin-top: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -253,9 +257,25 @@
     <div class="bg-animation"></div>
 
     <header>
-        <a href="#" class="logo-container">
-            <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
-        </a>
+        <div class="header-left">
+            <!-- Rozwijane menu boczne (hamburger) przed logo -->
+            <div class="menu-dropdown">
+                <button class="menu-toggle-btn">☰</button>
+                <ul class="side-menu-dropdown">
+                    <li><a href="#">Pierwsza drużyna</a></li>
+                    <li><a href="#">Akademia</a></li>
+                    <li><a href="#">Terminarz</a></li>
+                    <li><a href="#">Klub</a></li>
+                    <li><a href="#">Bilety</a></li>
+                    <li><a href="#">Sklep</a></li>
+                </ul>
+            </div>
+
+            <!-- Logo Legionu Białystok -->
+            <a href="#" class="logo-container">
+                <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
+            </a>
+        </div>
 
         <ul class="nav-links">
             <li><a href="#" data-translate="news">Aktualności</a></li>
@@ -264,7 +284,7 @@
             <li><a href="#" data-translate="club">Klub</a></li>
         </ul>
 
-        <!-- Rozwijane menu z flagami -->
+        <!-- Rozwijane menu z flagami po prawej stronie -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
@@ -277,78 +297,24 @@
         </div>
     </header>
 
-    <main>
-        <div class="match-center">
-            <h2 data-translate="match_center_title">Centrum Meczowe</h2>
-            <div class="match-subtitle" id="match-round">IV Liga • Kolejka 14</div>
-            
-            <div class="match-info-box">
-                <div class="team" id="home-team">Legion Białystok</div>
-                <div class="match-details">
-                    <div class="score" id="match-score">:</div>
-                    <div class="match-date" id="match-datetime">Sobota, 18:00</div>
-                </div>
-                <div class="team" id="away-team" data-translate="away_default">Przeciwnik</div>
-            </div>
-        </div>
-    </main>
-
     <script>
         const translations = {
-            pl: {
-                news: "Aktualności",
-                team: "Drużyna",
-                matches: "Mecze",
-                club: "Klub",
-                match_center_title: "Centrum Meczowe",
-                away_default: "Przeciwnik"
-            },
-            en: {
-                news: "News",
-                team: "Squad",
-                matches: "Matches",
-                club: "Club",
-                match_center_title: "Match Center",
-                away_default: "Opponent"
-            },
-            es: {
-                news: "Noticias",
-                team: "Plantilla",
-                matches: "Partidos",
-                club: "Club",
-                match_center_title: "Centro de Partidos",
-                away_default: "Rival"
-            },
-            ru: {
-                news: "Новости",
-                team: "Команда",
-                matches: "Матчи",
-                club: "Клуб",
-                match_center_title: "Матч-центр",
-                away_default: "Соперник"
-            },
-            ar: {
-                news: "الأخبار",
-                team: "الفريق",
-                matches: "المباريات",
-                club: "النادي",
-                match_center_title: "مركز المباريات",
-                away_default: "المنافس"
-            }
+            pl: { news: "Aktualności", team: "Drużyna", matches: "Mecze", club: "Klub" },
+            en: { news: "News", team: "Squad", matches: "Matches", club: "Club" },
+            es: { news: "Noticias", team: "Plantilla", matches: "Partidos", club: "Club" },
+            ru: { news: "Новости", team: "Команда", matches: "Матчи", club: "Клуб" },
+            ar: { news: "الأخبار", team: "الفريق", matches: "المباريات", club: "النادي" }
         };
 
         function setLanguage(lang, label) {
-            // Zmiana tekstu na przycisku języka
             document.getElementById('current-lang-btn').innerHTML = label;
 
-            // Kierunek tekstu dla arabskiego
             if (lang === 'ar') {
                 document.documentElement.dir = 'rtl';
             } else {
                 document.documentElement.dir = 'ltr';
             }
 
-            // Tłumaczenie elementów strony
             const elements = document.querySelectorAll('[data-translate]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-translate');
