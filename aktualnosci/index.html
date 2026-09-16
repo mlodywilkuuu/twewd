@@ -346,7 +346,7 @@
             gap: 30px;
         }
 
-        /* Kafelki newsów z efektem szkła (bez zdjęć) */
+        /* Kafelki newsów z efektem szkła */
         .news-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
@@ -589,29 +589,9 @@
             <button class="filter-btn" onclick="filterNews('akademia')" data-translate="filter_academy">Akademia</button>
         </div>
 
-        <!-- Siatka kafelków aktualności z unikalnymi ID pod przyszły panel -->
+        <!-- Siatka kafelków aktualności (obsługuje domyślne wpisy oraz dynamiczne z panelu) -->
         <div class="news-grid" id="news-container">
-            
-            <div class="news-card" id="news-1" data-news-id="1" data-tag="mecz" data-date="2026-03-15">
-                <div class="news-meta">
-                    <span class="news-date">15.03.2026</span>
-                    <span class="news-tag" data-translate="tag_match">Mecz</span>
-                </div>
-                <div class="news-title" data-translate="news_1_title">Przygotowania do nowego sezonu ruszą już wkrótce!</div>
-                <div class="news-desc" data-translate="news_1_desc">Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.</div>
-                <button class="news-btn" onclick="openModal('Przygotowania do nowego sezonu ruszą już wkrótce!', '15 Marca 2026', 'Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych, które pozwolą dopracować formę taktyczną oraz zgrać nowych zawodników przed walką o ligowe punkty.')" data-translate="read_more">Czytaj dalej ›</button>
-            </div>
-
-            <div class="news-card" id="news-2" data-news-id="2" data-tag="klub" data-date="2026-03-10">
-                <div class="news-meta">
-                    <span class="news-date">10.03.2026</span>
-                    <span class="news-tag" data-translate="tag_club">Klub</span>
-                </div>
-                <div class="news-title" data-translate="news_2_title">Podsumowanie ostatniego meczu ligowego</div>
-                <div class="news-desc" data-translate="news_2_desc">Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.</div>
-                <button class="news-btn" onclick="openModal('Podsumowanie ostatniego meczu ligowego', '10 Marca 2026', 'Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku, walcząc o każdą piłkę. Dziękujemy kibicom za niesamowity doping!')" data-translate="read_more">Czytaj dalej ›</button>
-            </div>
-
+            <!-- Wpisy będą ładowane dynamicznie przez JavaScript -->
         </div>
     </main>
 
@@ -626,6 +606,69 @@
     </div>
 
     <script>
+        // Domyślne artykuły (jeśli panel jeszcze nic nie zapisał)
+        const defaultNews = [
+            {
+                id: "news-1",
+                tag: "mecz",
+                date: "2026-03-15",
+                displayDate: "15.03.2026",
+                title: "Przygotowania do nowego sezonu ruszą już wkrótce!",
+                desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.",
+                body: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych, które pozwolą dopracować formę taktyczną oraz zgrać nowych zawodników przed walką o ligowe punkty."
+            },
+            {
+                id: "news-2",
+                tag: "klub",
+                date: "2026-03-10",
+                displayDate: "10.03.2026",
+                title: "Podsumowanie ostatniego meczu ligowego",
+                desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.",
+                body: "Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku, walcząc o każdą piłkę. Dziękujemy kibicom za niesamowity doping!"
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '';
+
+            // Pobieranie artykułów z pamięci przeglądarki (z panelu administratora) lub domyślne
+            let savedNews = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
+
+            // Sortowanie od najnowszych do najstarszych
+            savedNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            savedNews.forEach(item => {
+                if (currentFilter !== 'all' && item.tag !== currentFilter) {
+                    return;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'news-card';
+                card.id = item.id;
+                card.setAttribute('data-tag', item.tag);
+                card.setAttribute('data-date', item.date);
+
+                card.innerHTML = `
+                    <div class="news-meta">
+                        <span class="news-date">${item.displayDate || item.date}</span>
+                        <span class="news-tag">${item.tag}</span>
+                    </div>
+                    <div class="news-title">${item.title}</div>
+                    <div class="news-desc">${item.desc}</div>
+                    <button class="news-btn" onclick="openModal('${escapeHtml(item.title)}', '${item.displayDate || item.date}', '${escapeHtml(item.body)}')">Czytaj dalej ›</button>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+        }
+
         function openModal(title, date, body) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalDate').textContent = date;
@@ -644,32 +687,18 @@
         }
 
         function filterNews(tag) {
+            currentFilter = tag;
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-
-            const container = document.getElementById('news-container');
-            const cards = Array.from(container.getElementsByClassName('news-card'));
-
-            cards.sort((a, b) => new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date')));
-
-            cards.forEach(card => {
-                if (tag === 'all' || card.getAttribute('data-tag') === tag) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-                container.appendChild(card);
-            });
+            renderNews();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('news-container');
-            const cards = Array.from(container.getElementsByClassName('news-card'));
-            cards.sort((a, b) => new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date')));
-            cards.forEach(card => container.appendChild(card));
+            renderNews();
         });
 
+        // Obsługa tłumaczeń interfejsu
         const translations = {
             pl: {
                 news: "Aktualności",
@@ -684,14 +713,7 @@
                 filter_all: "Wszystkie",
                 filter_match: "Mecz",
                 filter_club: "Klub",
-                filter_academy: "Akademia",
-                tag_match: "Mecz",
-                tag_club: "Klub",
-                news_1_title: "Przygotowania do nowego sezonu ruszą już wkrótce!",
-                news_1_desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.",
-                news_2_title: "Podsumowanie ostatniego meczu ligowego",
-                news_2_desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.",
-                read_more: "Czytaj dalej ›"
+                filter_academy: "Akademia"
             },
             en: {
                 news: "News",
@@ -706,14 +728,7 @@
                 filter_all: "All",
                 filter_match: "Match",
                 filter_club: "Club",
-                filter_academy: "Academy",
-                tag_match: "Match",
-                tag_club: "Club",
-                news_1_title: "Pre-season preparations starting soon!",
-                news_1_desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.",
-                news_2_title: "Summary of the latest league match",
-                news_2_desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.",
-                read_more: "Read more ›"
+                filter_academy: "Academy"
             },
             es: {
                 news: "Noticias",
@@ -728,14 +743,7 @@
                 filter_all: "Todos",
                 filter_match: "Partido",
                 filter_club: "Club",
-                filter_academy: "Academia",
-                tag_match: "Partido",
-                tag_club: "Club",
-                news_1_title: "¡Los preparativos para la preemporada comienzan pronto!",
-                news_1_desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario de amistosos.",
-                news_2_title: "Resumen del último partido de liga",
-                news_2_desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.",
-                read_more: "Leer más ›"
+                filter_academy: "Academia"
             },
             ru: {
                 news: "Новости",
@@ -750,14 +758,7 @@
                 filter_all: "Все",
                 filter_match: "Матч",
                 filter_club: "Клуб",
-                filter_academy: "Академия",
-                tag_match: "Матч",
-                tag_club: "Клуб",
-                news_1_title: "Подготовка к новому сезону скоро начнется!",
-                news_1_desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием товарищеских встреч.",
-                news_2_title: "Итоги последнего матча чемпионата",
-                news_2_desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.",
-                read_more: "Читать далее ›"
+                filter_academy: "Академия"
             },
             ar: {
                 news: "الأخبار",
@@ -772,14 +773,7 @@
                 filter_all: "الكل",
                 filter_match: "مباراة",
                 filter_club: "النادي",
-                filter_academy: "الأكاديمية",
-                tag_match: "مباراة",
-                tag_club: "النادي",
-                news_1_title: "التحضيرات للموسم الجديد تبدأ قريباً!",
-                news_1_desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات الودية.",
-                news_2_title: "ملخص مباراتنا الأخيرة في الدوري",
-                news_2_desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.",
-                read_more: "اقرأ المزيد ›"
+                filter_academy: "الأكاديمية"
             }
         };
 
