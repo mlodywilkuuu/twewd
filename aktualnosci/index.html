@@ -606,156 +606,50 @@
     </div>
 
     <script>
-        // Słownik tłumaczeń i artykułów wspierający wiele języków
         const translations = {
             pl: {
-                news: "Aktualności",
-                team: "Pierwsza drużyna",
-                academy: "Akademia",
-                schedule: "Terminarz",
-                club: "Klub ›",
-                history: "Historia",
-                about: "O klubie",
-                people: "Ludzie Legionu",
-                section_title: "Aktualności",
-                filter_all: "Wszystkie",
-                filter_match: "Mecz",
-                filter_club: "Klub",
-                filter_academy: "Akademia",
-                read_more: "Czytaj dalej ›",
+                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
+                section_title: "Aktualności", filter_all: "Wszystkie", filter_match: "Mecz", filter_club: "Klub", filter_academy: "Akademia", read_more: "Czytaj dalej ›",
+                tags: { mecz: "Mecz", klub: "Klub", akademia: "Akademia" },
                 articles: {
-                    "news-1": {
-                        title: "Przygotowania do nowego sezonu ruszą już wkrótce!",
-                        desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.",
-                        body: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych, które pozwolą dopracować formę taktyczną oraz zgrać nowych zawodników przed walką o ligowe punkty.",
-                        tagLabel: "Mecz"
-                    },
-                    "news-2": {
-                        title: "Podsumowanie ostatniego meczu ligowego",
-                        desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.",
-                        body: "Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku, walcząc o każdą piłkę. Dziękujemy kibicom za niesamowity doping!",
-                        tagLabel: "Klub"
-                    }
+                    "news-1": { title: "Przygotowania do nowego sezonu ruszą już wkrótce!", desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.", body: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych." },
+                    "news-2": { title: "Podsumowanie ostatniego meczu ligowego", desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.", body: "Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku." }
                 }
             },
             en: {
-                news: "News",
-                team: "First Team",
-                academy: "Academy",
-                schedule: "Schedule",
-                club: "Club ›",
-                history: "History",
-                about: "About Club",
-                people: "Legion People",
-                section_title: "News",
-                filter_all: "All",
-                filter_match: "Match",
-                filter_club: "Club",
-                filter_academy: "Academy",
-                read_more: "Read more ›",
+                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
+                section_title: "News", filter_all: "All", filter_match: "Match", filter_club: "Club", filter_academy: "Academy", read_more: "Read more ›",
+                tags: { mecz: "Match", klub: "Club", akademia: "Academy" },
                 articles: {
-                    "news-1": {
-                        title: "Pre-season preparations starting soon!",
-                        desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.",
-                        body: "The team is training intensively ahead of upcoming league matches. The coaching staff has planned a series of friendly matches to fine-tune tactical form and integrate new players.",
-                        tagLabel: "Match"
-                    },
-                    "news-2": {
-                        title: "Summary of the latest league match",
-                        desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.",
-                        body: "An exciting clash full of twists until the final minutes. The team showed great character on the pitch, fighting for every ball. Thank you fans for the incredible support!",
-                        tagLabel: "Club"
-                    }
+                    "news-1": { title: "Pre-season preparations starting soon!", desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.", body: "The team is training intensively ahead of upcoming league matches. The coaching staff has planned a series of friendly matches." },
+                    "news-2": { title: "Summary of the latest league match", desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.", body: "An exciting clash full of twists until the final minutes. The team showed great character on the pitch." }
                 }
             },
             es: {
-                news: "Noticias",
-                team: "Primer Equipo",
-                academy: "Academia",
-                schedule: "Calendario",
-                club: "Club ›",
-                history: "Historia",
-                about: "Sobre el Club",
-                people: "Gente del Legion",
-                section_title: "Noticias",
-                filter_all: "Todos",
-                filter_match: "Partido",
-                filter_club: "Club",
-                filter_academy: "Academia",
-                read_more: "Leer más ›",
+                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
+                section_title: "Noticias", filter_all: "Todos", filter_match: "Partido", filter_club: "Club", filter_academy: "Academia", read_more: "Leer más ›",
+                tags: { mecz: "Partido", klub: "Club", akademia: "Academia" },
                 articles: {
-                    "news-1": {
-                        title: "¡Los preparativos para la preemporada comienzan pronto!",
-                        desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario.",
-                        body: "El equipo se entrena intensamente de cara a los próximos partidos de liga. El cuerpo técnico ha planeado una serie de partidos amistosos para afinar la forma táctica.",
-                        tagLabel: "Partido"
-                    },
-                    "news-2": {
-                        title: "Resumen del último partido de liga",
-                        desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.",
-                        body: "Un choque emocionante lleno de alternativas hasta los últimos minutos. El equipo mostró un gran carácter en el campo. ¡Gracias afición por el increíble apoyo!",
-                        tagLabel: "Club"
-                    }
+                    "news-1": { title: "¡Los preparativos para la preemporada comienzan pronto!", desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario.", body: "El equipo se entrena intensamente de cara a los próximos partidos de liga. El cuerpo técnico ha planeado una serie de partidos amistosos." },
+                    "news-2": { title: "Resumen del último partido de liga", desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.", body: "Un choque emocionante lleno de alternativas hasta los últimos minutos. El equipo mostró un gran carácter en el campo." }
                 }
             },
             ru: {
-                news: "Новости",
-                team: "Первая команда",
-                academy: "Академия",
-                schedule: "Расписание",
-                club: "Клуб ›",
-                history: "История",
-                about: "О клубе",
-                people: "Люди Легиона",
-                section_title: "Новости",
-                filter_all: "Все",
-                filter_match: "Матч",
-                filter_club: "Клуб",
-                filter_academy: "Академия",
-                read_more: "Читать далее ›",
+                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
+                section_title: "Новости", filter_all: "Все", filter_match: "Матч", filter_club: "Клуб", filter_academy: "Академия", read_more: "Читать далее ›",
+                tags: { mecz: "Матч", klub: "Клуб", akademia: "Академия" },
                 articles: {
-                    "news-1": {
-                        title: "Подготовка к новому сезону скоро начнется!",
-                        desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием.",
-                        body: "Команда интенсивно тренируется перед предстоящими матчами лиги. Тренерский штаб запланировал ряд товарищеских встреч.",
-                        tagLabel: "Матч"
-                    },
-                    "news-2": {
-                        title: "Итоги последнего матча чемпионата",
-                        desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.",
-                        body: "Захватывающий поединок до последних минут. Команда проявила огромный характер на поле. Спасибо болельщикам за невероятную поддержку!",
-                        tagLabel: "Клуб"
-                    }
+                    "news-1": { title: "Подготовка к новому сезону скоро начнется!", desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием.", body: "Команда интенсивно тренируется перед предстоящими матчами лиги. Тренерский штаб запланировал ряд товарищеских встреч." },
+                    "news-2": { title: "Итоги последнего матча чемпионата", desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.", body: "Захватывающий поединок до последних минут. Команда проявила огромный характер на поле." }
                 }
             },
             ar: {
-                news: "الأخبار",
-                team: "الفريق الأول",
-                academy: "الأكاديمية",
-                schedule: "الجدول",
-                club: "النادي ›",
-                history: "التاريخ",
-                about: "عن النادي",
-                people: "أعضاء النادي",
-                section_title: "الأخبار",
-                filter_all: "الكل",
-                filter_match: "مباراة",
-                filter_club: "النادي",
-                filter_academy: "الأكاديمية",
-                read_more: "اقرأ المزيد ›",
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
+                section_title: "الأخبار", filter_all: "الكل", filter_match: "مباراة", filter_club: "النادي", filter_academy: "الأكاديمية", read_more: "اقرأ المزيد ›",
+                tags: { mecz: "مباراة", klub: "النادي", akademia: "الأكاديمية" },
                 articles: {
-                    "news-1": {
-                        title: "التحضيرات للموسم الجديد تبدأ قريباً!",
-                        desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات.",
-                        body: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. خطط الجهاز الفني لسلسلة من المباريات الودية.",
-                        tagLabel: "مباراة"
-                    },
-                    "news-2": {
-                        title: "ملخص مباراتنا الأخيرة في الدوري",
-                        desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.",
-                        body: "مواجهة مثيرة مليئة بالتقلبات حتى الدقائق الأخيرة. أظهر الفريق شخصية عظيمة على أرض الملعب. شكراً للجماهير على الدعم!",
-                        tagLabel: "النادي"
-                    }
+                    "news-1": { title: "التحضيرات للموسم الجديد تبدأ قريباً!", desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات.", body: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. خطط الجهاز الفني لسلسلة من المباريات الودية." },
+                    "news-2": { title: "ملخص مباراتنا الأخيرة في الدوري", desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.", body: "مواجهة مثيرة مليئة بالتقلبات حتى الدقائق الأخيرة. أظهر الفريق شخصية عظيمة على أرض الملعب." }
                 }
             }
         };
@@ -775,21 +669,22 @@
             let savedNews = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
             savedNews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            const tArticles = translations[currentLang]?.articles || translations['pl'].articles;
-            const readMoreText = translations[currentLang]?.read_more || "Czytaj dalej ›";
+            const langData = translations[currentLang] || translations['pl'];
+            const tArticles = langData.articles || {};
+            const tTags = langData.tags || {};
+            const readMoreText = langData.read_more || "Czytaj dalej ›";
 
             savedNews.forEach(item => {
                 if (currentFilter !== 'all' && item.tag !== currentFilter) {
                     return;
                 }
 
-                // Pobranie przetłumaczonego artykułu (lub domyślnego z bazy/fallbacku)
-                const articleData = (tArticles && tArticles[item.id]) ? tArticles[item.id] : {
-                    title: item.title || "Nowy artykuł",
-                    desc: item.desc || "",
-                    body: item.body || "",
-                    tagLabel: item.tag
-                };
+                // Pobieranie tłumaczenia dla konkretnego artykułu (lub użycie zapisanego, jeśli dodany z panelu)
+                const articleTranslation = tArticles[item.id] || {};
+                const title = articleTranslation.title || item.title || "Artykuł";
+                const desc = articleTranslation.desc || item.desc || "";
+                const body = articleTranslation.body || item.body || desc;
+                const tagLabel = tTags[item.tag] || item.tag;
 
                 const card = document.createElement('div');
                 card.className = 'news-card';
@@ -800,11 +695,11 @@
                 card.innerHTML = `
                     <div class="news-meta">
                         <span class="news-date">${item.displayDate || item.date}</span>
-                        <span class="news-tag">${articleData.tagLabel || item.tag}</span>
+                        <span class="news-tag">${tagLabel}</span>
                     </div>
-                    <div class="news-title">${articleData.title}</div>
-                    <div class="news-desc">${articleData.desc}</div>
-                    <button class="news-btn" onclick="openModal('${escapeHtml(articleData.title)}', '${item.displayDate || item.date}', '${escapeHtml(articleData.body)}')">${readMoreText}</button>
+                    <div class="news-title">${title}</div>
+                    <div class="news-desc">${desc}</div>
+                    <button class="news-btn" onclick="openModal('${escapeHtml(title)}', '${item.displayDate || item.date}', '${escapeHtml(body)}')">${readMoreText}</button>
                 `;
 
                 container.appendChild(card);
@@ -850,7 +745,7 @@
                 document.documentElement.dir = 'ltr';
             }
 
-            // Tłumaczenie elementów statycznych interfejsu
+            // Tłumaczenie elementów nawigacji i menu
             const elements = document.querySelectorAll('[data-translate]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-translate');
@@ -859,7 +754,7 @@
                 }
             });
 
-            // Ponowne wyrenderowanie artykułów w wybranym języku
+            // Ponowne renderowanie artykułów w nowym języku
             renderNews();
         }
 
