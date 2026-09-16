@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skład Drużyny - Legion Białystok</title>
+    <title>Aktualności - Legion Białystok</title>
     <style>
         * {
             margin: 0;
@@ -109,7 +109,6 @@
             transition-delay: 0.2s;
         }
 
-        /* Automatyczne dostosowanie kierunku rozwijania menu dla trybu RTL (Arabski) */
         html[dir="rtl"] .side-menu-dropdown {
             left: auto;
             right: 0;
@@ -292,7 +291,7 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – Skład */
+        /* Główna treść strony – Aktualności */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
@@ -307,34 +306,63 @@
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             text-align: center;
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Nowoczesna siatka kafelków */
-        .squad-grid {
+        /* Panel sortowania i tagów na górze */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #cccccc;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+
+        /* Siatka aktualności */
+        .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 30px;
         }
 
-        /* Kafelki zawodników */
-        .player-card {
+        /* Kafelki newsów z efektem szkła (bez zdjęć) */
+        .news-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 30px 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
 
-        .player-card::before {
+        .news-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -346,44 +374,162 @@
             transition: opacity 0.35s ease;
         }
 
-        .player-card:hover {
+        .news-card:hover {
             transform: translateY(-8px);
             border-color: rgba(255, 215, 0, 0.45);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
         }
 
-        .player-card:hover::before {
+        .news-card:hover::before {
             opacity: 1;
         }
 
-        .player-number {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #ffd700;
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
-            line-height: 1;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
-        .player-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .player-position {
-            font-size: 0.85rem;
-            color: #999999;
+        .news-date {
+            font-size: 0.8rem;
+            color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px 12px;
+        }
+
+        .news-tag {
+            font-size: 0.75rem;
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .news-desc {
+            font-size: 0.95rem;
+            color: #aaaaaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .news-btn {
+            align-self: flex-start;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+            padding: 8px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .news-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+            border-color: #ffd700;
+        }
+
+        /* Modal / Okno wyskakujące dla artykułu */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             border-radius: 20px;
-            display: inline-block;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .modal-date {
+            font-size: 0.85rem;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .modal-body {
+            font-size: 1.05rem;
+            color: #cccccc;
+            line-height: 1.8;
         }
     </style>
 </head>
@@ -433,39 +579,102 @@
     </header>
 
     <main>
-        <h1 class="section-title" data-translate="section_title">Pierwsza Drużyna</h1>
+        <h1 class="section-title" data-translate="section_title">Aktualności</h1>
 
-        <!-- Siatka kafelków zawodników (imiona bez znacznika tłumaczenia, pozycje przetłumaczalne) -->
-        <div class="squad-grid">
+        <!-- Pasek tagów i sortowania na górze -->
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterNews('all')" data-translate="filter_all">Wszystkie</button>
+            <button class="filter-btn" onclick="filterNews('mecz')" data-translate="filter_match">Mecz</button>
+            <button class="filter-btn" onclick="filterNews('klub')" data-translate="filter_club">Klub</button>
+            <button class="filter-btn" onclick="filterNews('akademia')" data-translate="filter_academy">Akademia</button>
+        </div>
+
+        <!-- Siatka kafelków aktualności -->
+        <div class="news-grid" id="news-container">
             
-            <div class="player-card">
-                <div class="player-number">1</div>
-                <div class="player-name">Jan Kowalski</div>
-                <div class="player-position" data-translate="pos_gk">Bramkarz</div>
+            <div class="news-card" data-tag="mecz" data-date="2026-03-15">
+                <div class="news-meta">
+                    <span class="news-date">15.03.2026</span>
+                    <span class="news-tag" data-translate="tag_match">Mecz</span>
+                </div>
+                <div class="news-title" data-translate="news_1_title">Przygotowania do nowego sezonu ruszą już wkrótce!</div>
+                <div class="news-desc" data-translate="news_1_desc">Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.</div>
+                <button class="news-btn" onclick="openModal('Przygotowania do nowego sezonu ruszą już wkrótce!', '15 Marca 2026', 'Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych, które pozwolą dopracować formę taktyczną oraz zgrać nowych zawodników przed walką o ligowe punkty.')" data-translate="read_more">Czytaj dalej ›</button>
             </div>
 
-            <div class="player-card">
-                <div class="player-number">4</div>
-                <div class="player-name">Piotr Nowak</div>
-                <div class="player-position" data-translate="pos_def">Obrońca</div>
-            </div>
-
-            <div class="player-card">
-                <div class="player-number">8</div>
-                <div class="player-name">Michał Wiśniewski</div>
-                <div class="player-position" data-translate="pos_mid">Pomocnik</div>
-            </div>
-
-            <div class="player-card">
-                <div class="player-number">10</div>
-                <div class="player-name">Kamil Wójcik</div>
-                <div class="player-position" data-translate="pos_FWD">Napastnik</div>
+            <div class="news-card" data-tag="klub" data-date="2026-03-10">
+                <div class="news-meta">
+                    <span class="news-date">10.03.2026</span>
+                    <span class="news-tag" data-translate="tag_club">Klub</span>
+                </div>
+                <div class="news-title" data-translate="news_2_title">Podsumowanie ostatniego meczu ligowego</div>
+                <div class="news-desc" data-translate="news_2_desc">Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.</div>
+                <button class="news-btn" onclick="openModal('Podsumowanie ostatniego meczu ligowego', '10 Marca 2026', 'Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku, walcząc o każdą piłkę. Dziękujemy kibicom za niesamowity doping!')" data-translate="read_more">Czytaj dalej ›</button>
             </div>
 
         </div>
     </main>
 
+    <!-- Okno wyskakujące (Modal) dla artykułu -->
+    <div class="modal-overlay" id="articleModal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-date" id="modalDate"></div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
     <script>
+        // Funkcja otwierająca artykuł w oknie
+        function openModal(title, date, body) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalDate').textContent = date;
+            document.getElementById('modalBody').textContent = body;
+            document.getElementById('articleModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('articleModal').classList.remove('active');
+        }
+
+        function closeModalOutside(event) {
+            if (event.target === document.getElementById('articleModal')) {
+                closeModal();
+            }
+        }
+
+        // Sortowanie i filtrowanie po tagach
+        function filterNews(tag) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const container = document.getElementById('news-container');
+            const cards = Array.from(container.getElementsByClassName('news-card'));
+
+            // Sortowanie od najnowszych do najstarszych po dacie
+            cards.sort((a, b) => new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date')));
+
+            cards.forEach(card => {
+                if (tag === 'all' || card.getAttribute('data-tag') === tag) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+                container.appendChild(card); // Przestawianie kolejności w DOM
+            });
+        }
+
+        // Automatyczne sortowanie przy ładowaniu strony od najnowszych
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('news-container');
+            const cards = Array.from(container.getElementsByClassName('news-card'));
+            cards.sort((a, b) => new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date')));
+            cards.forEach(card => container.appendChild(card));
+        });
+
+        // Obsługa tłumaczeń
         const translations = {
             pl: {
                 news: "Aktualności",
@@ -476,11 +685,18 @@
                 history: "Historia",
                 about: "O klubie",
                 people: "Ludzie Legionu",
-                section_title: "Pierwsza Drużyna",
-                pos_gk: "Bramkarz",
-                pos_def: "Obrońca",
-                pos_mid: "Pomocnik",
-                pos_FWD: "Napastnik"
+                section_title: "Aktualności",
+                filter_all: "Wszystkie",
+                filter_match: "Mecz",
+                filter_club: "Klub",
+                filter_academy: "Akademia",
+                tag_match: "Mecz",
+                tag_club: "Klub",
+                news_1_title: "Przygotowania do nowego sezonu ruszą już wkrótce!",
+                news_1_desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.",
+                news_2_title: "Podsumowanie ostatniego meczu ligowego",
+                news_2_desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.",
+                read_more: "Czytaj dalej ›"
             },
             en: {
                 news: "News",
@@ -491,11 +707,18 @@
                 history: "History",
                 about: "About Club",
                 people: "Legion People",
-                section_title: "First Team",
-                pos_gk: "Goalkeeper",
-                pos_def: "Defender",
-                pos_mid: "Midfielder",
-                pos_FWD: "Forward"
+                section_title: "News",
+                filter_all: "All",
+                filter_match: "Match",
+                filter_club: "Club",
+                filter_academy: "Academy",
+                tag_match: "Match",
+                tag_club: "Club",
+                news_1_title: "Pre-season preparations starting soon!",
+                news_1_desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.",
+                news_2_title: "Summary of the latest league match",
+                news_2_desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.",
+                read_more: "Read more ›"
             },
             es: {
                 news: "Noticias",
@@ -506,11 +729,18 @@
                 history: "Historia",
                 about: "Sobre el Club",
                 people: "Gente del Legion",
-                section_title: "Primer Equipo",
-                pos_gk: "Portero",
-                pos_def: "Defensa",
-                pos_mid: "Centrocampista",
-                pos_FWD: "Delantero"
+                section_title: "Noticias",
+                filter_all: "Todos",
+                filter_match: "Partido",
+                filter_club: "Club",
+                filter_academy: "Academia",
+                tag_match: "Partido",
+                tag_club: "Club",
+                news_1_title: "¡Los preparativos para la preemporada comienzan pronto!",
+                news_1_desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario de amistosos.",
+                news_2_title: "Resumen del último partido de liga",
+                news_2_desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.",
+                read_more: "Leer más ›"
             },
             ru: {
                 news: "Новости",
@@ -521,11 +751,18 @@
                 history: "История",
                 about: "О клубе",
                 people: "Люди Легиона",
-                section_title: "Первая Команда",
-                pos_gk: "Вратарь",
-                pos_def: "Защитник",
-                pos_mid: "Полузащитник",
-                pos_FWD: "Нападающий"
+                section_title: "Новости",
+                filter_all: "Все",
+                filter_match: "Матч",
+                filter_club: "Клуб",
+                filter_academy: "Академия",
+                tag_match: "Матч",
+                tag_club: "Клуб",
+                news_1_title: "Подготовка к новому сезону скоро начнется!",
+                news_1_desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием товарищеских встреч.",
+                news_2_title: "Итоги последнего матча чемпионата",
+                news_2_desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.",
+                read_more: "Читать далее ›"
             },
             ar: {
                 news: "الأخبار",
@@ -536,11 +773,18 @@
                 history: "التاريخ",
                 about: "عن النادي",
                 people: "أعضاء النادي",
-                section_title: "الفريق الأول",
-                pos_gk: "حارس مرمى",
-                pos_def: "مدافع",
-                pos_mid: "لاعب خط وسط",
-                pos_FWD: "مهاجم"
+                section_title: "الأخبار",
+                filter_all: "الكل",
+                filter_match: "مباراة",
+                filter_club: "النادي",
+                filter_academy: "الأكاديمية",
+                tag_match: "مباراة",
+                tag_club: "النادي",
+                news_1_title: "التحضيرات للموسم الجديد تبدأ قريباً!",
+                news_1_desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات الودية.",
+                news_2_title: "ملخص مباراتنا الأخيرة في الدوري",
+                news_2_desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.",
+                read_more: "اقرأ المزيد ›"
             }
         };
 
