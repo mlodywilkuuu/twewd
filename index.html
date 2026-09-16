@@ -14,196 +14,95 @@
 }
 
 body{
-  background:#0b0f14;
+  height:100vh;
+  overflow:hidden;
   color:white;
 }
 
-/* ===== NAV ===== */
-nav{
+/* ===== ANIMOWANY GRADIENT ===== */
+.bg{
   position:fixed;
   width:100%;
-  top:0;
-  left:0;
-  padding:15px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:rgba(10,15,20,0.85);
-  backdrop-filter:blur(8px);
-  z-index:1000;
+  height:100%;
+  background: linear-gradient(-45deg, #0b0f14, #1a2a44, #0b0f14, #162033);
+  background-size:400% 400%;
+  animation: gradient 10s ease infinite;
+  z-index:-1;
+}
+
+@keyframes gradient{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ===== MAINTENANCE SCREEN ===== */
+.maintenance{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
 }
 
 .logo{
-  width:40px;
-}
-
-.menu a{
-  color:#ccc;
-  margin-left:20px;
-  text-decoration:none;
-  font-size:14px;
-}
-
-.menu a:hover{
-  color:white;
-}
-
-/* ===== HERO ===== */
-.hero{
-  height:90vh;
-  background:url("https://images.unsplash.com/photo-1508098682722-e99c643e7f0b") center/cover;
-  display:flex;
-  align-items:flex-end;
-  padding:60px;
-}
-
-.hero-content{
-  max-width:500px;
-}
-
-.hero h1{
-  font-size:48px;
-}
-
-.hero p{
-  margin-top:10px;
-  color:#ccc;
-}
-
-/* ===== BUTTON ===== */
-.btn{
-  display:inline-block;
-  margin-top:20px;
-  padding:12px 20px;
-  background:white;
-  color:black;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-/* ===== SEKCJE ===== */
-section{
-  padding:50px 40px;
-}
-
-.section-title{
-  font-size:22px;
+  width:120px;
   margin-bottom:20px;
 }
 
-/* ===== NEWS GRID ===== */
-.news{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  gap:15px;
+.maintenance h1{
+  font-size:28px;
+  margin-bottom:10px;
 }
 
-.news .big{
-  grid-row:span 2;
-  height:300px;
+.maintenance p{
+  color:#ccc;
 }
 
-.news div{
-  background:#111;
-  padding:15px;
+/* ===== UKRYTY PRZYCISK ===== */
+.hidden-btn{
+  position:fixed;
+  top:0;
+  right:0;
+  width:60px;
+  height:60px;
+  opacity:0;
+  cursor:pointer;
 }
 
-/* ===== MATCH ===== */
-.matches{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
+/* ===== PRAWDZIWA STRONA ===== */
+.main-site{
+  display:none;
+  padding:40px;
 }
-
-.match{
-  background:#111;
-  padding:20px;
-  flex:1;
-  min-width:200px;
-  text-align:center;
-}
-
-.match b{
-  color:#00aaff;
-}
-
-/* ===== FOOTER ===== */
-footer{
-  padding:30px;
-  text-align:center;
-  color:#777;
-}
-
 </style>
 </head>
 
 <body>
 
-<nav>
-  <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
-  <div class="menu">
-    <a href="#">Home</a>
-    <a href="#">News</a>
-    <a href="#">Matches</a>
-    <a href="#">Club</a>
-  </div>
-</nav>
+<div class="bg"></div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-content">
-    <h1>Legion Białystok</h1>
-    <p>Oficjalna strona klubu</p>
-    <a href="#" class="btn">Zobacz więcej</a>
-  </div>
+<!-- UKRYTY PRZYCISK -->
+<div class="hidden-btn" onclick="showSite()"></div>
+
+<!-- MAINTENANCE -->
+<div class="maintenance" id="maintenance">
+  <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
+  <h1>Legion Białystok</h1>
+  <p>Prace techniczne</p>
 </div>
 
-<!-- NEWS -->
-<section>
-  <div class="section-title">Aktualności</div>
-  <div class="news" id="articles"></div>
-</section>
-
-<!-- MATCHES -->
-<section>
-  <div class="section-title">Mecze</div>
-  <div class="matches" id="matches"></div>
-</section>
-
-<footer>
-  © 2026 Legion Białystok
-</footer>
+<!-- PRAWDZIWA STRONA -->
+<div class="main-site" id="mainSite">
+  <h1>Strona działa 🔥</h1>
+  <p>Tu później wrzucisz swoją normalną stronę</p>
+</div>
 
 <script>
-function loadData(){
-  const articles = JSON.parse(localStorage.getItem("articles")) || [];
-  const matches = JSON.parse(localStorage.getItem("matches")) || [];
-
-  const artDiv = document.getElementById("articles");
-  const matchDiv = document.getElementById("matches");
-
-  artDiv.innerHTML = "";
-  matchDiv.innerHTML = "";
-
-  articles.forEach((a,i)=>{
-    artDiv.innerHTML += `
-      <div class="${i==0?'big':''}">
-        <h3>${a.title}</h3>
-        <p>${a.content}</p>
-      </div>
-    `;
-  });
-
-  matches.forEach(m=>{
-    matchDiv.innerHTML += `
-      <div class="match">
-        ${m.team1} <b>${m.score1}:${m.score2}</b> ${m.team2}
-      </div>
-    `;
-  });
+function showSite(){
+  document.getElementById("maintenance").style.display = "none";
+  document.getElementById("mainSite").style.display = "block";
 }
-
-loadData();
 </script>
 
 </body>
