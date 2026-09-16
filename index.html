@@ -62,7 +62,7 @@
             gap: 25px;
         }
 
-        /* Styl przycisku menu (hamburger) i rozwijanej listy w stylu Realu */
+        /* Styl przycisku menu (hamburger) i rozwijanej listy */
         .menu-dropdown {
             position: relative;
             display: inline-block;
@@ -106,7 +106,7 @@
             visibility: hidden;
             transform: translateY(10px);
             transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            transition-delay: 0.2s; /* Zapobiega zbyt szybkiemu schowaniu */
+            transition-delay: 0.2s;
         }
 
         .menu-dropdown:hover .side-menu-dropdown,
@@ -158,29 +158,6 @@
             height: 50px;
             width: auto;
             object-fit: contain;
-        }
-
-        /* Wyśrodkowane przyciski główne */
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-            align-items: center;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #cccccc;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #ffd700;
         }
 
         /* Rozwijane menu językowe z flagami po prawej stronie */
@@ -277,13 +254,6 @@
             </a>
         </div>
 
-        <ul class="nav-links">
-            <li><a href="#" data-translate="news">Aktualności</a></li>
-            <li><a href="#" data-translate="team">Drużyna</a></li>
-            <li><a href="#" data-translate="matches">Mecze</a></li>
-            <li><a href="#" data-translate="club">Klub</a></li>
-        </ul>
-
         <!-- Rozwijane menu z flagami po prawej stronie -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
@@ -298,14 +268,6 @@
     </header>
 
     <script>
-        const translations = {
-            pl: { news: "Aktualności", team: "Drużyna", matches: "Mecze", club: "Klub" },
-            en: { news: "News", team: "Squad", matches: "Matches", club: "Club" },
-            es: { news: "Noticias", team: "Plantilla", matches: "Partidos", club: "Club" },
-            ru: { news: "Новости", team: "Команда", matches: "Матчи", club: "Клуб" },
-            ar: { news: "الأخبار", team: "الفريق", matches: "المباريات", club: "النادي" }
-        };
-
         function setLanguage(lang, label) {
             document.getElementById('current-lang-btn').innerHTML = label;
 
@@ -314,14 +276,6 @@
             } else {
                 document.documentElement.dir = 'ltr';
             }
-
-            const elements = document.querySelectorAll('[data-translate]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
         }
     </script>
 
