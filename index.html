@@ -11,13 +11,13 @@
             box-sizing: border-box;
         }
 
-        /* Płynna animacja biało-złotego gradientu w tle */
+        /* Nowoczesny, elegancki, ciemno-złoty animowany gradient w tle */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(-45deg, #ffffff, #f3e5ab, #d4af37, #fff8dc, #e6c687);
+            background: linear-gradient(-45deg, #0b0b0b, #141414, #26210f, #1a160a, #0b0b0b);
             background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
-            color: #1a1a1a;
+            animation: gradientAnimation 18s ease infinite;
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -28,20 +28,18 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Przezroczysty pasek menu w biało-złotej tonacji */
+        /* Pasek menu całkowicie przezroczysty – gradient przechodzi swobodnie pod spodem */
         header {
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            height: 85px;
-            position: sticky;
+            height: 90px;
+            position: fixed;
             top: 0;
+            left: 0;
             z-index: 1000;
         }
 
@@ -53,19 +51,19 @@
         }
 
         .logo-container img {
-            height: 55px;
+            height: 52px;
             width: auto;
             object-fit: contain;
         }
 
-        /* Minimalistyczne przyciski menu (bez ramek) */
+        /* Minimalistyczne przyciski menu */
         nav {
             display: flex;
             gap: 30px;
         }
 
         nav a {
-            color: #332700;
+            color: #e6c687;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -77,11 +75,11 @@
         }
 
         nav a:hover {
-            color: #d4af37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(230, 198, 135, 0.7);
         }
 
-        /* Prawa strona: Rozwijane menu tłumaczeń (po najechaniu) */
+        /* Prawa strona: Menu tłumaczeń z pełną widocznością tła */
         .lang-dropdown {
             position: relative;
             height: 100%;
@@ -91,10 +89,10 @@
         }
 
         .lang-btn {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(212, 175, 55, 0.5);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(230, 198, 135, 0.3);
             border-radius: 6px;
-            color: #332700;
+            color: #e6c687;
             font-size: 14px;
             font-weight: 600;
             display: flex;
@@ -105,26 +103,27 @@
         }
 
         .lang-dropdown:hover .lang-btn {
-            background: #ffffff;
-            border-color: #d4af37;
+            background: rgba(230, 198, 135, 0.1);
+            border-color: #e6c687;
+            color: #ffffff;
         }
 
         .lang-menu {
             position: absolute;
             right: 0;
             top: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.5);
+            background-color: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(230, 198, 135, 0.3);
             border-radius: 6px;
             width: 180px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             z-index: 1000;
             overflow: hidden;
             
-            /* Płynne chowanie i pokazywanie */
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -142,7 +141,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #332700;
+            color: #ffffff;
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
@@ -150,8 +149,8 @@
         }
 
         .lang-option:hover {
-            background-color: rgba(212, 175, 55, 0.2);
-            color: #a67c00;
+            background-color: rgba(230, 198, 135, 0.2);
+            color: #e6c687;
         }
 
         .lang-option img {
@@ -180,7 +179,7 @@
             </nav>
         </div>
 
-        <!-- Prawa strona: Menu tłumaczeń z 5 językami -->
+        <!-- Prawa strona: Rozwijane menu tłumaczeń -->
         <div class="lang-dropdown">
             <div class="lang-btn">
                 <img src="https://flagcdn.com/w40/pl.png" alt="PL" id="currentFlag" style="width:20px; height:14px; border-radius:2px;">
@@ -208,7 +207,6 @@
     </header>
 
     <script>
-        // Słownik tłumaczeń dla menu (bez zewnętrznego API Google)
         const translations = {
             pl: { home: "Strona Główna", team: "Drużyna", fixtures: "Terminarz", results: "Wyniki", tickets: "Bilety", contact: "Kontakt" },
             en: { home: "Home", team: "Team", fixtures: "Fixtures", results: "Results", tickets: "Tickets", contact: "Contact" },
@@ -218,15 +216,12 @@
         };
 
         function changeLanguage(langCode, langName, flagUrl, dir) {
-            // Zmiana flagi i tekstu przycisku
             document.getElementById('currentFlag').src = flagUrl;
             document.getElementById('currentLangText').innerText = langName;
             
-            // Ustawienie kierunku tekstu (np. dla arabskiego RTL)
             document.getElementById('htmlRoot').setAttribute('lang', langCode);
             document.getElementById('htmlRoot').setAttribute('dir', dir);
 
-            // Podmiana tekstów w menu
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
