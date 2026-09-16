@@ -352,7 +352,7 @@
 
         .person-card.president {
             max-width: 400px;
-            margin: 0 auto;
+            margin: 0 auto 40px auto;
             border-color: rgba(255, 215, 0, 0.4);
             background: linear-gradient(135deg, rgba(30, 25, 10, 0.8), rgba(15, 15, 15, 0.9));
         }
@@ -407,7 +407,6 @@
 
     <header>
         <div class="header-left">
-            <!-- Rozwijane menu boczne -->
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
@@ -427,13 +426,11 @@
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną -->
             <a href="../index.html" class="logo-container">
                 <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
 
-        <!-- Przełącznik języków -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
@@ -449,128 +446,97 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Ludzie Legionu</h1>
 
-        <!-- Sekcja Prezesa -->
-        <h2 class="subsection-title" data-translate="sub_president">Prezes Klubu</h2>
-        <div id="president-container" style="margin-bottom: 40px;">
-            <!-- Renderowane dynamicznie -->
-        </div>
-
-        <!-- Sekcja Wiceprezesów / Zarządu -->
-        <h2 class="subsection-title" data-translate="sub_board">Wiceprezesi i Zarząd</h2>
-        <div class="people-grid" id="board-container">
-            <!-- Renderowane dynamicznie -->
-        </div>
+        <!-- Kontener dynamiczny dla Prezesa oraz pozostałych osób pogrupowanych według stanowisk -->
+        <div id="people-dynamic-container"></div>
     </main>
 
     <script>
         const translations = {
             pl: {
                 news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
-                section_title: "Ludzie Legionu",
-                sub_president: "Prezes Klubu",
-                sub_board: "Wiceprezesi i Zarząd",
-                roles: {
-                    president: "Prezes",
-                    vice: "Wiceprezes"
-                }
+                section_title: "Ludzie Legionu"
             },
             en: {
                 news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
-                section_title: "Legion People",
-                sub_president: "Club President",
-                sub_board: "Vice Presidents & Board",
-                roles: {
-                    president: "President",
-                    vice: "Vice President"
-                }
+                section_title: "Legion People"
             },
             es: {
                 news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
-                section_title: "Gente del Legion",
-                sub_president: "Presidente del Club",
-                sub_board: "Vicepresidentes y Junta",
-                roles: {
-                    president: "Presidente",
-                    vice: "Vicepresidente"
-                }
+                section_title: "Gente del Legion"
             },
             ru: {
                 news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
-                section_title: "Люди Легиона",
-                sub_president: "Президент клуба",
-                sub_board: "Вице-президенты и правление",
-                roles: {
-                    president: "Президент",
-                    vice: "Вице-президент"
-                }
+                section_title: "Люди Легиона"
             },
             ar: {
                 news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
-                section_title: "أعضاء النادي",
-                sub_president: "رئيس النادي",
-                sub_board: "نواب الرئيس والإدارة",
-                roles: {
-                    president: "رئيس",
-                    vice: "نائب الرئيس"
-                }
+                section_title: "أعضاء النادي"
             }
         };
 
         let currentLang = 'pl';
 
-        // Domyślne dane z uwzględnieniem Twoich korekt (np. Wojciech Nawrocki na stanowisku)
         const defaultPeople = {
-            president: { id: "p-1", name: "Mateusz", roleKey: "president" },
+            president: { id: "p-1", name: "Mateusz", position: "Prezes Klubu" },
             board: [
-                { id: "b-1", name: "Wojciech Nawrocki", roleKey: "vice" },
-                { id: "b-2", name: "Andrey Gabrusevich", roleKey: "vice" }
+                { id: "b-1", name: "Wojciech Nawrocki", position: "Wiceprezes" },
+                { id: "b-2", name: "Andrey Gabrusevich", position: "Wiceprezes" }
             ]
         };
 
         function renderPeople() {
-            const presidentContainer = document.getElementById('president-container');
-            const boardContainer = document.getElementById('board-container');
-            
-            presidentContainer.innerHTML = '';
-            boardContainer.innerHTML = '';
+            const container = document.getElementById('people-dynamic-container');
+            container.innerHTML = '';
 
             let savedData = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
-            const langData = translations[currentLang] || translations['pl'];
-            const tRoles = langData.roles || {};
 
-            // Renderowanie Prezesa
-            if (savedData.president) {
+            // 1. Renderowanie prezesa (jeśli istnieje i ma wpisane imię/nazwisko)
+            if (savedData.president && savedData.president.name.trim() !== '') {
                 const p = savedData.president;
-                const roleName = tRoles[p.roleKey] || p.roleKey;
-
-                const card = document.createElement('div');
-                card.className = 'person-card president';
-                card.id = p.id;
-                card.setAttribute('data-person-id', p.id);
-
-                card.innerHTML = `
-                    <div class="person-role">${roleName}</div>
-                    <div class="person-name">${p.name}</div>
+                container.innerHTML += `
+                    <div class="person-card president">
+                        <div class="person-role">${p.position || 'Prezes Klubu'}</div>
+                        <div class="person-name">${p.name}</div>
+                    </div>
                 `;
-                presidentContainer.appendChild(card);
             }
 
-            // Renderowanie Wiceprezesów / Zarządu
+            // 2. Grupowanie pozostałych osób według unikalnych stanowisk
             if (savedData.board && Array.isArray(savedData.board)) {
-                savedData.board.forEach(member => {
-                    const roleName = tRoles[member.roleKey] || member.roleKey;
+                // Odfiltrowanie pustych wpisów
+                const validBoard = savedData.board.filter(item => item.name && item.name.trim() !== '');
 
-                    const card = document.createElement('div');
-                    card.className = 'person-card';
-                    card.id = member.id;
-                    card.setAttribute('data-person-id', member.id);
-
-                    card.innerHTML = `
-                        <div class="person-role">${roleName}</div>
-                        <div class="person-name">${member.name}</div>
-                    `;
-                    boardContainer.appendChild(card);
+                // Wyznaczenie unikalnych stanowisk
+                const positionsMap = {};
+                validBoard.forEach(member => {
+                    const pos = (member.position || 'Inne').trim();
+                    if (!positionsMap[pos]) {
+                        positionsMap[pos] = [];
+                    }
+                    positionsMap[pos].push(member);
                 });
+
+                // Tworzenie sekcji dla każdej niepustej kategorii stanowisk
+                for (const [positionName, members] of Object.entries(positionsMap)) {
+                    if (members.length > 0) {
+                        let sectionHTML = `
+                            <h2 class="subsection-title">${positionName}</h2>
+                            <div class="people-grid">
+                        `;
+
+                        members.forEach(m => {
+                            sectionHTML += `
+                                <div class="person-card">
+                                    <div class="person-role">${m.position || positionName}</div>
+                                    <div class="person-name">${m.name}</div>
+                                </div>
+                            `;
+                        });
+
+                        sectionHTML += `</div>`;
+                        container.innerHTML += sectionHTML;
+                    }
+                }
             }
         }
 
