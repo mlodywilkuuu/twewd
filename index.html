@@ -93,7 +93,7 @@
             color: #ffd700;
         }
 
-        /* Styl rozwijanego menu językowego po prawej stronie */
+        /* Rozwijane menu językowe z flagami */
         .lang-dropdown {
             position: relative;
             display: inline-block;
@@ -128,17 +128,15 @@
             border-radius: 10px;
             list-style: none;
             padding: 8px 0;
-            min-width: 140px;
+            min-width: 150px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            /* Ukryte domyślnie, z opóźnieniem znikania */
             opacity: 0;
             visibility: hidden;
             transform: translateY(10px);
             transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            transition-delay: 0.2s; /* Nie chowa się za szybko */
+            transition-delay: 0.25s; /* Wolniej się chowa */
         }
 
-        /* Pokazywanie menu po najechaniu na kontener z zapasem czasu */
         .lang-dropdown:hover .lang-menu,
         .lang-menu:hover {
             opacity: 1;
@@ -148,7 +146,9 @@
         }
 
         .lang-menu li a {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px 16px;
             color: #cccccc;
             text-decoration: none;
@@ -168,9 +168,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
-        /* Centrum Meczowe jako pełna sekcja z efektem szkła */
+        /* Centrum Meczowe jako pełna sekcja od końca do końca z efektem szkła */
         .match-center {
             width: 100%;
             background: rgba(18, 18, 18, 0.55);
@@ -178,13 +179,13 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 215, 0, 0.18);
             border-radius: 20px;
-            padding: 40px 30px;
+            padding: 45px 30px;
             text-align: center;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .match-center h2 {
-            font-size: 1.9rem;
+            font-size: 2rem;
             font-weight: 800;
             color: #ffd700;
             text-transform: uppercase;
@@ -194,7 +195,7 @@
         }
 
         .match-subtitle {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #b0b0b0;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -210,12 +211,12 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 215, 0, 0.1);
             border-radius: 14px;
-            padding: 30px 20px;
+            padding: 35px 25px;
         }
 
         .team {
             flex: 1;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.5px;
@@ -229,20 +230,20 @@
         }
 
         .score {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             color: #ffd700;
             letter-spacing: 4px;
             background: rgba(255, 215, 0, 0.06);
-            padding: 4px 24px;
+            padding: 4px 28px;
             border-radius: 10px;
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .match-date {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #aaaaaa;
-            margin-top: 10px;
+            margin-top: 12px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
@@ -259,29 +260,29 @@
                 <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
             <ul class="nav-links">
-                <li><a href="#">Aktualności</a></li>
-                <li><a href="#">Drużyna</a></li>
-                <li><a href="#">Mecze</a></li>
-                <li><a href="#">Klub</a></li>
+                <li><a href="#" data-translate="news">Aktualności</a></li>
+                <li><a href="#" data-translate="team">Drużyna</a></li>
+                <li><a href="#" data-translate="matches">Mecze</a></li>
+                <li><a href="#" data-translate="club">Klub</a></li>
             </ul>
         </div>
 
-        <!-- Rozwijane menu wyboru języka z flagami po prawej stronie -->
+        <!-- Rozwijane menu z flagami -->
         <div class="lang-dropdown">
             <button class="lang-btn">🌐 Język</button>
             <ul class="lang-menu">
-                <li><a href="#" onclick="changeLang('pl')">🇵🇱 Polski</a></li>
-                <li><a href="#" onclick="changeLang('en')">🇬🇧 English</a></li>
-                <li><a href="#" onclick="changeLang('es')">🇪🇸 Español</a></li>
-                <li><a href="#" onclick="changeLang('ru')">🇷🇺 Русский</a></li>
-                <li><a href="#" onclick="changeLang('ar')">🇸🇦 العربية</a></li>
+                <li><a href="#" onclick="setLanguage('pl')">🇵🇱 Polski</a></li>
+                <li><a href="#" onclick="setLanguage('en')">🇬🇧 English</a></li>
+                <li><a href="#" onclick="setLanguage('es')">🇪🇸 Español</a></li>
+                <li><a href="#" onclick="setLanguage('ru')">🇷🇺 Русский</a></li>
+                <li><a href="#" onclick="setLanguage('ar')">🇸🇦 العربية</a></li>
             </ul>
         </div>
     </header>
 
     <main>
         <div class="match-center">
-            <h2>Centrum Meczowe</h2>
+            <h2 data-translate="match_center_title">Centrum Meczowe</h2>
             <div class="match-subtitle" id="match-round">IV Liga • Kolejka 14</div>
             
             <div class="match-info-box">
@@ -296,9 +297,74 @@
     </main>
 
     <script>
-        // Prosta funkcja do obsługi zmiany języka (możesz rozbudować o własne tłumaczenia)
-        function changeLang(lang) {
-            console.log("Zmiana języka na: " + lang);
+        // Słownik tłumaczeń
+        const translations = {
+            pl: {
+                news: "Aktualności",
+                team: "Drużyna",
+                matches: "Mecze",
+                club: "Klub",
+                match_center_title: "Centrum Meczowe",
+                away_default: "Przeciwnik"
+            },
+            en: {
+                news: "News",
+                team: "Squad",
+                matches: "Matches",
+                club: "Club",
+                match_center_title: "Match Center",
+                away_default: "Opponent"
+            },
+            es: {
+                news: "Noticias",
+                team: "Plantilla",
+                matches: "Partidos",
+                club: "Club",
+                match_center_title: "Centro de Partidos",
+                away_default: "Rival"
+            },
+            ru: {
+                news: "Новости",
+                team: "Команда",
+                matches: "Матчи",
+                club: "Клуб",
+                match_center_title: "Матч-центр",
+                away_default: "Соперник"
+            },
+            ar: {
+                news: "الأخبار",
+                team: "الفريق",
+                matches: "المباريات",
+                club: "النادي",
+                match_center_title: "مركز المباريات",
+                away_default: "المنافس"
+            }
+        };
+
+        function setLanguage(lang) {
+            // Zmiana kierunku tekstu dla języka arabskiego
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.documentElement.dir = 'ltr';
+            }
+
+            // Tłumaczenie elementów z atrybutem data-translate
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Tłumaczenie domyślnego przeciwnika
+            const awayTeam = document.getElementById('away-team');
+            if (awayTeam && translations[lang] && translations[lang]['away_default']) {
+                if (awayTeam.textContent === "Przeciwnik" || awayTeam.textContent === "Opponent" || awayTeam.textContent === "Rival" || awayTeam.textContent === "Соперник" || awayTeam.textContent === "المنافس") {
+                    awayTeam.textContent = translations[lang]['away_default'];
+                }
+            }
         }
     </script>
 
