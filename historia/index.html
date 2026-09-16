@@ -317,7 +317,6 @@
             padding: 20px 0;
         }
 
-        /* Pionowa linia osi czasu */
         .timeline::before {
             content: '';
             position: absolute;
@@ -335,7 +334,6 @@
             }
         }
 
-        /* Element osi czasu */
         .timeline-item {
             position: relative;
             margin-bottom: 40px;
@@ -358,7 +356,6 @@
             }
         }
 
-        /* Kropka na osi czasu */
         .timeline-dot {
             position: absolute;
             right: -10px;
@@ -384,14 +381,13 @@
             }
         }
 
-        /* Kafelki z treścią wydarzeń */
         .timeline-content {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
@@ -421,27 +417,19 @@
         }
 
         .timeline-year {
-            font-size: 1.1rem;
-            font-weight: 900;
+            font-size: 0.95rem;
+            font-weight: 700;
             color: #ffd700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
         .timeline-event-title {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-
-        .timeline-event-desc {
-            font-size: 0.95rem;
-            color: #cccccc;
-            line-height: 1.6;
+            line-height: 1.35;
         }
     </style>
 </head>
@@ -493,7 +481,7 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Historia Klubu</h1>
 
-        <!-- Oś czasu (Timeline) z obsługą localStorage (pod panel administracyjny) -->
+        <!-- Oś czasu (Timeline) z obsługą localStorage -->
         <div class="timeline" id="timeline-container">
             <!-- Renderowane dynamicznie przez skrypt -->
         </div>
@@ -505,45 +493,50 @@
                 news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
                 section_title: "Historia Klubu",
                 events: {
-                    "hist-1": { year: "2024", title: "Powstanie klubu", desc: "Klub Legion Białystok został oficjalnie założony z inicjatywy pasjonatów sportu i lokalnej społeczności." },
-                    "hist-2": { year: "2025", title: "Debiut w rozgrywkach", desc: "Zgłoszenie drużyny do oficjalnych rozgrywek piłkarskich oraz budowa silnych fundamentów sportowych." },
-                    "hist-3": { year: "2026", title: "Rozwój i nowa era", desc: "Uruchomienie nowoczesnej platformy internetowej, rozbudowa akademii oraz powrót na boiska z ogromnymi ambicjami." }
+                    "hist-1": { year: "Październik 2024", title: "Utworzenie Klubu Sportowego Legion Białystok" },
+                    "hist-2": { year: "19.10.2025", title: "Debiut w Białostockiej Lidze Sportu" },
+                    "hist-3": { year: "05.02.2026", title: "Kara oraz odjęcie punktów" },
+                    "hist-4": { year: "14.03.2026", title: "Spadek z II Ligi Białostockiej Ligi Sportu" }
                 }
             },
             en: {
                 news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
                 section_title: "Club History",
                 events: {
-                    "hist-1": { year: "2024", title: "Foundation of the club", desc: "Legion Białystok was officially established on the initiative of sports enthusiasts and the local community." },
-                    "hist-2": { year: "2025", title: "Debut in competitions", desc: "Entering the team into official football competitions and building strong sports foundations." },
-                    "hist-3": { year: "2026", title: "Development and new era", desc: "Launch of the modern web platform, academy expansion, and return to the pitch with great ambitions." }
+                    "hist-1": { year: "October 2024", title: "Establishment of the Sports Club Legion Białystok" },
+                    "hist-2": { year: "19.10.2025", title: "Debut in the Białystok Sports League" },
+                    "hist-3": { year: "05.02.2026", title: "Penalty and point deduction" },
+                    "hist-4": { year: "14.03.2026", title: "Relegation from the 2nd Division of the Białystok Sports League" }
                 }
             },
             es: {
                 news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
                 section_title: "Historia del Club",
                 events: {
-                    "hist-1": { year: "2024", title: "Fundación del club", desc: "Legion Białystok fue fundado oficialmente por iniciativa de entusiastas del deporte y la comunidad local." },
-                    "hist-2": { year: "2025", title: "Debút en competiciones", desc: "Inscripción del equipo en competiciones oficiales de fútbol y construcción de bases sólidas." },
-                    "hist-3": { year: "2026", title: "Desarrollo y nueva era", desc: "Lanzamiento de la plataforma web moderna, expansión de la academia y regreso al campo con grandes ambiciones." }
+                    "hist-1": { year: "Octubre 2024", title: "Creación del Club Deportivo Legion Białystok" },
+                    "hist-2": { year: "19.10.2025", title: "Debut en la Liga Deportiva de Białystok" },
+                    "hist-3": { year: "05.02.2026", title: "Sanción y deducción de puntos" },
+                    "hist-4": { year: "14.03.2026", title: "Descenso de la 2ª División de la Liga Deportiva de Białystok" }
                 }
             },
             ru: {
                 news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
                 section_title: "История Клуба",
                 events: {
-                    "hist-1": { year: "2024", title: "Основание клуба", desc: "Клуб «Легион Белосток» был официально создан по инициативе спортивных энтузиастов и местного сообщества." },
-                    "hist-2": { year: "2025", title: "Дебют в соревнованиях", desc: "Заявление команды в официальные футбольные турниры и построение прочной спортивной базы." },
-                    "hist-3": { year: "2026", title: "Развитие и новая эра", desc: "Запуск современной веб-платформы, расширение академии и возвращение на поле с большими амбициями." }
+                    "hist-1": { year: "Октябрь 2024", title: "Создание спортивного клуба «Легион Белосток»" },
+                    "hist-2": { year: "19.10.2025", title: "Дебют в Белостокской спортивной лиге" },
+                    "hist-3": { year: "05.02.2026", title: "Наказание и снятие очков" },
+                    "hist-4": { year: "14.03.2026", title: "Вылет из Второй лиги Белостокской спортивной лиги" }
                 }
             },
             ar: {
                 news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
                 section_title: "تاريخ النادي",
                 events: {
-                    "hist-1": { year: "2024", title: "تأسيس النادي", desc: "تم تأسيس نادي ليجيون بياويستوك رسمياً بمبادرة من عشاق الرياضة والمجتمع المحلي." },
-                    "hist-2": { year: "2025", title: "الظهور الأول في المسابقات", desc: "تسجيل الفريق في مسابقات كرة القدم الرسمية وبناء أسس رياضية قوية." },
-                    "hist-3": { year: "2026", title: "التطور وعصر جديد", desc: "إطلاق المنصة الإلكترونية الحديثة، توسيع الأكاديمية والعودة إلى الملعب بطموحات كبيرة." }
+                    "hist-1": { year: "أكتوبر 2024", title: "تأسيس النادي الرياضي ليجيون بياويستوك" },
+                    "hist-2": { year: "19.10.2025", title: "الظهور الأول في دوري بياويستوك الرياضي" },
+                    "hist-3": { year: "05.02.2026", title: "العقوبة خصم النقاط" },
+                    "hist-4": { year: "14.03.2026", title: "الهبوط من الدرجة الثانية لدوري بياويستوك الرياضي" }
                 }
             }
         };
@@ -553,23 +546,22 @@
         const defaultEvents = [
             { id: "hist-1" },
             { id: "hist-2" },
-            { id: "hist-3" }
+            { id: "hist-3" },
+            { id: "hist-4" }
         ];
 
         function renderTimeline() {
             const container = document.getElementById('timeline-container');
             container.innerHTML = '';
 
-            // Klucz w localStorage to "legion_history" – gotowy pod panel administracyjny
             let savedEvents = JSON.parse(localStorage.getItem('legion_history')) || defaultEvents;
             const langData = translations[currentLang] || translations['pl'];
             const tEvents = langData.events || {};
 
             savedEvents.forEach(item => {
                 const eventData = tEvents[item.id] || {
-                    year: item.year || "2026",
-                    title: item.title || "Wydarzenie",
-                    desc: item.desc || ""
+                    year: item.year || "",
+                    title: item.title || ""
                 };
 
                 const timelineItem = document.createElement('div');
@@ -582,7 +574,6 @@
                     <div class="timeline-content">
                         <div class="timeline-year">${eventData.year}</div>
                         <div class="timeline-event-title">${eventData.title}</div>
-                        <div class="timeline-event-desc">${eventData.desc}</div>
                     </div>
                 `;
 
