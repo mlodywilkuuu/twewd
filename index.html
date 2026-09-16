@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,25 +11,41 @@
             box-sizing: border-box;
         }
 
+        /* Płynna animacja biało-złotego gradientu w tle */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d0d;
-            color: #ffffff;
+            background: linear-gradient(-45deg, #ffffff, #f3e5ab, #d4af37, #fff8dc, #e6c687);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: #1a1a1a;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Pasek menu */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Przezroczysty pasek menu w biało-złotej tonacji */
         header {
             width: 100%;
-            background-color: #000000;
-            border-bottom: 1px solid #d4af37;
+            background-color: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
             height: 85px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        /* Lewa strona: Logo + przyciski obok */
+        /* Lewa strona: Logo + Minimalistyczne przyciski */
         .left-section {
             display: flex;
             align-items: center;
@@ -49,7 +65,7 @@
         }
 
         nav a {
-            color: #d4af37;
+            color: #332700;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -61,11 +77,11 @@
         }
 
         nav a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
         }
 
-        /* Prawa strona: Menu tłumaczeń wysuwane po najechaniu (Hover) */
+        /* Prawa strona: Rozwijane menu tłumaczeń (po najechaniu) */
         .lang-dropdown {
             position: relative;
             height: 100%;
@@ -75,33 +91,36 @@
         }
 
         .lang-btn {
-            background: none;
-            border: none;
-            color: #d4af37;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 6px;
+            color: #332700;
             font-size: 14px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 0;
-            transition: color 0.3s ease;
+            padding: 8px 14px;
+            transition: all 0.3s ease;
         }
 
         .lang-dropdown:hover .lang-btn {
-            color: #ffffff;
+            background: #ffffff;
+            border-color: #d4af37;
         }
 
         .lang-menu {
             position: absolute;
             right: 0;
             top: 100%;
-            background-color: #121212;
-            border: 1px solid #d4af37;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.5);
             border-radius: 6px;
             width: 180px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.9);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
             z-index: 1000;
             overflow: hidden;
             
@@ -112,7 +131,6 @@
             transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
         }
 
-        /* Pokazywanie menu po najechaniu na kontener */
         .lang-dropdown:hover .lang-menu {
             opacity: 1;
             visibility: visible;
@@ -124,7 +142,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #ffffff;
+            color: #332700;
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
@@ -132,8 +150,8 @@
         }
 
         .lang-option:hover {
-            background-color: rgba(212, 175, 55, 0.15);
-            color: #d4af37;
+            background-color: rgba(212, 175, 55, 0.2);
+            color: #a67c00;
         }
 
         .lang-option img {
@@ -153,16 +171,16 @@
                 <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </div>
             <nav>
-                <a href="#">Strona Główna</a>
-                <a href="#">Drużyna</a>
-                <a href="#">Terminarz</a>
-                <a href="#">Wyniki</a>
-                <a href="#">Bilety</a>
-                <a href="#">Kontakt</a>
+                <a href="#" data-i18n="home">Strona Główna</a>
+                <a href="#" data-i18n="team">Drużyna</a>
+                <a href="#" data-i18n="fixtures">Terminarz</a>
+                <a href="#" data-i18n="results">Wyniki</a>
+                <a href="#" data-i18n="tickets">Bilety</a>
+                <a href="#" data-i18n="contact">Kontakt</a>
             </nav>
         </div>
 
-        <!-- Prawa strona: Rozwijane menu tłumaczeń (po najechaniu) z 5 językami -->
+        <!-- Prawa strona: Menu tłumaczeń z 5 językami -->
         <div class="lang-dropdown">
             <div class="lang-btn">
                 <img src="https://flagcdn.com/w40/pl.png" alt="PL" id="currentFlag" style="width:20px; height:14px; border-radius:2px;">
@@ -170,19 +188,19 @@
                 <span>▼</span>
             </div>
             <div class="lang-menu">
-                <div class="lang-option" onclick="changeLanguage('pl', 'PL', 'https://flagcdn.com/w40/pl.png')">
+                <div class="lang-option" onclick="changeLanguage('pl', 'PL', 'https://flagcdn.com/w40/pl.png', 'ltr')">
                     <img src="https://flagcdn.com/w40/pl.png" alt="PL"> Polski
                 </div>
-                <div class="lang-option" onclick="changeLanguage('en', 'EN', 'https://flagcdn.com/w40/gb.png')">
+                <div class="lang-option" onclick="changeLanguage('en', 'EN', 'https://flagcdn.com/w40/gb.png', 'ltr')">
                     <img src="https://flagcdn.com/w40/gb.png" alt="EN"> English
                 </div>
-                <div class="lang-option" onclick="changeLanguage('ru', 'RU', 'https://flagcdn.com/w40/ru.png')">
+                <div class="lang-option" onclick="changeLanguage('ru', 'RU', 'https://flagcdn.com/w40/ru.png', 'ltr')">
                     <img src="https://flagcdn.com/w40/ru.png" alt="RU"> Русский
                 </div>
-                <div class="lang-option" onclick="changeLanguage('es', 'ES', 'https://flagcdn.com/w40/es.png')">
+                <div class="lang-option" onclick="changeLanguage('es', 'ES', 'https://flagcdn.com/w40/es.png', 'ltr')">
                     <img src="https://flagcdn.com/w40/es.png" alt="ES"> Español
                 </div>
-                <div class="lang-option" onclick="changeLanguage('ar', 'AR', 'https://flagcdn.com/w40/sa.png')">
+                <div class="lang-option" onclick="changeLanguage('ar', 'AR', 'https://flagcdn.com/w40/sa.png', 'rtl')">
                     <img src="https://flagcdn.com/w40/sa.png" alt="AR"> العربية
                 </div>
             </div>
@@ -190,12 +208,32 @@
     </header>
 
     <script>
-        // Funkcja zmieniająca aktywną flagę i język po kliknięciu
-        function changeLanguage(langCode, langName, flagUrl) {
+        // Słownik tłumaczeń dla menu (bez zewnętrznego API Google)
+        const translations = {
+            pl: { home: "Strona Główna", team: "Drużyna", fixtures: "Terminarz", results: "Wyniki", tickets: "Bilety", contact: "Kontakt" },
+            en: { home: "Home", team: "Team", fixtures: "Fixtures", results: "Results", tickets: "Tickets", contact: "Contact" },
+            ru: { home: "Главная", team: "Команда", fixtures: "Матчи", results: "Результаты", tickets: "Билеты", contact: "Контакты" },
+            es: { home: "Inicio", team: "Equipo", fixtures: "Calendario", results: "Resultados", tickets: "Entradas", contact: "Contacto" },
+            ar: { home: "الرئيسية", team: "الفريق", fixtures: "المباريات", results: "النتائج", tickets: "التذاكر", contact: "اتصل بنا" }
+        };
+
+        function changeLanguage(langCode, langName, flagUrl, dir) {
+            // Zmiana flagi i tekstu przycisku
             document.getElementById('currentFlag').src = flagUrl;
             document.getElementById('currentLangText').innerText = langName;
             
-            // Tutaj możesz wpiąć własną logikę obsługującą zmianę języka na stronie
+            // Ustawienie kierunku tekstu (np. dla arabskiego RTL)
+            document.getElementById('htmlRoot').setAttribute('lang', langCode);
+            document.getElementById('htmlRoot').setAttribute('dir', dir);
+
+            // Podmiana tekstów w menu
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[langCode] && translations[langCode][key]) {
+                    el.innerText = translations[langCode][key];
+                }
+            });
         }
     </script>
 
