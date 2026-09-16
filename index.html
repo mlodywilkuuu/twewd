@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #0b0b0b;
+            background-color: #080808;
             color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -27,7 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #050505, #141414, #1f1905);
+            background: linear-gradient(135deg, #050505, #111111, #1a1504);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
@@ -38,17 +38,17 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Górny pasek nawigacyjny */
+        /* Górny pasek nawigacyjny z efektem szkła */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 75px;
-            background: rgba(10, 10, 10, 0.65);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            background: rgba(12, 12, 12, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.12);
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -61,6 +61,7 @@
             display: flex;
             align-items: center;
             gap: 35px;
+            width: 100%;
         }
 
         .logo-container {
@@ -97,42 +98,42 @@
         /* Sekcja główna */
         main {
             margin-top: 120px;
-            padding: 0 5% 50px 5%;
+            padding: 0 4% 50px 4%;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Centrum Meczowe */
+        /* Centrum Meczowe - szerokie od końca do końca z efektem szkła */
         .match-center {
             width: 100%;
-            max-width: 1000px;
-            background: rgba(18, 18, 18, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            padding: 35px 30px;
+            background: rgba(18, 18, 18, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 0, 0.18);
+            border-radius: 20px;
+            padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            margin-top: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            margin-top: 10px;
         }
 
         .match-center h2 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: 800;
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+            text-shadow: 0 2px 12px rgba(255, 215, 0, 0.25);
         }
 
         .match-subtitle {
-            font-size: 0.95rem;
-            color: #aaaaaa;
+            font-size: 1rem;
+            color: #b0b0b0;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 30px;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
             font-weight: 600;
         }
 
@@ -140,15 +141,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(25, 25, 25, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 25px 20px;
+            background: rgba(12, 12, 12, 0.45);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 14px;
+            padding: 30px 20px;
         }
 
         .team {
             flex: 1;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.5px;
@@ -158,26 +160,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 25px;
         }
 
         .score {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #ffd700;
-            letter-spacing: 2px;
-            background: rgba(255, 215, 0, 0.05);
-            padding: 5px 20px;
-            border-radius: 8px;
+            letter-spacing: 4px;
+            background: rgba(255, 215, 0, 0.06);
+            padding: 4px 24px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .match-date {
-            font-size: 0.85rem;
-            color: #888888;
-            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #aaaaaa;
+            margin-top: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -202,15 +205,17 @@
     <main>
         <div class="match-center">
             <h2>Centrum Meczowe</h2>
-            <div class="match-subtitle">IV Liga • Kolejka 14</div>
+            <!-- Ten element zmieni się po aktualizacji w panelu/kodzie -->
+            <div class="match-subtitle" id="match-round">IV Liga • Kolejka 14</div>
             
             <div class="match-info-box">
-                <div class="team">Legion Białystok</div>
+                <div class="team" id="home-team">Legion Białystok</div>
                 <div class="match-details">
-                    <div class="score">0 : 0</div>
-                    <div class="match-date">Sobota, 18:00</div>
+                    <!-- Zamiast wyniku jest dwukropek -->
+                    <div class="score" id="match-score">:</div>
+                    <div class="match-date" id="match-datetime">Sobota, 18:00</div>
                 </div>
-                <div class="team">Przeciwnik</div>
+                <div class="team" id="away-team">Przeciwnik</div>
             </div>
         </div>
     </main>
