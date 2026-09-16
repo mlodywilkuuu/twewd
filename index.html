@@ -56,12 +56,6 @@
             z-index: 1000;
         }
 
-        .left-nav {
-            display: flex;
-            align-items: center;
-            gap: 35px;
-        }
-
         .logo-container {
             display: flex;
             align-items: center;
@@ -74,11 +68,15 @@
             object-fit: contain;
         }
 
+        /* Wyśrodkowane przyciski nawigacyjne */
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 30px;
             list-style: none;
             align-items: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .nav-links a {
@@ -93,7 +91,7 @@
             color: #ffd700;
         }
 
-        /* Rozwijane menu językowe z flagami */
+        /* Rozwijane menu językowe z flagami po prawej stronie */
         .lang-dropdown {
             position: relative;
             display: inline-block;
@@ -134,7 +132,7 @@
             visibility: hidden;
             transform: translateY(10px);
             transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            transition-delay: 0.25s; /* Wolniej się chowa */
+            transition-delay: 0.25s;
         }
 
         .lang-dropdown:hover .lang-menu,
@@ -255,27 +253,26 @@
     <div class="bg-animation"></div>
 
     <header>
-        <div class="left-nav">
-            <a href="#" class="logo-container">
-                <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
-            </a>
-            <ul class="nav-links">
-                <li><a href="#" data-translate="news">Aktualności</a></li>
-                <li><a href="#" data-translate="team">Drużyna</a></li>
-                <li><a href="#" data-translate="matches">Mecze</a></li>
-                <li><a href="#" data-translate="club">Klub</a></li>
-            </ul>
-        </div>
+        <a href="#" class="logo-container">
+            <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#" data-translate="news">Aktualności</a></li>
+            <li><a href="#" data-translate="team">Drużyna</a></li>
+            <li><a href="#" data-translate="matches">Mecze</a></li>
+            <li><a href="#" data-translate="club">Klub</a></li>
+        </ul>
 
         <!-- Rozwijane menu z flagami -->
         <div class="lang-dropdown">
-            <button class="lang-btn">🌐 Język</button>
+            <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
-                <li><a href="#" onclick="setLanguage('pl')">🇵🇱 Polski</a></li>
-                <li><a href="#" onclick="setLanguage('en')">🇬🇧 English</a></li>
-                <li><a href="#" onclick="setLanguage('es')">🇪🇸 Español</a></li>
-                <li><a href="#" onclick="setLanguage('ru')">🇷🇺 Русский</a></li>
-                <li><a href="#" onclick="setLanguage('ar')">🇸🇦 العربية</a></li>
+                <li><a href="#" onclick="setLanguage('pl', '🇵🇱 Polski')">🇵🇱 Polski</a></li>
+                <li><a href="#" onclick="setLanguage('en', '🇬🇧 English')">🇬🇧 English</a></li>
+                <li><a href="#" onclick="setLanguage('es', '🇪🇸 Español')">🇪🇸 Español</a></li>
+                <li><a href="#" onclick="setLanguage('ru', '🇷🇺 Русский')">🇷🇺 Русский</a></li>
+                <li><a href="#" onclick="setLanguage('ar', '🇸🇦 العربية')">🇸🇦 العربية</a></li>
             </ul>
         </div>
     </header>
@@ -291,13 +288,12 @@
                     <div class="score" id="match-score">:</div>
                     <div class="match-date" id="match-datetime">Sobota, 18:00</div>
                 </div>
-                <div class="team" id="away-team">Przeciwnik</div>
+                <div class="team" id="away-team" data-translate="away_default">Przeciwnik</div>
             </div>
         </div>
     </main>
 
     <script>
-        // Słownik tłumaczeń
         const translations = {
             pl: {
                 news: "Aktualności",
@@ -341,15 +337,18 @@
             }
         };
 
-        function setLanguage(lang) {
-            // Zmiana kierunku tekstu dla języka arabskiego
+        function setLanguage(lang, label) {
+            // Zmiana tekstu na przycisku języka
+            document.getElementById('current-lang-btn').innerHTML = label;
+
+            // Kierunek tekstu dla arabskiego
             if (lang === 'ar') {
                 document.documentElement.dir = 'rtl';
             } else {
                 document.documentElement.dir = 'ltr';
             }
 
-            // Tłumaczenie elementów z atrybutem data-translate
+            // Tłumaczenie elementów strony
             const elements = document.querySelectorAll('[data-translate]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-translate');
@@ -357,14 +356,6 @@
                     el.textContent = translations[lang][key];
                 }
             });
-
-            // Tłumaczenie domyślnego przeciwnika
-            const awayTeam = document.getElementById('away-team');
-            if (awayTeam && translations[lang] && translations[lang]['away_default']) {
-                if (awayTeam.textContent === "Przeciwnik" || awayTeam.textContent === "Opponent" || awayTeam.textContent === "Rival" || awayTeam.textContent === "Соперник" || awayTeam.textContent === "المنافس") {
-                    awayTeam.textContent = translations[lang]['away_default'];
-                }
-            }
         }
     </script>
 
