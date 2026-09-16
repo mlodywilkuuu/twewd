@@ -33,7 +33,7 @@
         .left-section {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 50px;
         }
 
         .logo-container img {
@@ -42,10 +42,10 @@
             object-fit: contain;
         }
 
-        /* Nowoczesny styl przycisków menu */
+        /* Minimalistyczne przyciski menu (bez ramek) */
         nav {
             display: flex;
-            gap: 12px;
+            gap: 30px;
         }
 
         nav a {
@@ -55,80 +55,80 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 10px 18px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 6px;
-            background-color: rgba(212, 175, 55, 0.05);
-            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
         }
 
         nav a:hover {
-            background-color: #d4af37;
-            color: #000000;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            transform: translateY(-2px);
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
         }
 
-        /* Prawa strona: Rozwijane menu tłumaczeń z flagami */
+        /* Prawa strona: Menu tłumaczeń wysuwane po najechaniu (Hover) */
         .lang-dropdown {
             position: relative;
-            user-select: none;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
         }
 
         .lang-btn {
-            background-color: #121212;
-            border: 1px solid #d4af37;
+            background: none;
+            border: none;
             color: #d4af37;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
             font-size: 14px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
+            padding: 10px 0;
+            transition: color 0.3s ease;
         }
 
-        .lang-btn:hover {
-            background-color: #d4af37;
-            color: #000000;
+        .lang-dropdown:hover .lang-btn {
+            color: #ffffff;
         }
 
         .lang-menu {
             position: absolute;
             right: 0;
-            top: calc(100% + 8px);
+            top: 100%;
             background-color: #121212;
             border: 1px solid #d4af37;
             border-radius: 6px;
-            width: 160px;
-            display: none; /* Domyślnie schowane */
+            width: 180px;
+            display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.9);
             z-index: 1000;
             overflow: hidden;
+            
+            /* Płynne chowanie i pokazywanie */
             opacity: 0;
+            visibility: hidden;
             transform: translateY(-10px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
         }
 
-        .lang-dropdown.active .lang-menu {
-            display: flex;
+        /* Pokazywanie menu po najechaniu na kontener */
+        .lang-dropdown:hover .lang-menu {
             opacity: 1;
+            visibility: visible;
             transform: translateY(0);
         }
 
         .lang-option {
-            padding: 10px 14px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             color: #ffffff;
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
         .lang-option:hover {
@@ -147,7 +147,7 @@
 <body>
 
     <header>
-        <!-- Lewa strona: Logo + Przyciski obok -->
+        <!-- Lewa strona: Logo + Minimalistyczne przyciski -->
         <div class="left-section">
             <div class="logo-container">
                 <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
@@ -162,9 +162,9 @@
             </nav>
         </div>
 
-        <!-- Prawa strona: Rozwijane menu tłumaczeń (działające flagi, brak paska Google) -->
-        <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-btn" onclick="toggleLangMenu()">
+        <!-- Prawa strona: Rozwijane menu tłumaczeń (po najechaniu) z 5 językami -->
+        <div class="lang-dropdown">
+            <div class="lang-btn">
                 <img src="https://flagcdn.com/w40/pl.png" alt="PL" id="currentFlag" style="width:20px; height:14px; border-radius:2px;">
                 <span id="currentLangText">PL</span>
                 <span>▼</span>
@@ -179,33 +179,23 @@
                 <div class="lang-option" onclick="changeLanguage('ru', 'RU', 'https://flagcdn.com/w40/ru.png')">
                     <img src="https://flagcdn.com/w40/ru.png" alt="RU"> Русский
                 </div>
+                <div class="lang-option" onclick="changeLanguage('es', 'ES', 'https://flagcdn.com/w40/es.png')">
+                    <img src="https://flagcdn.com/w40/es.png" alt="ES"> Español
+                </div>
+                <div class="lang-option" onclick="changeLanguage('ar', 'AR', 'https://flagcdn.com/w40/sa.png')">
+                    <img src="https://flagcdn.com/w40/sa.png" alt="AR"> العربية
+                </div>
             </div>
         </div>
     </header>
 
     <script>
-        // Obsługa płynnego rozwijania i chowania menu wyboru języka
-        function toggleLangMenu() {
-            const dropdown = document.getElementById('langDropdown');
-            dropdown.classList.toggle('active');
-        }
-
-        // Zamknij menu po kliknięciu poza nim
-        window.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('langDropdown');
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Funkcja zmieniająca flagę i tekst (tutaj możesz podpiąć własną logikę tłumaczeń)
+        // Funkcja zmieniająca aktywną flagę i język po kliknięciu
         function changeLanguage(langCode, langName, flagUrl) {
             document.getElementById('currentFlag').src = flagUrl;
             document.getElementById('currentLangText').innerText = langName;
-            document.getElementById('langDropdown').classList.remove('active');
             
-            // Przykład: console.log lub właściwa zmiana języka strony
-            console..log("Zmieniono język na: " + langCode);
+            // Tutaj możesz wpiąć własną logikę obsługującą zmianę języka na stronie
         }
     </script>
 
