@@ -313,14 +313,6 @@
             background: rgba(255, 215, 0, 0.25);
         }
 
-        /* Formularze w modalach / sekcjach */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
         .checkbox-group {
             display: flex;
             flex-direction: column;
@@ -357,6 +349,33 @@
             display: none;
             font-weight: 600;
         }
+
+        /* Pasek narzędzi formatowania tekstu */
+        .editor-toolbar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-bottom: none;
+        }
+
+        .toolbar-btn {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -388,7 +407,7 @@
                 <div class="sidebar-user" id="sidebarUsername">Zalogowany: mpiotrowski</div>
             </div>
             <ul class="sidebar-nav" id="sidebarNav">
-                <!-- Generowane dynamicznie na podstawie permisji -->
+                <!-- Generowane dynamicznie -->
             </ul>
             <div class="sidebar-footer">
                 <button class="btn logout-btn" onclick="handleLogout()">Wyloguj się</button>
@@ -397,6 +416,15 @@
 
         <main class="admin-content">
             <div class="success-banner" id="successBanner">Zmiany zostały zapisane pomyślnie!</div>
+
+            <!-- ZAKŁADKA: ARTYKUŁY / AKTUALNOŚCI -->
+            <div class="panel-section" id="sec-news">
+                <div class="section-header-row">
+                    <h2 class="section-heading">Zarządzanie Artykułami</h2>
+                    <button class="btn-add" onclick="openEditModal('news', null)">+ Dodaj artykuł</button>
+                </div>
+                <div id="list-news"></div>
+            </div>
 
             <!-- ZAKŁADKA: PIERWSZA DRUŻYNA -->
             <div class="panel-section" id="sec-squad">
@@ -447,7 +475,7 @@
             <div class="panel-section" id="sec-people">
                 <div class="section-header-row">
                     <h2 class="section-heading">Ludzie Legionu</h2>
-                    <button class="btn-add" onclick="openEditModal('people', null)">+ Dodaj osobę</button>
+                    <button class="btn-add" onclick="openEditModal('people_board', null)">+ Dodaj wiceprezesa</button>
                 </div>
                 <div id="list-people"></div>
             </div>
@@ -483,7 +511,7 @@
 
     <!-- OGÓLNY MODAL EDYCJI TREŚCI -->
     <div id="contentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center;">
-        <div style="background:#111; border:1px solid #ffd700; border-radius:20px; padding:30px; width:90%; max-width:500px;" id="modalFormContainer">
+        <div style="background:#111; border:1px solid #ffd700; border-radius:20px; padding:30px; width:90%; max-width:600px;" id="modalFormContainer">
             <h3 id="modalTitle" style="color:#ffd700; margin-bottom:20px; text-transform:uppercase;">Edycja</h3>
             <div id="modalFields"></div>
             <div style="display:flex; gap:10px; margin-top:20px;">
@@ -496,7 +524,7 @@
     <!-- MODAL UŻYTKOWNIKÓW -->
     <div id="userModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center;">
         <div style="background:#111; border:1px solid #ffd700; border-radius:20px; padding:30px; width:90%; max-width:500px;">
-            <h3 style="color:#ffd700; margin-bottom:20px; text-transform:uppercase;" id="userModalTitle">Użytkownik</h3>
+            <h3 style="color:#ffd700; margin-bottom:20px; text-transform:uppercase;">Użytkownik</h3>
             <div class="form-group">
                 <label class="form-label">Login</label>
                 <input type="text" id="uModalLogin" class="form-input">
@@ -510,6 +538,7 @@
                     <input type="checkbox" id="permFull" onchange="toggleFullAdmin(this)"> Pełny administrator (Wszystkie uprawnienia)
                 </label>
                 <hr style="border-color:rgba(255,215,0,0.1); margin:5px 0;">
+                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="news"> Artykuły</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="squad"> Pierwsza Drużyna</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="academy"> Akademia</label>
                 <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="schedule"> Terminarz</label>
@@ -526,13 +555,12 @@
     </div>
 
     <script>
-        // Inicjalizacja domyślnego konta admina dla Mateusza
         const defaultUsers = [
             {
                 login: "mpiotrowski",
                 pass: "Jaga1920",
                 fullAdmin: true,
-                perms: ["squad", "academy", "schedule", "history", "about", "people", "users"]
+                perms: ["news", "squad", "academy", "schedule", "history", "about", "people", "users"]
             }
         ];
 
@@ -540,6 +568,7 @@
         let currentUser = JSON.parse(sessionStorage.getItem('legion_current_user')) || null;
 
         const navItems = [
+            { id: 'news', label: 'Artykuły', perm: 'news' },
             { id: 'squad', label: 'Pierwsza Drużyna', perm: 'squad' },
             { id: 'academy', label: 'Akademia', perm: 'academy' },
             { id: 'schedule', label: 'Terminarz', perm: 'schedule' },
@@ -586,7 +615,6 @@
             buildSidebar();
             loadAllSections();
 
-            // Otwórz pierwszą dostępną zakładkę
             const firstNav = navItems.find(n => n.perm === 'always' || currentUser.fullAdmin || currentUser.perms.includes(n.perm));
             if (firstNav) switchSection(firstNav.id);
         }
@@ -620,8 +648,8 @@
             setTimeout(() => { b.style.display = 'none'; }, 3000);
         }
 
-        // Ładowanie wszystkich danych do edycji
         function loadAllSections() {
+            loadNews();
             loadSquad();
             loadAcademy();
             loadSchedule();
@@ -631,12 +659,32 @@
             loadUsersList();
         }
 
+        // --- ARTYKUŁY ---
+        const defaultNews = [
+            { id: "news-1", title: "Rozpoczęcie przygotowań do sezonu", date: "20.03.2026", content: "<p>Drużyna rozpoczęła intensywne treningi...</p>" }
+        ];
+        function loadNews() {
+            let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
+            const container = document.getElementById('list-news');
+            container.innerHTML = '';
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <div>
+                            <div class="item-info">${item.title}</div>
+                            <div class="item-subinfo">Data: ${item.date}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-sm btn-edit" onclick="openEditModal('news', '${item.id}')">Edytuj</button>
+                            <button class="btn-sm btn-del" onclick="deleteItem('news', '${item.id}')">Usuń</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
         // --- PIERWSZA DRUŻYNA ---
         const defaultSquad = [
-            { id: "player-1", number: "1", name: "Jan Kowalski", positionKey: "gk", nationality: "Polska", birthdate: "12.05.1998" },
-            { id: "player-2", number: "4", name: "Piotr Nowak", positionKey: "def", nationality: "Polska", birthdate: "23.09.2001" },
-            { id: "player-3", number: "8", name: "Michał Wiśniewski", positionKey: "mid", nationality: "Polska", birthdate: "04.01.1999" },
-            { id: "player-4", number: "10", name: "Kamil Wójcik", positionKey: "fwd", nationality: "Polska", birthdate: "18.11.2000" }
+            { id: "player-1", number: "1", name: "Jan Kowalski", positionKey: "gk", nationality: "Polska", birthdate: "12.05.1998" }
         ];
         function loadSquad() {
             let data = JSON.parse(localStorage.getItem('legion_players')) || defaultSquad;
@@ -659,8 +707,7 @@
 
         // --- AKADEMIA ---
         const defaultAcademy = [
-            { id: "acad-1", number: "12", name: "Jakub Zalewski", positionKey: "gk", nationality: "Polska", birthdate: "14.05.2008" },
-            { id: "acad-2", number: "3", name: "Kacper Szymański", positionKey: "def", nationality: "Polska", birthdate: "22.09.2009" }
+            { id: "acad-1", number: "12", name: "Jakub Zalewski", positionKey: "gk", nationality: "Polska", birthdate: "14.05.2008" }
         ];
         function loadAcademy() {
             let data = JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy;
@@ -683,8 +730,7 @@
 
         // --- TERMINARZ ---
         const defaultSchedule = [
-            { id: "match-1", league: "Liga Okręgowa", date: "22.03.2026, 15:00", homeTeam: "Legion Białystok", awayTeam: "Iskra Narew", score: "2 : 1" },
-            { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" }
+            { id: "match-1", league: "Liga Okręgowa", date: "22.03.2026, 15:00", homeTeam: "Legion Białystok", awayTeam: "Iskra Narew", score: "2 : 1" }
         ];
         function loadSchedule() {
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
@@ -707,12 +753,7 @@
 
         // --- HISTORIA ---
         const defaultHistory = [
-            { id: "hist-1", date: "Październik 2024", title: "Utworzenie Klubu Sportowego Legion Białystok" },
-            { id: "hist-2", date: "19.10.2025", title: "Debiut w Białostockiej Lidze Sportu" },
-            { id: "hist-3", date: "05.02.2026", title: "Kara oraz odjęcie punktów" },
-            { id: "hist-4", date: "14.03.2026", title: "Spadek z II Ligi Białostockiej Ligi Sportu" },
-            { id: "hist-5", date: "18.03.2026", title: "Rozwiązanie Klubu Sportowego Legion Białystok" },
-            { id: "hist-6", date: "16.09.2026", title: "Reaktywacja Klubu Sportowego Legion Białystok" }
+            { id: "hist-1", date: "Październik 2024", title: "Utworzenie Klubu Sportowego Legion Białystok" }
         ];
         function loadHistory() {
             let data = JSON.parse(localStorage.getItem('legion_history')) || defaultHistory;
@@ -735,8 +776,7 @@
 
         // --- O KLUBIE ---
         const defaultAbout = [
-            { id: "sec-1", title: "Kim jesteśmy?", text: "Legion Białystok to klub sportowy..." },
-            { id: "sec-2", title: "Nasze cele", text: "Dążymy do ciągłego rozwoju..." }
+            { id: "sec-1", title: "Kim jesteśmy?", text: "Legion Białystok to klub sportowy..." }
         ];
         function loadAbout() {
             let data = JSON.parse(localStorage.getItem('legion_about')) || defaultAbout;
@@ -770,7 +810,6 @@
             const container = document.getElementById('list-people');
             container.innerHTML = '';
 
-            // Prezes
             if (data.president) {
                 container.innerHTML += `
                     <div class="item-row" style="border-color:rgba(255,215,0,0.4);">
@@ -783,7 +822,6 @@
                     </div>`;
             }
 
-            // Zarząd
             data.board.forEach(item => {
                 container.innerHTML += `
                     <div class="item-row">
@@ -828,6 +866,7 @@
 
             let item = null;
             if (id) {
+                if (type === 'news') item = (JSON.parse(localStorage.getItem('legion_news')) || defaultNews).find(x => x.id === id);
                 if (type === 'squad') item = (JSON.parse(localStorage.getItem('legion_players')) || defaultSquad).find(x => x.id === id);
                 if (type === 'academy') item = (JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy).find(x => x.id === id);
                 if (type === 'schedule') item = (JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule).find(x => x.id === id);
@@ -837,7 +876,23 @@
                 if (type === 'people_board') item = (JSON.parse(localStorage.getItem('legion_people')) || defaultPeople).board.find(x => x.id === id);
             }
 
-            if (type === 'squad' || type === 'academy') {
+            if (type === 'news') {
+                fields.innerHTML = `
+                    <div class="form-group"><label class="form-label">Tytuł artykułu</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
+                    <div class="form-group"><label class="form-label">Data</label><input type="text" id="mDate" class="form-input" value="${item ? item.date : new Date().toLocaleDateString()}"></div>
+                    <div class="form-group">
+                        <label class="form-label">Treść artykułu (z formatowaniem)</label>
+                        <div class="editor-toolbar">
+                            <button type="button" class="toolbar-btn" onclick="formatText('bold')"><b>B</b></button>
+                            <button type="button" class="toolbar-btn" onclick="formatText('italic')"><i>I</i></button>
+                            <button type="button" class="toolbar-btn" onclick="formatText('h2')">H2</button>
+                            <button type="button" class="toolbar-btn" onclick="formatText('h3')">H3</button>
+                            <button type="button" class="toolbar-btn" onclick="formatText('ul')">• Lista</button>
+                        </div>
+                        <textarea id="mContent" class="form-input" style="height:150px; border-top-left-radius:0; border-top-right-radius:0;">${item ? item.content : ''}</textarea>
+                    </div>
+                `;
+            } else if (type === 'squad' || type === 'academy') {
                 fields.innerHTML = `
                     <div class="form-group"><label class="form-label">Numer</label><input type="text" id="mNum" class="form-input" value="${item ? item.number : ''}"></div>
                     <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
@@ -872,6 +927,25 @@
             modal.style.display = 'flex';
         }
 
+        // Pasek narzędzi formatowania w edytorze artykułów
+        function formatText(tag) {
+            const textarea = document.getElementById('mContent');
+            if (!textarea) return;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            let replacement = '';
+
+            if (tag === 'bold') replacement = `<strong>${selectedText}</strong>`;
+            if (tag === 'italic') replacement = `<em>${selectedText}</em>`;
+            if (tag === 'h2') replacement = `<h2>${selectedText}</h2>`;
+            if (tag === 'h3') replacement = `<h3>${selectedText}</h3>`;
+            if (tag === 'ul') replacement = `<ul>\n  <li>${selectedText}</li>\n</ul>`;
+
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+            textarea.focus();
+        }
+
         function closeContentModal() {
             document.getElementById('contentModal').style.display = 'none';
         }
@@ -879,7 +953,21 @@
         function saveModalData() {
             const { type, id } = currentEditing;
 
-            if (type === 'squad' || type === 'academy') {
+            if (type === 'news') {
+                let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
+                const title = document.getElementById('mTitle').value;
+                const date = document.getElementById('mDate').value;
+                const content = document.getElementById('mContent').value;
+
+                if (id) {
+                    let obj = data.find(x => x.id === id);
+                    obj.title = title; obj.date = date; obj.content = content;
+                } else {
+                    data.unshift({ id: 'news-' + Date.now(), title, date, content });
+                }
+                localStorage.setItem('legion_news', JSON.stringify(data));
+                loadNews();
+            } else if (type === 'squad' || type === 'academy') {
                 let storageKey = type === 'squad' ? 'legion_players' : 'legion_academy_players';
                 let data = JSON.parse(localStorage.getItem(storageKey)) || (type === 'squad' ? defaultSquad : defaultAcademy);
                 
@@ -963,7 +1051,12 @@
 
         function deleteItem(type, id) {
             if (!confirm("Czy na pewno chcesz usunąć ten element?")) return;
-            if (type === 'squad' || type === 'academy') {
+            if (type === 'news') {
+                let data = JSON.parse(localStorage.getItem('legion_news')) || [];
+                data = data.filter(x => x.id !== id);
+                localStorage.setItem('legion_news', JSON.stringify(data));
+                loadNews();
+            } else if (type === 'squad' || type === 'academy') {
                 let key = type === 'squad' ? 'legion_players' : 'legion_academy_players';
                 let data = JSON.parse(localStorage.getItem(key)) || [];
                 data = data.filter(x => x.id !== id);
@@ -993,7 +1086,7 @@
             showSuccess();
         }
 
-        // --- ZARZĄDZANIE UŻYTKOWNIKAMI I PERMISJAMI ---
+        // --- UŻYTKOWNICY ---
         let editingUserIndex = null;
         function openUserModal(index) {
             editingUserIndex = index;
