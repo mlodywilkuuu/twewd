@@ -51,15 +51,6 @@ body{
   margin-bottom:25px;
 }
 
-/* NAZWA KLUBU */
-.club{
-  font-size:28px;
-  font-weight:600;
-  letter-spacing:1px;
-  margin-bottom:10px;
-}
-
-/* NAPIS TECHNICZNY */
 .status{
   font-size:14px;
   text-transform:uppercase;
@@ -68,20 +59,17 @@ body{
   margin-bottom:15px;
 }
 
-/* OPIS */
-.desc{
-  color:#aaa;
-  font-size:14px;
-  line-height:1.5;
-}
-
-/* DELIKATNA LINIA */
 .line{
   width:60px;
   height:2px;
   background:#00aaff;
   margin:15px auto;
   opacity:0.7;
+}
+
+.desc{
+  color:#aaa;
+  font-size:14px;
 }
 
 /* ===== UKRYTY PRZYCISK ===== */
@@ -98,44 +86,45 @@ body{
 /* ===== STRONA ===== */
 .main-site{
   display:none;
-  padding:100px 40px;
+  padding-top:80px;
 }
 
+/* ===== MENU (TOP BAR) ===== */
 nav{
   position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(20,25,35,0.7);
-  padding:10px 20px;
-  border-radius:40px;
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.1);
+  top:0;
+  left:0;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  padding:15px;
+  background:rgba(10,15,20,0.5);
+  backdrop-filter:blur(8px);
+  transition:0.3s;
+  z-index:1000;
+}
+
+/* ukrywanie menu */
+nav.hide{
+  transform:translateY(-100%);
 }
 
 nav a{
   color:#ccc;
-  margin:0 10px;
   text-decoration:none;
   font-size:14px;
+  transition:0.2s;
 }
 
 nav a:hover{
   color:white;
 }
 
-/* HERO */
-.hero{
-  margin-top:80px;
-}
-
-.hero h1{
-  font-size:42px;
-}
-
-.hero p{
-  color:#aaa;
-  margin-top:10px;
+/* SEKCJA DEMO */
+.section{
+  height:100vh;
+  padding:40px;
 }
 
 </style>
@@ -151,33 +140,24 @@ nav a:hover{
 <!-- MAINTENANCE -->
 <div class="maintenance" id="maintenance">
   <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" class="logo">
-  
-  <div class="club">Legion Białystok</div>
-  
   <div class="line"></div>
-  
   <div class="status">Prace techniczne</div>
-  
-  <div class="desc">
-    Strona jest chwilowo niedostępna.<br>
-    Trwają prace nad nową wersją.
-  </div>
+  <div class="desc">Strona jest chwilowo niedostępna</div>
 </div>
 
-<!-- PRAWDZIWA STRONA -->
+<!-- STRONA -->
 <div class="main-site" id="mainSite">
 
-  <nav>
+  <nav id="navbar">
     <a href="#">Home</a>
     <a href="#">News</a>
     <a href="#">Matches</a>
     <a href="#">Team</a>
   </nav>
 
-  <div class="hero">
-    <h1>Legion Białystok</h1>
-    <p>Oficjalna strona klubu</p>
-  </div>
+  <div class="section"></div>
+  <div class="section"></div>
+  <div class="section"></div>
 
 </div>
 
@@ -187,6 +167,22 @@ function showSite(){
   document.getElementById("mainSite").style.display = "block";
   document.body.style.overflow = "auto";
 }
+
+/* ===== SCROLL HIDE MENU ===== */
+let lastScroll = 0;
+const nav = document.getElementById("navbar");
+
+window.addEventListener("scroll", () => {
+  const currentScroll = window.pageYOffset;
+
+  if(currentScroll > lastScroll){
+    nav.classList.add("hide"); // scroll w dół
+  } else {
+    nav.classList.remove("hide"); // scroll w górę
+  }
+
+  lastScroll = currentScroll;
+});
 </script>
 
 </body>
