@@ -553,12 +553,26 @@
             const container = document.getElementById('players-container');
             container.innerHTML = '';
 
-            // Pobieramy dane bezpośrednio z localStorage (panel administratora zapisuje je tam)
-            let storedData = localStorage.getItem('legion_first_team');
-            let data = storedData ? JSON.parse(storedData) : [];
+            // Przeszukujemy wszystkie możliwe klucze w localStorage, które mógł utworzyć panel administratora
+            let data = [];
+            const possibleKeys = ['legion_first_team', 'first_team', 'players', 'zawodnicy', 'skład', 'druzyna', 'team'];
+            
+            for (let key of possibleKeys) {
+                let stored = localStorage.getItem(key);
+                if (stored) {
+                    try {
+                        let parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            data = parsed;
+                            break;
+                        }
+                    } catch(e) {}
+                }
+            }
 
+            // Jeśli żaden klucz nie zwrócił danych, ustawiamy pustą tablicę lub domyślne, jeśli bardzo potrzebne
             if (data.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #888;">Brak zawodników w bazie.</p>`;
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #888;">Brak zawodników w bazie. Dodaj ich w panelu administratora.</p>`;
                 return;
             }
 
@@ -567,9 +581,13 @@
                 card.className = 'player-card';
                 card.onclick = () => openModal(player);
 
+                // Obsługa różnych nazw pól w zależności od tego, jak panel je zapisuje (np. name lub imie, position lub pozycja)
+                const playerName = player.name || player.imie || player.nazwa || "Zawodnik";
+                const playerPos = player.position || player.pozycja || "Piłkarz";
+
                 card.innerHTML = `
-                    <h3 class="player-name">${player.name}</h3>
-                    <p class="player-position">${player.position}</p>
+                    <h3 class="player-name">${playerName}</h3>
+                    <p class="player-position">${playerPos}</p>
                 `;
 
                 container.appendChild(card);
@@ -580,14 +598,21 @@
             const modal = document.getElementById('playerModal');
             const modalBody = document.getElementById('modal-body');
 
+            const playerName = player.name || player.imie || player.nazwa || "Zawodnik";
+            const playerPos = player.position || player.pozycja || "Piłkarz";
+            const playerNumber = player.number || player.numer || '0';
+            const playerAge = player.age || player.wiek || 'B/D';
+            const playerMatches = player.matches || player.mecze || '0';
+            const playerGoals = player.goals || player.gole || '0';
+
             modalBody.innerHTML = `
-                <h2 class="modal-title">${player.name}</h2>
-                <p class="modal-subtitle">${player.position} #${player.number || '0'}</p>
+                <h2 class="modal-title">${playerName}</h2>
+                <p class="modal-subtitle">${playerPos} #${playerNumber}</p>
                 <div class="modal-info-grid">
-                    <div class="modal-info-item">Wiek: <span>${player.age || 'B/D'}</span></div>
-                    <div class="modal-info-item">Numer: <span>#${player.number || 'B/D'}</span></div>
-                    <div class="modal-info-item">Mecze: <span>${player.matches || '0'}</span></div>
-                    <div class="modal-info-item">Gole: <span>${player.goals || '0'}</span></div>
+                    <div class="modal-info-item">Wiek: <span>${playerAge}</span></div>
+                    <div class="modal-info-item">Numer: <span>#${playerNumber}</span></div>
+                    <div class="modal-info-item">Mecze: <span>${playerMatches}</span></div>
+                    <div class="modal-info-item">Gole: <span>${playerGoals}</span></div>
                 </div>
             `;
 
@@ -625,11 +650,9 @@
             renderPlayers();
         });
 
-        // Nasłuchiwanie zmian w pamięci, aby strona odświeżała się w czasie rzeczywistym, gdy zmieniasz coś w panelu
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'legion_first_team') {
-                renderPlayers();
-            }
+        // Nasłuchiwanie zmian w pamięci, aby strona aktualizowała się na żywo
+        window.addEventListener('storage', () => {
+            renderPlayers();
         });
     </script>
 
