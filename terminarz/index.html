@@ -531,7 +531,8 @@
 
         const defaultSchedule = [
             { id: "match-1", league: "II Liga BLS", date: "25.10.2026", homeTeam: "KS LIDER", awayTeam: "Legion Białystok", score: "9 : 2" },
-            { id: "match-2", league: "II Liga BLS", date: "15.11.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" }
+            { id: "match-2", league: "II Liga BLS", date: "15.11.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" },
+            { id: "match-3", league: "Mecz towarzyski", date: "10.10.2026", homeTeam: "Legion Białystok", awayTeam: "Sparta Białystok", score: "3 : 1" }
         ];
 
         function parseDate(dateStr) {
@@ -558,7 +559,7 @@
             // Sortowanie od najnowszych do najstarszych
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-            // Generowanie unikalnych przycisków tagów (rozgrywek)
+            // Generowanie unikalnych przycisków tagów (w tym Mecz towarzyski, II Liga BLS itd.)
             const leagues = [...new Set(data.map(item => item.league || 'Mecz ligowy'))];
             
             let filtersHTML = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterByLeague('all')">Wszystkie mecze</button>`;
