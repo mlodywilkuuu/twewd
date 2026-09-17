@@ -16,12 +16,6 @@
             background-color: #060606;
             color: #ffffff;
             min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
         }
 
         /* Ekran logowania */
@@ -53,63 +47,135 @@
             margin-bottom: 15px;
         }
 
+        /* Układ panelu z bocznym menu */
         .admin-panel {
             display: none;
+            min-height: 100vh;
+            display: none; /* domyślnie ukryty przed logowaniem */
+            grid-template-columns: 260px 1fr;
         }
 
-        .admin-header {
+        /* Boczne menu */
+        .sidebar {
+            background: rgba(12, 12, 12, 0.95);
+            border-right: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 30px 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            padding: 20px 30px;
-            margin-bottom: 30px;
+            flex-direction: column;
+            gap: 15px;
+            position: fixed;
+            width: 260px;
+            height: 100vh;
+            backdrop-filter: blur(15px);
         }
 
-        .admin-header img {
+        .sidebar-logo {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .sidebar-logo img {
             height: 50px;
             object-fit: contain;
+            margin-bottom: 8px;
         }
 
-        .admin-header h1 {
+        .sidebar-logo h3 {
             color: #ffd700;
-            font-size: 1.5rem;
+            font-size: 0.95rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .logout-btn {
-            background: #ff4d4d !important;
-            color: white !important;
-            width: auto !important;
-            grid-column: auto !important;
+        .menu-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #cccccc;
+            padding: 12px 18px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .menu-btn:hover, .menu-btn.active {
+            background: rgba(255, 215, 0, 0.12);
+            border-color: rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .logout-btn-side {
+            margin-top: auto;
+            background: rgba(255, 77, 77, 0.15);
+            border: 1px solid rgba(255, 77, 77, 0.3);
+            color: #ff4d4d;
+            padding: 12px 18px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn-side:hover {
+            background: #ff4d4d;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+        }
+
+        /* Główna zawartość panelu */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            max-width: 1100px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-box {
             background: rgba(20, 20, 20, 0.8);
             border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 16px;
-            padding: 25px;
+            padding: 30px;
             margin-bottom: 30px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
         h2 {
             color: #ffd700;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
             border-bottom: 1px solid rgba(255, 215, 0, 0.1);
             padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         form {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         input, select, textarea {
@@ -127,7 +193,7 @@
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
         }
 
-        button {
+        button.submit-btn {
             background: linear-gradient(135deg, #ffd700, #cca600);
             color: #000000;
             border: none;
@@ -139,7 +205,7 @@
             grid-column: 1 / -1;
         }
 
-        button:hover {
+        button.submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
@@ -147,13 +213,13 @@
         .item-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .item-row {
             background: rgba(30, 30, 30, 0.6);
-            padding: 12px 15px;
-            border-radius: 8px;
+            padding: 15px 20px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -164,12 +230,11 @@
             background: #ff4d4d;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 600;
-            grid-column: auto;
         }
 
         .delete-btn:hover {
@@ -179,109 +244,130 @@
 </head>
 <body>
 
-    <div class="container">
+    <!-- EKRAN LOGOWANIA -->
+    <div class="login-screen" id="loginScreen">
+        <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo Legion" class="login-logo">
+        <h2>Panel Administratora</h2>
+        <form onsubmit="handleLogin(event)" style="display: block;">
+            <input type="text" id="loginUser" placeholder="Login" required style="width: 100%; margin-bottom: 15px;">
+            <input type="password" id="loginPass" placeholder="Hasło" required style="width: 100%; margin-bottom: 20px;">
+            <button type="submit" class="submit-btn" style="width: 100%;">Zaloguj się</button>
+        </form>
+        <p id="loginError" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9rem; display: none;">Niepoprawny login lub hasło!</p>
+    </div>
 
-        <!-- EKRAN LOGOWANIA -->
-        <div class="login-screen" id="loginScreen">
-            <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo Legion" class="login-logo">
-            <h2>Panel Administratora</h2>
-            <form onsubmit="handleLogin(event)" style="display: block;">
-                <input type="text" id="loginUser" placeholder="Login" required style="width: 100%; margin-bottom: 15px;">
-                <input type="password" id="loginPass" placeholder="Hasło" required style="width: 100%; margin-bottom: 20px;">
-                <button type="submit" style="width: 100%;">Zaloguj się</button>
-            </form>
-            <p id="loginError" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9rem; display: none;">Niepoprawny login lub hasło!</p>
-        </div>
+    <!-- PANEL ADMINISTRATORA Z BOCZNYM MENU -->
+    <div class="admin-panel" id="adminPanel">
+        
+        <!-- Boczne Menu -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo">
+                <h3>Legion Białystok</h3>
+            </div>
+            <button class="menu-btn active" onclick="switchSection('overview')">Przegląd / Hasło</button>
+            <button class="menu-btn" onclick="switchSection('first-team')">Pierwsza Drużyna</button>
+            <button class="menu-btn" onclick="switchSection('academy')">Akademia</button>
+            <button class="menu-btn" onclick="switchSection('articles')">Artykuły</button>
+            <button class="menu-btn" onclick="switchSection('tables')">Tabele i Ligi</button>
+            <button class="menu-btn" onclick="switchSection('users')">Użytkownicy i Permisje</button>
+            <button class="logout-btn-side" onclick="handleLogout()">Wyloguj się</button>
+        </aside>
 
-        <!-- PANEL ADMINISTRATORA -->
-        <div class="admin-panel" id="adminPanel">
-            <div class="admin-header">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo">
-                    <h1>Zarządzanie Klubem</h1>
+        <!-- Główna zawartość -->
+        <main class="main-content">
+
+            <!-- 1. PRZEGLĄD / ZMIANA HASŁA -->
+            <section id="sec-overview" class="content-section active">
+                <div class="section-box">
+                    <h2>Zmiana Hasła</h2>
+                    <form onsubmit="changePassword(event)">
+                        <input type="password" id="newPass" placeholder="Nowe hasło" required>
+                        <button type="submit" class="submit-btn">Zmień hasło</button>
+                    </form>
                 </div>
-                <button class="logout-btn" onclick="handleLogout()">Wyloguj</button>
-            </div>
+            </section>
 
-            <!-- Zmiana Hasła -->
-            <div class="section-box">
-                <h2>Zmiana Hasła</h2>
-                <form onsubmit="changePassword(event)">
-                    <input type="password" id="newPass" placeholder="Nowe hasło" required>
-                    <button type="submit">Zmień hasło</button>
-                </form>
-            </div>
+            <!-- 2. PIERWSZA DRUŻYNA -->
+            <section id="sec-first-team" class="content-section">
+                <div class="section-box">
+                    <h2>Zarządzanie: Pierwsza Drużyna</h2>
+                    <form onsubmit="addPlayer(event, 'legion_first_team')">
+                        <input type="text" id="t-name" placeholder="Imię i nazwisko" required>
+                        <input type="text" id="t-position" placeholder="Pozycja" required>
+                        <input type="number" id="t-age" placeholder="Wiek" required>
+                        <input type="number" id="t-number" placeholder="Numer" required>
+                        <input type="number" id="t-matches" placeholder="Mecze" required>
+                        <input type="number" id="t-goals" placeholder="Gole" required>
+                        <button type="submit" class="submit-btn">Dodaj zawodnika do 1. Drużyny</button>
+                    </form>
+                    <div class="item-list" id="list-legion_first_team"></div>
+                </div>
+            </section>
 
-            <!-- Zarządzanie Permisjami / Użytkownikami -->
-            <div class="section-box">
-                <h2>Nadawanie Permisji (Użytkownicy)</h2>
-                <form onsubmit="addUser(event)">
-                    <input type="text" id="u-name" placeholder="Login użytkownika" required>
-                    <select id="u-role">
-                        <option value="admin">Administrator (Pełne uprawnienia)</option>
-                        <option value="editor">Edytor (Artykuły i Składy)</option>
-                    </select>
-                    <button type="submit">Dodaj użytkownika / Zmień uprawnienia</button>
-                </form>
-                <div class="item-list" id="list-users"></div>
-            </div>
+            <!-- 3. AKADEMIA -->
+            <section id="sec-academy" class="content-section">
+                <div class="section-box">
+                    <h2>Zarządzanie: Akademia</h2>
+                    <form onsubmit="addPlayer(event, 'legion_academy_players')">
+                        <input type="text" id="a-name" placeholder="Imię i nazwisko" required>
+                        <input type="text" id="a-position" placeholder="Pozycja" required>
+                        <input type="number" id="a-age" placeholder="Wiek" required>
+                        <input type="number" id="a-number" placeholder="Numer" required>
+                        <input type="number" id="a-matches" placeholder="Mecze" required>
+                        <input type="number" id="a-goals" placeholder="Gole" required>
+                        <button type="submit" class="submit-btn">Dodaj zawodnika do Akademii</button>
+                    </form>
+                    <div class="item-list" id="list-legion_academy_players"></div>
+                </div>
+            </section>
 
-            <!-- Pierwsza Drużyna -->
-            <div class="section-box">
-                <h2>Zarządzanie: Pierwsza Drużyna</h2>
-                <form onsubmit="addPlayer(event, 'legion_first_team')">
-                    <input type="text" id="t-name" placeholder="Imię i nazwisko" required>
-                    <input type="text" id="t-position" placeholder="Pozycja" required>
-                    <input type="number" id="t-age" placeholder="Wiek" required>
-                    <input type="number" id="t-number" placeholder="Numer" required>
-                    <input type="number" id="t-matches" placeholder="Mecze" required>
-                    <input type="number" id="t-goals" placeholder="Gole" required>
-                    <button type="submit">Dodaj zawodnika do 1. Drużyny</button>
-                </form>
-                <div class="item-list" id="list-legion_first_team"></div>
-            </div>
+            <!-- 4. ARTYKUŁY -->
+            <section id="sec-articles" class="content-section">
+                <div class="section-box">
+                    <h2>Zarządzanie: Artykuły</h2>
+                    <form onsubmit="addArticle(event)">
+                        <input type="text" id="art-title" placeholder="Tytuł artykułu" required style="grid-column: 1 / -1;">
+                        <input type="text" id="art-tags" placeholder="Tagi (np. Drużyna, Klub)" required>
+                        <input type="text" id="art-date" placeholder="Data (np. 2026-03-29 14:00)" required>
+                        <textarea id="art-content" placeholder="Treść artykułu" required style="grid-column: 1 / -1; height: 100px;"></textarea>
+                        <button type="submit" class="submit-btn">Dodaj Artykuł</button>
+                    </form>
+                    <div class="item-list" id="list-articles"></div>
+                </div>
+            </section>
 
-            <!-- Akademia -->
-            <div class="section-box">
-                <h2>Zarządzanie: Akademia</h2>
-                <form onsubmit="addPlayer(event, 'legion_academy_players')">
-                    <input type="text" id="a-name" placeholder="Imię i nazwisko" required>
-                    <input type="text" id="a-position" placeholder="Pozycja" required>
-                    <input type="number" id="a-age" placeholder="Wiek" required>
-                    <input type="number" id="a-number" placeholder="Numer" required>
-                    <input type="number" id="a-matches" placeholder="Mecze" required>
-                    <input type="number" id="a-goals" placeholder="Gole" required>
-                    <button type="submit">Dodaj zawodnika do Akademii</button>
-                </form>
-                <div class="item-list" id="list-legion_academy_players"></div>
-            </div>
+            <!-- 5. TABELE I LIGI -->
+            <section id="sec-tables" class="content-section">
+                <div class="section-box">
+                    <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
+                    <form onsubmit="addTableLeague(event)">
+                        <input type="text" id="league-tag" placeholder="Nazwa Ligi / Sezonu (Tag)" required style="grid-column: 1 / -1;">
+                        <textarea id="league-data" placeholder="Dane tabeli / wiersze" required style="grid-column: 1 / -1; height: 100px;"></textarea>
+                        <button type="submit" class="submit-btn">Zapisz Tabelę dla Ligi</button>
+                    </form>
+                    <div class="item-list" id="list-leagues"></div>
+                </div>
+            </section>
 
-            <!-- Artykuły -->
-            <div class="section-box">
-                <h2>Zarządzanie: Artykuły</h2>
-                <form onsubmit="addArticle(event)">
-                    <input type="text" id="art-title" placeholder="Tytuł artykułu" required style="grid-column: 1 / -1;">
-                    <input type="text" id="art-tags" placeholder="Tagi (np. Drużyna, Klub)" required>
-                    <input type="text" id="art-date" placeholder="Data (np. 2026-03-29 14:00)" required>
-                    <textarea id="art-content" placeholder="Treść artykułu" required style="grid-column: 1 / -1; height: 80px;"></textarea>
-                    <button type="submit">Dodaj Artykuł</button>
-                </form>
-                <div class="item-list" id="list-articles"></div>
-            </div>
+            <!-- 6. UŻYTKOWNICY I PERMISJE -->
+            <section id="sec-users" class="content-section">
+                <div class="section-box">
+                    <h2>Nadawanie Permisji (Użytkownicy i Hasła)</h2>
+                    <form onsubmit="addUser(event)">
+                        <input type="text" id="u-name" placeholder="Login nowego użytkownika" required>
+                        <input type="password" id="u-pass" placeholder="Hasło użytkownika" required>
+                        <select id="u-role">
+                            <option value="admin">Administrator (Pełne uprawnienia)</option>
+                            <option value="editor">Edytor (Artykuły i Składy)</option>
+                        </select>
+                        <button type="submit" class="submit-btn">Utwórz / Zaktualizuj użytkownika</button>
+                    </form>
+                    <div class="item-list" id="list-users"></div>
+                </div>
+            </section>
 
-            <!-- Tabele i Tagi Lig -->
-            <div class="section-box">
-                <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
-                <form onsubmit="addTableLeague(event)">
-                    <input type="text" id="league-tag" placeholder="Nazwa Ligi / Sezonu (Tag)" required style="grid-column: 1 / -1;">
-                    <textarea id="league-data" placeholder="Dane tabeli / wiersze" required style="grid-column: 1 / -1; height: 80px;"></textarea>
-                    <button type="submit">Zapisz Tabelę dla Ligi</button>
-                </form>
-                <div class="item-list" id="list-leagues"></div>
-            </div>
-
-        </div>
-
+        </main>
     </div>
 
     <script>
@@ -294,9 +380,18 @@
 
             if (localStorage.getItem('legion_logged_in') === 'true') {
                 document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminPanel').style.display = 'grid';
                 loadPanelData();
             }
+        }
+
+        // Przełączanie zakładek w bocznym menu
+        function switchSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('sec-' + sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
         function handleLogin(event) {
@@ -310,7 +405,7 @@
                 localStorage.setItem('legion_logged_in', 'true');
                 localStorage.setItem('legion_current_user', user);
                 document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminPanel').style.display = 'grid';
                 loadPanelData();
             } else {
                 document.getElementById('loginError').style.display = 'block';
@@ -340,14 +435,16 @@
         function addUser(event) {
             event.preventDefault();
             const name = document.getElementById('u-name').value.trim();
+            const pass = document.getElementById('u-pass').value.trim();
             const role = document.getElementById('u-role').value;
 
             let users = JSON.parse(localStorage.getItem('legion_users')) || {};
-            users[name] = { pass: users[name]?.pass || '123456', role: role };
+            users[name] = { pass: pass, role: role };
             localStorage.setItem('legion_users', JSON.stringify(users));
 
             event.target.reset();
             renderUsers();
+            alert('Użytkownik został pomyślnie dodany/zaktualizowany!');
         }
 
         function deleteUser(name) {
