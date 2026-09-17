@@ -293,90 +293,25 @@
 
         /* Główna treść strony */
         main {
-            margin-top: 130px;
-            padding: 20px 5% 80px 5%;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 150px;
+            padding: 20px 5%;
+            text-align: center;
         }
 
-        .section-title {
-            font-size: 2.2rem;
+        .hero-title {
+            font-size: 2.8rem;
             font-weight: 800;
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 30px;
-            text-align: center;
-            text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
+            margin-bottom: 15px;
+            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
         }
 
-        /* Styl Tabeli Wyników */
-        .table-container {
-            background: linear-gradient(135deg, rgba(20, 20, 20, 0.75), rgba(10, 10, 10, 0.85));
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        html[dir="rtl"] table {
-            text-align: right;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            font-size: 0.95rem;
-        }
-
-        th {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s;
-        }
-
-        tr:hover {
-            background: rgba(255, 215, 0, 0.05);
-        }
-
-        tr.highlight-team {
-            background: rgba(255, 215, 0, 0.12);
-            font-weight: 700;
-            color: #ffd700;
-        }
-
-        td.pos {
-            font-weight: 800;
-            color: #ffd700;
-            width: 60px;
-            text-align: center;
-        }
-
-        td.pts {
-            font-weight: 800;
-            color: #ffd700;
-            text-align: center;
-        }
-
-        td.stats {
-            text-align: center;
-            color: #cccccc;
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #aaaaaa;
+            margin-bottom: 40px;
         }
     </style>
 </head>
@@ -426,58 +361,8 @@
     </header>
 
     <main>
-        <h1 class="section-title" data-translate="table_title">Tabela Wyników</h1>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="text-align: center;">#</th>
-                        <th data-translate="th_team">Drużyna</th>
-                        <th style="text-align: center;" data-translate="th_m">M</th>
-                        <th style="text-align: center;" data-translate="th_pkt">Pkt</th>
-                        <th style="text-align: center;" data-translate="th_bramki">Bramki</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="pos">1</td>
-                        <td>KS LIDER</td>
-                        <td class="stats">12</td>
-                        <td class="pts">31</td>
-                        <td class="stats">45 : 15</td>
-                    </tr>
-                    <tr class="highlight-team">
-                        <td class="pos">2</td>
-                        <td>Legion Białystok</td>
-                        <td class="stats">12</td>
-                        <td class="pts">28</td>
-                        <td class="stats">38 : 18</td>
-                    </tr>
-                    <tr>
-                        <td class="pos">3</td>
-                        <td>EXTreme team</td>
-                        <td class="stats">12</td>
-                        <td class="pts">25</td>
-                        <td class="stats">30 : 22</td>
-                    </tr>
-                    <tr>
-                        <td class="pos">4</td>
-                        <td>Sparta Białystok</td>
-                        <td class="stats">12</td>
-                        <td class="pts">19</td>
-                        <td class="stats">24 : 26</td>
-                    </tr>
-                    <tr>
-                        <td class="pos">5</td>
-                        <td>Iskra Narew</td>
-                        <td class="stats">12</td>
-                        <td class="pts">12</td>
-                        <td class="stats">18 : 35</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <h1 class="hero-title" data-translate="welcome_title">Witaj w Legionie Białystok</h1>
+        <p class="hero-subtitle" data-translate="welcome_subtitle">Oficjalny serwis internetowy klubu</p>
     </main>
 
     <script>
@@ -488,14 +373,11 @@
                 academy: "Akademia",
                 table: "Tabela",
                 club: "Klub ›",
-                history: "История",
+                history: "Historia",
                 about: "O klubie",
                 people: "Ludzie Legionu",
-                table_title: "Tabela Wyników",
-                th_team: "Drużyna",
-                th_m: "M",
-                th_pkt: "Pkt",
-                th_bramki: "Bramki"
+                welcome_title: "Witaj w Legionie Białystok",
+                welcome_subtitle: "Oficjalny serwis internetowy klubu"
             },
             en: {
                 news: "News",
@@ -506,11 +388,8 @@
                 history: "History",
                 about: "About Club",
                 people: "Legion People",
-                table_title: "Standings",
-                th_team: "Team",
-                th_m: "P",
-                th_pkt: "Pts",
-                th_bramki: "Goals"
+                welcome_title: "Welcome to Legion Białystok",
+                welcome_subtitle: "Official club website"
             },
             es: {
                 news: "Noticias",
@@ -521,11 +400,8 @@
                 history: "Historia",
                 about: "Sobre el Club",
                 people: "Gente del Legion",
-                table_title: "Clasificación",
-                th_team: "Equipo",
-                th_m: "PJ",
-                th_pkt: "Pts",
-                th_bramki: "Goles"
+                welcome_title: "Bienvenido a Legion Białystok",
+                welcome_subtitle: "Sitio web oficial del club"
             },
             ru: {
                 news: "Новости",
@@ -536,11 +412,8 @@
                 history: "История",
                 about: "О клубе",
                 people: "Люди Легиона",
-                table_title: "Таблица результатов",
-                th_team: "Команда",
-                th_m: "И",
-                th_pkt: "О",
-                th_bramki: "Голы"
+                welcome_title: "Добро пожаловать в Легион Белосток",
+                welcome_subtitle: "Официальный сайт клуба"
             },
             ar: {
                 news: "الأخبار",
@@ -551,11 +424,8 @@
                 history: "التاريخ",
                 about: "عن النادي",
                 people: "أعضاء النادي",
-                table_title: "جدول الترتيب",
-                th_team: "الفريق",
-                th_m: "لعب",
-                th_pkt: "نقاط",
-                th_bramki: "الأهداف"
+                welcome_title: "مرحباً بكم في ليغيون بياويستوك",
+                welcome_subtitle: "الموقع الرسمي للنادي"
             }
         };
 
