@@ -291,7 +291,7 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – Terminarz w sztywnej siatce zabezpieczonej przed mieszaniem */
+        /* Główna treść strony */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
@@ -306,12 +306,40 @@
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             text-align: center;
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Siatka 3 kolumny ze stałym dopasowaniem wysokości wierszy */
+        /* Pasek filtrów / tagów rozgrywek */
+        .filters-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .filter-btn {
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #cccccc;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Siatka 3 kolumny */
         .schedule-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -431,6 +459,7 @@
                     <li><a href="../druzyna" data-translate="team">Pierwsza drużyna</a></li>
                     <li><a href="../akademia" data-translate="academy">Akademia</a></li>
                     <li><a href="../terminarz" data-translate="schedule">Terminarz</a></li>
+                    <li><a href="../tabela" data-translate="table">Tabela</a></li>
                     
                     <li class="has-submenu">
                         <a href="#" data-translate="club">Klub ›</a>
@@ -463,6 +492,11 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Terminarz i Wyniki</h1>
 
+        <!-- Panel tagów / filtrów rozgrywek -->
+        <div class="filters-bar" id="filters-container">
+            <button class="filter-btn active" onclick="filterByLeague('all')">Wszystkie mecze</button>
+        </div>
+
         <div class="schedule-grid" id="schedule-container">
             <!-- Renderowane dynamicznie -->
         </div>
@@ -471,38 +505,38 @@
     <script>
         const translations = {
             pl: {
-                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
+                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", table: "Tabela", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
                 section_title: "Terminarz i Wyniki"
             },
             en: {
-                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
+                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", table: "Standings", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
                 section_title: "Schedule & Results"
             },
             es: {
-                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
+                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", table: "Clasificación", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
                 section_title: "Calendario y Resultados"
             },
             ru: {
-                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
+                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", table: "Таблица", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
                 section_title: "Расписание и результаты"
             },
             ar: {
-                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", table: "الترتيب", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
                 section_title: "الجدول والنتائج"
             }
         };
 
         let currentLang = 'pl';
+        let currentFilter = 'all';
 
         const defaultSchedule = [
-            { id: "match-1", league: "Liga Okręgowa", date: "22.03.2026, 15:00", homeTeam: "Legion Białystok", awayTeam: "Iskra Narew", score: "2 : 1" },
-            { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" }
+            { id: "match-1", league: "II Liga BLS", date: "25.10.2026", homeTeam: "KS LIDER", awayTeam: "Legion Białystok", score: "9 : 2" },
+            { id: "match-2", league: "II Liga BLS", date: "15.11.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" }
         ];
 
-        // Niezawodny algorytm parsowania daty do wartości liczbowej (timestamp) dla poprawnego sortowania
         function parseDate(dateStr) {
             if (!dateStr) return 0;
-            const cleanStr = dateStr.split(',')[0].trim(); // np. "11.09" lub "25.10.2026"
+            const cleanStr = dateStr.split(',')[0].trim();
             const parts = cleanStr.split('.');
             
             let day = parseInt(parts[0], 10) || 1;
@@ -511,20 +545,32 @@
 
             if (year < 100) year += 2000;
 
-            // Zwracamy unikalną wartość liczbową w formacie RRRRMMDD dla perfekcyjnego sortowania
-            return year * 10000 + month * 100 + day;
+            return new Date(year, month - 1, day).getTime();
         }
 
         function renderSchedule() {
             const container = document.getElementById('schedule-container');
+            const filtersContainer = document.getElementById('filters-container');
             container.innerHTML = '';
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // Sortowanie malejące: od największej wartości (najnowsza data) do najmniejszej (najstarsza data)
+            // Sortowanie od najnowszych do najstarszych
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-            data.forEach(item => {
+            // Generowanie unikalnych przycisków tagów (rozgrywek)
+            const leagues = [...new Set(data.map(item => item.league || 'Mecz ligowy'))];
+            
+            let filtersHTML = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterByLeague('all')">Wszystkie mecze</button>`;
+            leagues.forEach(league => {
+                filtersHTML += `<button class="filter-btn ${currentFilter === league ? 'active' : ''}" onclick="filterByLeague('${league}')">${league}</button>`;
+            });
+            filtersContainer.innerHTML = filtersHTML;
+
+            // Filtrowanie meczów
+            const filteredData = currentFilter === 'all' ? data : data.filter(item => (item.league || 'Mecz ligowy') === currentFilter);
+
+            filteredData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'match-card';
                 card.id = item.id;
@@ -543,6 +589,11 @@
 
                 container.appendChild(card);
             });
+        }
+
+        function filterByLeague(leagueName) {
+            currentFilter = leagueName;
+            renderSchedule();
         }
 
         function setLanguage(lang, label) {
