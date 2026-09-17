@@ -24,12 +24,67 @@
             margin: 0 auto;
         }
 
-        h1 {
-            color: #ffd700;
+        /* Ekran logowania */
+        .login-screen {
+            max-width: 400px;
+            margin: 100px auto;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.95));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
             text-align: center;
+        }
+
+        .login-logo {
+            height: 70px;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .login-screen h2 {
+            color: #ffd700;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        .login-screen input {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 16px;
+            padding: 20px 30px;
             margin-bottom: 30px;
+        }
+
+        .admin-header img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .admin-header h1 {
+            color: #ffd700;
+            font-size: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn {
+            background: #ff4d4d !important;
+            color: white !important;
+            width: auto !important;
+            grid-column: auto !important;
         }
 
         .section-box {
@@ -119,91 +174,215 @@
 
         .delete-btn:hover {
             background: #ff1a1a;
-            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Panel Administratora</h1>
 
-        <!-- 1. Pierwsza Drużyna -->
-        <div class="section-box">
-            <h2>Zarządzanie: Pierwsza Drużyna</h2>
-            <form onsubmit="addPlayer(event, 'legion_first_team')">
-                <input type="text" id="t-name" placeholder="Imię i nazwisko" required>
-                <input type="text" id="t-position" placeholder="Pozycja (np. Napastnik)" required>
-                <input type="number" id="t-age" placeholder="Wiek" required>
-                <input type="number" id="t-number" placeholder="Numer na koszulce" required>
-                <input type="number" id="t-matches" placeholder="Liczba meczów" required>
-                <input type="number" id="t-goals" placeholder="Liczba goli" required>
-                <button type="submit">Dodaj zawodnika do Pierwszej Drużyny</button>
+        <!-- EKRAN LOGOWANIA -->
+        <div class="login-screen" id="loginScreen">
+            <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo Legion" class="login-logo">
+            <h2>Panel Administratora</h2>
+            <form onsubmit="handleLogin(event)" style="display: block;">
+                <input type="text" id="loginUser" placeholder="Login" required style="width: 100%; margin-bottom: 15px;">
+                <input type="password" id="loginPass" placeholder="Hasło" required style="width: 100%; margin-bottom: 20px;">
+                <button type="submit" style="width: 100%;">Zaloguj się</button>
             </form>
-            <div class="item-list" id="list-legion_first_team"></div>
+            <p id="loginError" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9rem; display: none;">Niepoprawny login lub hasło!</p>
         </div>
 
-        <!-- 2. Akademia -->
-        <div class="section-box">
-            <h2>Zarządzanie: Akademia</h2>
-            <form onsubmit="addPlayer(event, 'legion_academy_players')">
-                <input type="text" id="a-name" placeholder="Imię i nazwisko" required>
-                <input type="text" id="a-position" placeholder="Pozycja" required>
-                <input type="number" id="a-age" placeholder="Wiek" required>
-                <input type="number" id="a-number" placeholder="Numer na koszulce" required>
-                <input type="number" id="a-matches" placeholder="Liczba meczów" required>
-                <input type="number" id="a-goals" placeholder="Liczba goli" required>
-                <button type="submit">Dodaj zawodnika do Akademii</button>
-            </form>
-            <div class="item-list" id="list-legion_academy_players"></div>
-        </div>
+        <!-- PANEL ADMINISTRATORA -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Logo">
+                    <h1>Zarządzanie Klubem</h1>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Wyloguj</button>
+            </div>
 
-        <!-- 3. Artykuły (Aktualności) -->
-        <div class="section-box">
-            <h2>Zarządzanie: Artykuły</h2>
-            <form onsubmit="addArticle(event)">
-                <input type="text" id="art-title" placeholder="Tytuł artykułu" required style="grid-column: 1 / -1;">
-                <input type="text" id="art-tags" placeholder="Tagi (np. Drużyna, Klub, Mecz)" required>
-                <input type="text" id="art-date" placeholder="Data (np. 2026-03-29 14:00)" required>
-                <textarea id="art-content" placeholder="Treść artykułu (HTML dozwolony)" required style="grid-column: 1 / -1; height: 100px;"></textarea>
-                <button type="submit">Dodaj Artykuł</button>
-            </form>
-            <div class="item-list" id="list-articles"></div>
-        </div>
+            <!-- Zmiana Hasła -->
+            <div class="section-box">
+                <h2>Zmiana Hasła</h2>
+                <form onsubmit="changePassword(event)">
+                    <input type="password" id="newPass" placeholder="Nowe hasło" required>
+                    <button type="submit">Zmień hasło</button>
+                </form>
+            </div>
 
-        <!-- 4. Tabele i Ligi (Tagi) -->
-        <div class="section-box">
-            <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
-            <form onsubmit="addTableLeague(event)">
-                <input type="text" id="league-tag" placeholder="Nazwa Ligi / Sezonu (Tag)" required style="grid-column: 1 / -1;">
-                <textarea id="league-data" placeholder="Kod HTML tabeli lub dane wierszy" required style="grid-column: 1 / -1; height: 80px;"></textarea>
-                <button type="submit">Zapisz Tabelę dla Ligi</button>
-            </form>
-            <div class="item-list" id="list-leagues"></div>
-        </div>
+            <!-- Zarządzanie Permisjami / Użytkownikami -->
+            <div class="section-box">
+                <h2>Nadawanie Permisji (Użytkownicy)</h2>
+                <form onsubmit="addUser(event)">
+                    <input type="text" id="u-name" placeholder="Login użytkownika" required>
+                    <select id="u-role">
+                        <option value="admin">Administrator (Pełne uprawnienia)</option>
+                        <option value="editor">Edytor (Artykuły i Składy)</option>
+                    </select>
+                    <button type="submit">Dodaj użytkownika / Zmień uprawnienia</button>
+                </form>
+                <div class="item-list" id="list-users"></div>
+            </div>
 
-        <!-- 5. Match Center (Mecze) -->
-        <div class="section-box">
-            <h2>Zarządzanie: Match Center (Wyniki iTerminarz)</h2>
-            <form onsubmit="addMatch(event)">
-                <input type="text" id="match-teams" placeholder="Mecz (np. Legion vs Rywal)" required>
-                <input type="text" id="match-score" placeholder="Wynik (np. 2:1 lub zapowiedź)" required>
-                <input type="text" id="match-date" placeholder="Data i godzina" required>
-                <button type="submit">Dodaj Mecz</button>
-            </form>
-            <div class="item-list" id="list-matches"></div>
+            <!-- Pierwsza Drużyna -->
+            <div class="section-box">
+                <h2>Zarządzanie: Pierwsza Drużyna</h2>
+                <form onsubmit="addPlayer(event, 'legion_first_team')">
+                    <input type="text" id="t-name" placeholder="Imię i nazwisko" required>
+                    <input type="text" id="t-position" placeholder="Pozycja" required>
+                    <input type="number" id="t-age" placeholder="Wiek" required>
+                    <input type="number" id="t-number" placeholder="Numer" required>
+                    <input type="number" id="t-matches" placeholder="Mecze" required>
+                    <input type="number" id="t-goals" placeholder="Gole" required>
+                    <button type="submit">Dodaj zawodnika do 1. Drużyny</button>
+                </form>
+                <div class="item-list" id="list-legion_first_team"></div>
+            </div>
+
+            <!-- Akademia -->
+            <div class="section-box">
+                <h2>Zarządzanie: Akademia</h2>
+                <form onsubmit="addPlayer(event, 'legion_academy_players')">
+                    <input type="text" id="a-name" placeholder="Imię i nazwisko" required>
+                    <input type="text" id="a-position" placeholder="Pozycja" required>
+                    <input type="number" id="a-age" placeholder="Wiek" required>
+                    <input type="number" id="a-number" placeholder="Numer" required>
+                    <input type="number" id="a-matches" placeholder="Mecze" required>
+                    <input type="number" id="a-goals" placeholder="Gole" required>
+                    <button type="submit">Dodaj zawodnika do Akademii</button>
+                </form>
+                <div class="item-list" id="list-legion_academy_players"></div>
+            </div>
+
+            <!-- Artykuły -->
+            <div class="section-box">
+                <h2>Zarządzanie: Artykuły</h2>
+                <form onsubmit="addArticle(event)">
+                    <input type="text" id="art-title" placeholder="Tytuł artykułu" required style="grid-column: 1 / -1;">
+                    <input type="text" id="art-tags" placeholder="Tagi (np. Drużyna, Klub)" required>
+                    <input type="text" id="art-date" placeholder="Data (np. 2026-03-29 14:00)" required>
+                    <textarea id="art-content" placeholder="Treść artykułu" required style="grid-column: 1 / -1; height: 80px;"></textarea>
+                    <button type="submit">Dodaj Artykuł</button>
+                </form>
+                <div class="item-list" id="list-articles"></div>
+            </div>
+
+            <!-- Tabele i Tagi Lig -->
+            <div class="section-box">
+                <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
+                <form onsubmit="addTableLeague(event)">
+                    <input type="text" id="league-tag" placeholder="Nazwa Ligi / Sezonu (Tag)" required style="grid-column: 1 / -1;">
+                    <textarea id="league-data" placeholder="Dane tabeli / wiersze" required style="grid-column: 1 / -1; height: 80px;"></textarea>
+                    <button type="submit">Zapisz Tabelę dla Ligi</button>
+                </form>
+                <div class="item-list" id="list-leagues"></div>
+            </div>
+
         </div>
 
     </div>
 
     <script>
-        // Uniwersalne ładowanie i renderowanie
-        function loadPanel() {
+        // Inicjalizacja domyślnego konta administratora
+        function initAuth() {
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {
+                'mpiotrowski': { pass: 'Jaga1920', role: 'admin' }
+            };
+            localStorage.setItem('legion_users', JSON.stringify(users));
+
+            if (localStorage.getItem('legion_logged_in') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadPanelData();
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {};
+
+            if (users[user] && users[user].pass === pass) {
+                localStorage.setItem('legion_logged_in', 'true');
+                localStorage.setItem('legion_current_user', user);
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadPanelData();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('legion_logged_in');
+            localStorage.removeItem('legion_current_user');
+            window.location.reload();
+        }
+
+        function changePassword(event) {
+            event.preventDefault();
+            const newPass = document.getElementById('newPass').value.trim();
+            const currentUser = localStorage.getItem('legion_current_user') || 'mpiotrowski';
+
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {};
+            if (users[currentUser]) {
+                users[currentUser].pass = newPass;
+                localStorage.setItem('legion_users', JSON.stringify(users));
+                alert('Hasło zostało pomyślnie zmienione!');
+                event.target.reset();
+            }
+        }
+
+        function addUser(event) {
+            event.preventDefault();
+            const name = document.getElementById('u-name').value.trim();
+            const role = document.getElementById('u-role').value;
+
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {};
+            users[name] = { pass: users[name]?.pass || '123456', role: role };
+            localStorage.setItem('legion_users', JSON.stringify(users));
+
+            event.target.reset();
+            renderUsers();
+        }
+
+        function deleteUser(name) {
+            if (name === 'mpiotrowski') {
+                alert('Nie można usunąć głównego administratora!');
+                return;
+            }
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {};
+            delete users[name];
+            localStorage.setItem('legion_users', JSON.stringify(users));
+            renderUsers();
+        }
+
+        function renderUsers() {
+            const container = document.getElementById('list-users');
+            if(!container) return;
+            container.innerHTML = '';
+            let users = JSON.parse(localStorage.getItem('legion_users')) || {};
+
+            for (let [name, info] of Object.entries(users)) {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <span><strong>${name}</strong> (${info.role.toUpperCase()})</span>
+                        ${name !== 'mpiotrowski' ? `<button class="delete-btn" onclick="deleteUser('${name}')">Usuń</button>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        function loadPanelData() {
+            renderUsers();
             renderPlayers('legion_first_team');
             renderPlayers('legion_academy_players');
             renderArticles();
             renderLeagues();
-            renderMatches();
         }
 
         // --- ZAWODNICY ---
@@ -285,6 +464,7 @@
 
         function renderArticles() {
             const container = document.getElementById('list-articles');
+            if(!container) return;
             container.innerHTML = '';
             let data = JSON.parse(localStorage.getItem('legion_news')) || [];
             
@@ -303,7 +483,7 @@
             });
         }
 
-        // --- TABELE I LIGI (TAGI) ---
+        // --- TABELE I LIGI ---
         function addTableLeague(event) {
             event.preventDefault();
             const tag = document.getElementById('league-tag').value.trim();
@@ -326,6 +506,7 @@
 
         function renderLeagues() {
             const container = document.getElementById('list-leagues');
+            if(!container) return;
             container.innerHTML = '';
             let leagues = JSON.parse(localStorage.getItem('legion_leagues_tables')) || {};
             const keys = Object.keys(leagues);
@@ -345,52 +526,7 @@
             });
         }
 
-        // --- MATCH CENTER ---
-        function addMatch(event) {
-            event.preventDefault();
-            const match = {
-                id: 'm_' + Date.now(),
-                teams: document.getElementById('match-teams').value,
-                score: document.getElementById('match-score').value,
-                date: document.getElementById('match-date').value
-            };
-
-            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
-            data.push(match);
-            localStorage.setItem('legion_matches', JSON.stringify(data));
-
-            event.target.reset();
-            renderMatches();
-        }
-
-        function deleteMatch(id) {
-            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
-            data = data.filter(m => m.id !== id);
-            localStorage.setItem('legion_matches', JSON.stringify(data));
-            renderMatches();
-        }
-
-        function renderMatches() {
-            const container = document.getElementById('list-matches');
-            container.innerHTML = '';
-            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
-
-            if (data.length === 0) {
-                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak zaplanowanych meczów / wyników.</p>';
-                return;
-            }
-
-            data.forEach(m => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <span><strong>${m.teams}</strong> (${m.score}) - ${m.date}</span>
-                        <button class="delete-btn" onclick="deleteMatch('${m.id}')">Usuń</button>
-                    </div>
-                `;
-            });
-        }
-
-        window.addEventListener('DOMContentLoaded', loadPanel);
+        window.addEventListener('DOMContentLoaded', initAuth);
     </script>
 </body>
 </html>
