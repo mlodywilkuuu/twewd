@@ -416,33 +416,43 @@
             font-weight: 700;
         }
 
+        /* Układ drużyn: lewa strona (away), środek (score), prawa strona (home) */
         .match-body {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: 10px;
             text-align: center;
         }
 
         .team {
-            font-size: 1.1rem;
+            flex: 1;
+            font-size: 1rem;
             font-weight: 700;
             color: #ffffff;
             word-break: break-word;
+        }
+
+        .team.away {
+            text-align: left;
+        }
+
+        .team.home {
+            text-align: right;
         }
 
         .score-box {
             background: rgba(255, 215, 0, 0.1);
             border: 1px solid rgba(255, 215, 0, 0.3);
             color: #ffd700;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             letter-spacing: 2px;
-            min-width: 90px;
+            min-width: 80px;
             text-align: center;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -531,10 +541,10 @@
 
         const defaultSchedule = [
             { id: "match-1", league: "II Liga BLS", date: "25.10.2026", homeTeam: "KS LIDER", awayTeam: "Legion Białystok", score: "9 : 2" },
-            { id: "match-2", league: "II Liga BLS", date: "15.11.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" },
-            { id: "match-3", league: "Mecz towarzyski", date: "10.10.2026", homeTeam: "Legion Białystok", awayTeam: "Sparta Białystok", score: "3 : 1" }
+            { id: "match-2", league: "II Liga BLS", date: "15.09.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" }
         ];
 
+        // Bezbłędny parser dat konwertujący tekst na unikalny znacznik liczbowy
         function parseDate(dateStr) {
             if (!dateStr) return 0;
             const cleanStr = dateStr.split(',')[0].trim();
@@ -556,10 +566,10 @@
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // KROK KLUCZOWY: Sortowanie malejące (b - a) ustawia najświeższe/najbliższe daty (np. listopad 2026) na samej górze
+            // Sortowanie malejące: od najnowszego (np. wrzesień 2026) do najstarszego (np. czerwiec 2026)
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-            // Generowanie unikalnych przycisków tagów
+            // Generowanie przycisków tagów
             const leagues = [...new Set(data.map(item => item.league || 'Mecz ligowy'))];
             
             let filtersHTML = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterByLeague('all')">Wszystkie mecze</button>`;
@@ -582,9 +592,9 @@
                         <span class="match-date">${item.date}</span>
                     </div>
                     <div class="match-body">
-                        <div class="team home">${item.homeTeam}</div>
+                        <div class="team away">${item.awayTeam || 'Legion Białystok'}</div>
                         <div class="score-box">${item.score || 'VS'}</div>
-                        <div class="team away">${item.awayTeam}</div>
+                        <div class="team home">${item.homeTeam || 'Przeciwnik'}</div>
                     </div>
                 `;
 
