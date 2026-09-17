@@ -295,7 +295,7 @@
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
-            max-width: 1400px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -306,58 +306,27 @@
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             text-align: center;
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Panel sortowania i tagów na górze */
-        .filter-container {
+        /* Lista artykułów */
+        .news-list {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 40px;
+            flex-direction: column;
+            gap: 25px;
         }
 
-        .filter-btn {
-            background: rgba(20, 20, 20, 0.6);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: #cccccc;
-            padding: 8px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            border-color: #ffd700;
-        }
-
-        /* Siatka aktualności */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        /* Kafelki newsów z efektem szkła */
         .news-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 30px 25px;
+            padding: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
             position: relative;
             overflow: hidden;
         }
@@ -375,7 +344,7 @@
         }
 
         .news-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             border-color: rgba(255, 215, 0, 0.45);
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
         }
@@ -388,149 +357,44 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #888888;
         }
 
         .news-date {
-            font-size: 0.8rem;
             color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
             font-weight: 600;
         }
 
-        .news-tag {
-            font-size: 0.75rem;
+        .news-tags {
             background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
             padding: 4px 10px;
-            border-radius: 12px;
+            border-radius: 8px;
             border: 1px solid rgba(255, 215, 0, 0.2);
-            text-transform: uppercase;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
         .news-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .news-desc {
-            font-size: 0.95rem;
-            color: #aaaaaa;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .news-btn {
-            align-self: flex-start;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: #ffd700;
-            padding: 8px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .news-btn:hover {
-            background: rgba(255, 215, 0, 0.25);
-            border-color: #ffd700;
-        }
-
-        /* Modal / Okno wyskakujące dla artykułu */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 700px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 215, 0, 0.2);
-        }
-
-        .modal-date {
-            font-size: 0.85rem;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .modal-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
         }
 
-        .modal-body {
-            font-size: 1.05rem;
+        .news-content {
+            font-size: 1rem;
             color: #cccccc;
-            line-height: 1.8;
+            line-height: 1.6;
         }
+
+        .news-content h2 { color: #ffd700; font-size: 1.3rem; margin: 15px 0 10px 0; }
+        .news-content h3 { color: #ffffff; font-size: 1.1rem; margin: 12px 0 8px 0; }
+        .news-content ul { margin-left: 20px; margin-bottom: 10px; }
+        .news-content strong { color: #ffd700; }
     </style>
 </head>
 <body>
@@ -539,14 +403,13 @@
 
     <header>
         <div class="header-left">
-            <!-- Rozwijane menu boczne -->
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
                     <li><a href="../aktualnosci" data-translate="news">Aktualności</a></li>
                     <li><a href="../druzyna" data-translate="team">Pierwsza drużyna</a></li>
                     <li><a href="../akademia" data-translate="academy">Akademia</a></li>
-                    <li><a href="../terminarz" data-translate="schedule">Terminarz</a></li>
+                    <li><a href="../tabela" data-translate="table">Tabela</a></li>
                     
                     <li class="has-submenu">
                         <a href="#" data-translate="club">Klub ›</a>
@@ -559,13 +422,11 @@
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną -->
             <a href="../index.html" class="logo-container">
                 <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
 
-        <!-- Przełącznik języków -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
@@ -581,158 +442,69 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Aktualności</h1>
 
-        <!-- Pasek tagów i sortowania na górze -->
-        <div class="filter-container">
-            <button class="filter-btn active" onclick="filterNews('all')" data-translate="filter_all">Wszystkie</button>
-            <button class="filter-btn" onclick="filterNews('mecz')" data-translate="filter_match">Mecz</button>
-            <button class="filter-btn" onclick="filterNews('klub')" data-translate="filter_club">Klub</button>
-            <button class="filter-btn" onclick="filterNews('akademia')" data-translate="filter_academy">Akademia</button>
-        </div>
-
-        <!-- Siatka kafelków aktualności -->
-        <div class="news-grid" id="news-container">
-            <!-- Dynamicznie renderowane artykuły -->
+        <div class="news-list" id="news-container">
+            <!-- Renderowane dynamicznie -->
         </div>
     </main>
-
-    <!-- Okno wyskakujące (Modal) dla artykułu -->
-    <div class="modal-overlay" id="articleModal" onclick="closeModalOutside(event)">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-date" id="modalDate"></div>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="modal-body" id="modalBody"></div>
-        </div>
-    </div>
 
     <script>
         const translations = {
             pl: {
-                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
-                section_title: "Aktualności", filter_all: "Wszystkie", filter_match: "Mecz", filter_club: "Klub", filter_academy: "Akademia", read_more: "Czytaj dalej ›",
-                tags: { mecz: "Mecz", klub: "Klub", akademia: "Akademia" },
-                articles: {
-                    "news-1": { title: "Przygotowania do nowego sezonu ruszą już wkrótce!", desc: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sprawdź plan sparingów.", body: "Zespół intensywnie trenuje przed nadchodzącymi spotkaniami ligowymi. Sztab szkoleniowy zaplanował szereg sparingów kontrolnych." },
-                    "news-2": { title: "Podsumowanie ostatniego meczu ligowego", desc: "Emocjonujące starcie pełne zwrotów akcji. Zobacz bramki oraz podyktowane sytuacje podbramkowe.", body: "Emocjonujące starcie pełne zwrotów akcji do ostatnich minut. Drużyna pokazała ogromny charakter na boisku." }
-                }
+                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", table: "Tabela", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
+                section_title: "Aktualności"
             },
             en: {
-                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
-                section_title: "News", filter_all: "All", filter_match: "Match", filter_club: "Club", filter_academy: "Academy", read_more: "Read more ›",
-                tags: { mecz: "Match", klub: "Club", akademia: "Academy" },
-                articles: {
-                    "news-1": { title: "Pre-season preparations starting soon!", desc: "The team is training intensively ahead of upcoming league matches. Check the friendly match schedule.", body: "The team is training intensively ahead of upcoming league matches. The coaching staff has planned a series of friendly matches." },
-                    "news-2": { title: "Summary of the latest league match", desc: "An exciting clash full of twists. Watch the goals and key scoring opportunities.", body: "An exciting clash full of twists until the final minutes. The team showed great character on the pitch." }
-                }
+                news: "News", team: "First Team", academy: "Academy", table: "Standings", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
+                section_title: "News"
             },
             es: {
-                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
-                section_title: "Noticias", filter_all: "Todos", filter_match: "Partido", filter_club: "Club", filter_academy: "Academia", read_more: "Leer más ›",
-                tags: { mecz: "Partido", klub: "Club", akademia: "Academia" },
-                articles: {
-                    "news-1": { title: "¡Los preparativos para la preemporada comienzan pronto!", desc: "El equipo se entrena intensamente de cara a los próximos partidos de liga. Consulta el calendario.", body: "El equipo se entrena intensamente de cara a los próximos partidos de liga. El cuerpo técnico ha planeado una serie de partidos amistosos." },
-                    "news-2": { title: "Resumen del último partido de liga", desc: "Un choque emocionante lleno de alternativas. Mira los goles y las ocasiones clave.", body: "Un choque emocionante lleno de alternativas hasta los últimos minutos. El equipo mostró un gran carácter en el campo." }
-                }
+                news: "Noticias", team: "Primer Equipo", academy: "Academia", table: "Clasificación", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
+                section_title: "Noticias"
             },
             ru: {
-                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
-                section_title: "Новости", filter_all: "Все", filter_match: "Матч", filter_club: "Клуб", filter_academy: "Академия", read_more: "Читать далее ›",
-                tags: { mecz: "Матч", klub: "Клуб", akademia: "Академия" },
-                articles: {
-                    "news-1": { title: "Подготовка к новому сезону скоро начнется!", desc: "Команда интенсивно тренируется перед предстоящими матчами лиги. Ознакомьтесь с расписанием.", body: "Команда интенсивно тренируется перед предстоящими матчами лиги. Тренерский штаб запланировал ряд товарищеских встреч." },
-                    "news-2": { title: "Итоги последнего матча чемпионата", desc: "Захватывающий поединок, полный неожиданных поворотов. Смотрите голы и опасные моменты.", body: "Захватывающий поединок до последних минут. Команда проявила огромный характер на поле." }
-                }
+                news: "Новости", team: "Первая команда", academy: "Академия", table: "Таблица", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
+                section_title: "Новости"
             },
             ar: {
-                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
-                section_title: "الأخبار", filter_all: "الكل", filter_match: "مباراة", filter_club: "النادي", filter_academy: "الأكاديمية", read_more: "اقرأ المزيد ›",
-                tags: { mecz: "مباراة", klub: "النادي", akademia: "الأكاديمية" },
-                articles: {
-                    "news-1": { title: "التحضيرات للموسم الجديد تبدأ قريباً!", desc: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. تحقق من جدول المباريات.", body: "الفريق يتدرب بشكل مكثف استعداداً للمباريات القادمة في الدوري. خطط الجهاز الفني لسلسلة من المباريات الودية." },
-                    "news-2": { title: "ملخص مباراتنا الأخيرة في الدوري", desc: "مواجهة مثيرة مليئة بالتقلبات. شاهد الأهداف والفرص التهديفية الحاسمة.", body: "مواجهة مثيرة مليئة بالتقلبات حتى الدقائق الأخيرة. أظهر الفريق شخصية عظيمة على أرض الملعب." }
-                }
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", table: "الترتيب", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
+                section_title: "الأخبار"
             }
         };
 
         let currentLang = 'pl';
-        let currentFilter = 'all';
 
         const defaultNews = [
-            { id: "news-1", tag: "mecz", date: "2026-03-15", displayDate: "15.03.2026" },
-            { id: "news-2", tag: "klub", date: "2026-03-10", displayDate: "10.03.2026" }
+            { 
+                id: "news-1", 
+                title: "Rozpoczęcie przygotowań do sezonu", 
+                date: "20.03.2026", 
+                tags: "Drużyna, Sezon", 
+                content: "<p>Drużyna rozpoczęła intensywne treningi przed nadchodzącymi rozgrywkami...</p>" 
+            }
         ];
 
         function renderNews() {
             const container = document.getElementById('news-container');
             container.innerHTML = '';
 
-            let savedNews = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
-            savedNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
 
-            const langData = translations[currentLang] || translations['pl'];
-            const tArticles = langData.articles || {};
-            const tTags = langData.tags || {};
-            const readMoreText = langData.read_more || "Czytaj dalej ›";
-
-            savedNews.forEach(item => {
-                if (currentFilter !== 'all' && item.tag !== currentFilter) {
-                    return;
-                }
-
-                // Pobieranie tłumaczenia dla konkretnego artykułu (lub użycie zapisanego, jeśli dodany z panelu)
-                const articleTranslation = tArticles[item.id] || {};
-                const title = articleTranslation.title || item.title || "Artykuł";
-                const desc = articleTranslation.desc || item.desc || "";
-                const body = articleTranslation.body || item.body || desc;
-                const tagLabel = tTags[item.tag] || item.tag;
-
+            data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'news-card';
                 card.id = item.id;
-                card.setAttribute('data-tag', item.tag);
-                card.setAttribute('data-date', item.date);
 
                 card.innerHTML = `
                     <div class="news-meta">
-                        <span class="news-date">${item.displayDate || item.date}</span>
-                        <span class="news-tag">${tagLabel}</span>
+                        <span class="news-date">${item.date}</span>
+                        ${item.tags ? `<span class="news-tags">${item.tags}</span>` : ''}
                     </div>
-                    <div class="news-title">${title}</div>
-                    <div class="news-desc">${desc}</div>
-                    <button class="news-btn" onclick="openModal('${escapeHtml(title)}', '${item.displayDate || item.date}', '${escapeHtml(body)}')">${readMoreText}</button>
+                    <h2 class="news-title">${item.title}</h2>
+                    <div class="news-content">${item.content}</div>
                 `;
 
                 container.appendChild(card);
             });
-        }
-
-        function escapeHtml(text) {
-            return text.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
-        }
-
-        function openModal(title, date, body) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalDate').textContent = date;
-            document.getElementById('modalBody').textContent = body;
-            document.getElementById('articleModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('articleModal').classList.remove('active');
-        }
-
-        function closeModalOutside(event) {
-            if (event.target === document.getElementById('articleModal')) {
-                closeModal();
-            }
-        }
-
-        function filterNews(tag) {
-            currentFilter = tag;
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderNews();
         }
 
         function setLanguage(lang, label) {
@@ -745,7 +517,6 @@
                 document.documentElement.dir = 'ltr';
             }
 
-            // Tłumaczenie elementów nawigacji i menu
             const elements = document.querySelectorAll('[data-translate]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-translate');
@@ -753,9 +524,6 @@
                     el.textContent = translations[lang][key];
                 }
             });
-
-            // Ponowne renderowanie artykułów w nowym języku
-            renderNews();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
