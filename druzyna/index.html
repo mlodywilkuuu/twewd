@@ -549,21 +549,17 @@
 
         let currentLang = 'pl';
 
-        const defaultPlayers = [
-            { id: "t-1", name: "Jan Kowalski", position: "Napastnik", age: "20 lat", matches: "10", goals: "6", number: "9" },
-            { id: "t-2", name: "Piotr Nowak", position: "Pomocnik", age: "22 lat", matches: "12", goals: "3", number: "10" }
-        ];
-
         function renderPlayers() {
             const container = document.getElementById('players-container');
             container.innerHTML = '';
 
+            // Pobieramy dane bezpośrednio z localStorage (panel administratora zapisuje je tam)
             let storedData = localStorage.getItem('legion_first_team');
-            let data = storedData ? JSON.parse(storedData) : null;
+            let data = storedData ? JSON.parse(storedData) : [];
 
-            if (!data || data.length === 0) {
-                localStorage.setItem('legion_first_team', JSON.stringify(defaultPlayers));
-                data = defaultPlayers;
+            if (data.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #888;">Brak zawodników w bazie.</p>`;
+                return;
             }
 
             data.forEach(player => {
@@ -627,6 +623,13 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             renderPlayers();
+        });
+
+        // Nasłuchiwanie zmian w pamięci, aby strona odświeżała się w czasie rzeczywistym, gdy zmieniasz coś w panelu
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'legion_first_team') {
+                renderPlayers();
+            }
         });
     </script>
 
