@@ -51,7 +51,6 @@
         .admin-panel {
             display: none;
             min-height: 100vh;
-            display: none; /* domyślnie ukryty przed logowaniem */
             grid-template-columns: 260px 1fr;
         }
 
@@ -62,16 +61,17 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             position: fixed;
             width: 260px;
             height: 100vh;
             backdrop-filter: blur(15px);
+            overflow-y: auto;
         }
 
         .sidebar-logo {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding-bottom: 15px;
             border-bottom: 1px solid rgba(255, 215, 0, 0.1);
         }
@@ -93,10 +93,10 @@
             background: transparent;
             border: 1px solid transparent;
             color: #cccccc;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 12px;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -115,10 +115,10 @@
             background: rgba(255, 77, 77, 0.15);
             border: 1px solid rgba(255, 77, 77, 0.3);
             color: #ff4d4d;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 12px;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -268,6 +268,7 @@
             <button class="menu-btn active" onclick="switchSection('overview')">Przegląd / Hasło</button>
             <button class="menu-btn" onclick="switchSection('first-team')">Pierwsza Drużyna</button>
             <button class="menu-btn" onclick="switchSection('academy')">Akademia</button>
+            <button class="menu-btn" onclick="switchSection('people')">Ludzie Legionu</button>
             <button class="menu-btn" onclick="switchSection('articles')">Artykuły</button>
             <button class="menu-btn" onclick="switchSection('tables')">Tabele i Ligi</button>
             <button class="menu-btn" onclick="switchSection('users')">Użytkownicy i Permisje</button>
@@ -322,7 +323,21 @@
                 </div>
             </section>
 
-            <!-- 4. ARTYKUŁY -->
+            <!-- 4. LUDZIE LEGIONU -->
+            <section id="sec-people" class="content-section">
+                <div class="section-box">
+                    <h2>Zarządzanie: Ludzie Legionu</h2>
+                    <form onsubmit="addPerson(event)">
+                        <input type="text" id="p-name" placeholder="Imię i nazwisko" required>
+                        <input type="text" id="p-role" placeholder="Rola / Stanowisko (np. Prezes)" required>
+                        <textarea id="p-desc" placeholder="Krótki opis" required style="grid-column: 1 / -1; height: 80px;"></textarea>
+                        <button type="submit" class="submit-btn">Dodaj osobę</button>
+                    </form>
+                    <div class="item-list" id="list-people"></div>
+                </div>
+            </section>
+
+            <!-- 5. ARTYKUŁY -->
             <section id="sec-articles" class="content-section">
                 <div class="section-box">
                     <h2>Zarządzanie: Artykuły</h2>
@@ -337,7 +352,7 @@
                 </div>
             </section>
 
-            <!-- 5. TABELE I LIGI -->
+            <!-- 6. TABELE I LIGI -->
             <section id="sec-tables" class="content-section">
                 <div class="section-box">
                     <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
@@ -350,7 +365,7 @@
                 </div>
             </section>
 
-            <!-- 6. UŻYTKOWNICY I PERMISJE -->
+            <!-- 7. UŻYTKOWNICY I PERMISJE -->
             <section id="sec-users" class="content-section">
                 <div class="section-box">
                     <h2>Nadawanie Permisji (Użytkownicy i Hasła)</h2>
@@ -478,6 +493,7 @@
             renderUsers();
             renderPlayers('legion_first_team');
             renderPlayers('legion_academy_players');
+            renderPeople();
             renderArticles();
             renderLeagues();
         }
@@ -528,6 +544,52 @@
                     <div class="item-row">
                         <span><strong>${p.name}</strong> (${p.position}) - Nr ${p.number}</span>
                         <button class="delete-btn" onclick="deletePlayer('${storageKey}', '${p.id}')">Usuń</button>
+                    </div>
+                `;
+            });
+        }
+
+        // --- LUDZIE LEGIONU ---
+        function addPerson(event) {
+            event.preventDefault();
+            const person = {
+                id: 'pers_' + Date.now(),
+                name: document.getElementById('p-name').value,
+                role: document.getElementById('p-role').value,
+                desc: document.getElementById('p-desc').value
+            };
+
+            let data = JSON.parse(localStorage.getItem('legion_people')) || [];
+            data.push(person);
+            localStorage.setItem('legion_people', JSON.stringify(data));
+
+            event.target.reset();
+            renderPeople();
+        }
+
+        function deletePerson(id) {
+            let data = JSON.parse(localStorage.getItem('legion_people')) || [];
+            data = data.filter(p => p.id !== id);
+            localStorage.setItem('legion_people', JSON.stringify(data));
+            renderPeople();
+        }
+
+        function renderPeople() {
+            const container = document.getElementById('list-people');
+            if(!container) return;
+            container.innerHTML = '';
+            let data = JSON.parse(localStorage.getItem('legion_people')) || [];
+
+            if (data.length === 0) {
+                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak osób w bazie.</p>';
+                return;
+            }
+
+            data.forEach(p => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <span><strong>${p.name}</strong> (${p.role})</span>
+                        <button class="delete-btn" onclick="deletePerson('${p.id}')">Usuń</button>
                     </div>
                 `;
             });
