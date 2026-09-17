@@ -336,7 +336,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 25px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
@@ -367,30 +367,15 @@
             opacity: 1;
         }
 
-        .player-photo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 15px auto;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            background: rgba(255, 215, 0, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #ffd700;
-        }
-
         .player-name {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .player-position {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #ffd700;
             font-weight: 600;
             text-transform: uppercase;
@@ -441,27 +426,19 @@
             transform: scale(1.2);
         }
 
-        .modal-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 20px auto;
-            border: 3px solid #ffd700;
-        }
-
         .modal-title {
             font-size: 1.6rem;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 5px;
+            margin-top: 10px;
         }
 
         .modal-subtitle {
             font-size: 1rem;
             color: #ffd700;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -573,17 +550,21 @@
         let currentLang = 'pl';
 
         const defaultPlayers = [
-            { id: "t-1", name: "Mateusz Piotrowski", position: "Napastnik / Prezes", age: "21 lat", matches: "18", goals: "14", number: "7" },
-            { id: "t-2", name: "Wojciech Nawrocki", position: "Pomocnik / Wiceprezes", age: "22 lat", matches: "17", goals: "5", number: "8" },
-            { id: "t-3", name: "Andrey Gabrusevich", position: "Obrońca", age: "22 lat", matches: "16", goals: "2", number: "5" },
-            { id: "t-4", name: "Kamil Sokołowski", position: "Bramkarz", age: "23 lat", matches: "18", goals: "0", number: "1" }
+            { id: "t-1", name: "Jan Kowalski", position: "Napastnik", age: "20 lat", matches: "10", goals: "6", number: "9" },
+            { id: "t-2", name: "Piotr Nowak", position: "Pomocnik", age: "22 lat", matches: "12", goals: "3", number: "10" }
         ];
 
         function renderPlayers() {
             const container = document.getElementById('players-container');
             container.innerHTML = '';
 
-            let data = JSON.parse(localStorage.getItem('legion_first_team')) || defaultPlayers;
+            let storedData = localStorage.getItem('legion_first_team');
+            let data = storedData ? JSON.parse(storedData) : null;
+
+            if (!data || data.length === 0) {
+                localStorage.setItem('legion_first_team', JSON.stringify(defaultPlayers));
+                data = defaultPlayers;
+            }
 
             data.forEach(player => {
                 const card = document.createElement('div');
@@ -591,7 +572,6 @@
                 card.onclick = () => openModal(player);
 
                 card.innerHTML = `
-                    <div class="player-photo">⚽</div>
                     <h3 class="player-name">${player.name}</h3>
                     <p class="player-position">${player.position}</p>
                 `;
@@ -605,7 +585,6 @@
             const modalBody = document.getElementById('modal-body');
 
             modalBody.innerHTML = `
-                <div class="modal-photo">⚽</div>
                 <h2 class="modal-title">${player.name}</h2>
                 <p class="modal-subtitle">${player.position} #${player.number || '0'}</p>
                 <div class="modal-info-grid">
