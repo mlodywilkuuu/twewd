@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administracyjny - Legion Białystok</title>
+    <title>Panel Administratora - Legion Białystok</title>
     <style>
         * {
             margin: 0;
@@ -16,1147 +16,381 @@
             background-color: #060606;
             color: #ffffff;
             min-height: 100vh;
+            padding: 40px 20px;
         }
 
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #040404, #0f0f0f, #1a1402);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Ekran logowania */
-        .login-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: rgba(15, 15, 15, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            text-align: center;
-        }
-
-        .login-title {
-            font-size: 1.8rem;
-            font-weight: 800;
+        h1 {
             color: #ffd700;
+            text-align: center;
             margin-bottom: 30px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #aaaaaa;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
+        .section-box {
+            background: rgba(20, 20, 20, 0.8);
             border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .form-input:focus {
+        h2 {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            padding-bottom: 10px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input, select, textarea {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        input:focus, select:focus, textarea:focus {
             border-color: #ffd700;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
         }
 
-        .btn {
+        button {
             background: linear-gradient(135deg, #ffd700, #cca600);
-            color: #060606;
+            color: #000000;
             border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 1rem;
             cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            grid-column: 1 / -1;
         }
 
-        .btn:hover {
+        button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
 
-        .error-msg {
-            color: #ff4d4d;
-            font-size: 0.9rem;
-            margin-top: 15px;
-        }
-
-        /* Panel główny po zalogowaniu */
-        .admin-layout {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .admin-sidebar {
-            width: 280px;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 215, 0, 0.15);
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
+        .item-list {
             display: flex;
             flex-direction: column;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-        }
-
-        .sidebar-brand {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-user {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 5px;
-        }
-
-        .sidebar-nav {
-            list-style: none;
-            padding: 20px 0;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        .sidebar-nav li a {
-            display: block;
-            padding: 14px 25px;
-            color: #cccccc;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-left: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .sidebar-nav li a:hover, .sidebar-nav li a.active {
-            background: rgba(255, 215, 0, 0.08);
-            color: #ffd700;
-            border-left-color: #ffd700;
-        }
-
-        .admin-content {
-            margin-left: 280px;
-            padding: 30px 40px 40px 40px;
-            max-width: 1200px;
-        }
-
-        .admin-topbar {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 30px;
-        }
-
-        .logout-top-btn {
-            background: rgba(255, 77, 77, 0.15);
-            border: 1px solid rgba(255, 77, 77, 0.4);
-            color: #ff4d4d;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-        }
-
-        .logout-top-btn:hover {
-            background: rgba(255, 77, 77, 0.3);
-            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.2);
-        }
-
-        .panel-section {
-            display: none;
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            margin-bottom: 30px;
-        }
-
-        .panel-section.active {
-            display: block;
-        }
-
-        .section-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .section-heading {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-transform: uppercase;
+            gap: 10px;
         }
 
         .item-row {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            border-radius: 12px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            gap: 15px;
-        }
-
-        .item-info {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .item-subinfo {
-            font-size: 0.85rem;
-            color: #888888;
-            margin-top: 3px;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-sm {
-            padding: 8px 14px;
-            font-size: 0.85rem;
+            background: rgba(30, 30, 30, 0.6);
+            padding: 12px 15px;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            border: none;
-            transition: all 0.2s;
-        }
-
-        .btn-edit {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-edit:hover {
-            background: rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-del {
-            background: rgba(255, 77, 77, 0.15);
-            color: #ff4d4d;
-            border: 1px solid rgba(255, 77, 77, 0.3);
-        }
-
-        .btn-del:hover {
-            background: rgba(255, 77, 77, 0.3);
-        }
-
-        .btn-add {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .btn-add:hover {
-            background: rgba(255, 215, 0, 0.25);
-        }
-
-        .checkbox-group {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 15px;
-            border-radius: 10px;
+            justify-content: space-between;
+            align-items: center;
             border: 1px solid rgba(255, 215, 0, 0.1);
         }
 
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            color: #dddddd;
-            cursor: pointer;
-        }
-
-        .checkbox-label input {
-            width: 18px;
-            height: 18px;
-            accent-color: #ffd700;
-            cursor: pointer;
-        }
-
-        .success-banner {
-            background: rgba(0, 255, 128, 0.1);
-            border: 1px solid rgba(0, 255, 128, 0.3);
-            color: #00ff80;
-            padding: 12px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            font-weight: 600;
-        }
-
-        .editor-toolbar {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 8px;
-            border-radius: 8px 8px 0 0;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-bottom: none;
-        }
-
-        .toolbar-btn {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            padding: 6px 10px;
+        .delete-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
             font-size: 0.85rem;
+            font-weight: 600;
+            grid-column: auto;
         }
 
-        .toolbar-btn:hover {
-            background: rgba(255, 215, 0, 0.25);
+        .delete-btn:hover {
+            background: #ff1a1a;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"></div>
+    <div class="container">
+        <h1>Panel Administratora</h1>
 
-    <!-- EKRAN LOGOWANIA -->
-    <div class="login-wrapper" id="loginScreen">
-        <div class="login-card">
-            <h1 class="login-title">Panel Admina</h1>
-            <div class="form-group">
-                <label class="form-label">Nazwa użytkownika</label>
-                <input type="text" id="loginUser" class="form-input" placeholder="Wprowadź login">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Hasło</label>
-                <input type="password" id="loginPass" class="form-input" placeholder="Wprowadź hasło">
-            </div>
-            <button class="btn" onclick="handleLogin()">Zaloguj się</button>
-            <div class="error-msg" id="loginError"></div>
+        <!-- 1. Pierwsza Drużyna -->
+        <div class="section-box">
+            <h2>Zarządzanie: Pierwsza Drużyna</h2>
+            <form onsubmit="addPlayer(event, 'legion_first_team')">
+                <input type="text" id="t-name" placeholder="Imię i nazwisko" required>
+                <input type="text" id="t-position" placeholder="Pozycja (np. Napastnik)" required>
+                <input type="number" id="t-age" placeholder="Wiek" required>
+                <input type="number" id="t-number" placeholder="Numer na koszulce" required>
+                <input type="number" id="t-matches" placeholder="Liczba meczów" required>
+                <input type="number" id="t-goals" placeholder="Liczba goli" required>
+                <button type="submit">Dodaj zawodnika do Pierwszej Drużyny</button>
+            </form>
+            <div class="item-list" id="list-legion_first_team"></div>
         </div>
-    </div>
 
-    <!-- PANEL ADMINISTRACYJNY -->
-    <div class="admin-layout" id="adminPanel">
-        <aside class="admin-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">Legion Admin</div>
-                <div class="sidebar-user" id="sidebarUsername">Zalogowany: mpiotrowski</div>
-            </div>
-            <ul class="sidebar-nav" id="sidebarNav">
-                <!-- Generowane dynamicznie -->
-            </ul>
-        </aside>
-
-        <main class="admin-content">
-            <div class="admin-topbar">
-                <button class="logout-top-btn" onclick="handleLogout()">Wyloguj się</button>
-            </div>
-
-            <div class="success-banner" id="successBanner">Zmiany zostały zapisane pomyślnie!</div>
-
-            <!-- ZAKŁADKA: ARTYKUŁY -->
-            <div class="panel-section" id="sec-news">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Zarządzanie Artykułami</h2>
-                    <button class="btn-add" onclick="openEditModal('news', null)">+ Dodaj artykuł</button>
-                </div>
-                <div id="list-news"></div>
-            </div>
-
-            <!-- ZAKŁADKA: MATCH CENTER -->
-            <div class="panel-section" id="sec-matchcenter">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Match Center (Centrum Meczowe)</h2>
-                    <button class="btn-add" onclick="openEditModal('matchcenter', null)">+ Dodaj relację meczową</button>
-                </div>
-                <div id="list-matchcenter"></div>
-            </div>
-
-            <!-- ZAKŁADKA: PIERWSZA DRUŻYNA -->
-            <div class="panel-section" id="sec-squad">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Pierwsza Drużyna</h2>
-                    <button class="btn-add" onclick="openEditModal('squad', null)">+ Dodaj zawodnika</button>
-                </div>
-                <div id="list-squad"></div>
-            </div>
-
-            <!-- ZAKŁADKA: AKADEMIA -->
-            <div class="panel-section" id="sec-academy">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Akademia</h2>
-                    <button class="btn-add" onclick="openEditModal('academy', null)">+ Dodaj zawodnika</button>
-                </div>
-                <div id="list-academy"></div>
-            </div>
-
-            <!-- ZAKŁADKA: TERMINARZ -->
-            <div class="panel-section" id="sec-schedule">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Terminarz i Wyniki</h2>
-                    <button class="btn-add" onclick="openEditModal('schedule', null)">+ Dodaj mecz</button>
-                </div>
-                <div id="list-schedule"></div>
-            </div>
-
-            <!-- ZAKŁADKA: LUDZIE LEGIONU -->
-            <div class="panel-section" id="sec-people">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Ludzie Legionu</h2>
-                    <button class="btn-add" onclick="openEditModal('people_board', null)">+ Dodaj pracownika / wiceprezesa</button>
-                </div>
-                <div id="list-people"></div>
-            </div>
-
-            <!-- ZAKŁADKA: UŻYTKOWNICY I PERMISJE -->
-            <div class="panel-section" id="sec-users">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Zarządzanie Użytkownikami i Permisjami</h2>
-                    <button class="btn-add" onclick="openUserModal(null)">+ Utwórz użytkownika</button>
-                </div>
-                <div id="list-users"></div>
-            </div>
-
-            <!-- ZAKŁADKA: ZMIANA HASŁA -->
-            <div class="panel-section" id="sec-password">
-                <div class="section-header-row">
-                    <h2 class="section-heading">Zmiana Hasła</h2>
-                </div>
-                <div style="max-width: 400px;">
-                    <div class="form-group">
-                        <label class="form-label">Stare hasło</label>
-                        <input type="password" id="oldPass" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Nowe hasło</label>
-                        <input type="password" id="newPass" class="form-input">
-                    </div>
-                    <button class="btn" onclick="changePassword()">Zmień hasło</button>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- OGÓLNY MODAL EDYCJI TREŚCI -->
-    <div id="contentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center;">
-        <div style="background:#111; border:1px solid #ffd700; border-radius:20px; padding:30px; width:90%; max-width:600px;" id="modalFormContainer">
-            <h3 id="modalTitle" style="color:#ffd700; margin-bottom:20px; text-transform:uppercase;">Edycja</h3>
-            <div id="modalFields"></div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn" onclick="saveModalData()">Zapisz</button>
-                <button class="btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeContentModal()">Anuluj</button>
-            </div>
+        <!-- 2. Akademia -->
+        <div class="section-box">
+            <h2>Zarządzanie: Akademia</h2>
+            <form onsubmit="addPlayer(event, 'legion_academy_players')">
+                <input type="text" id="a-name" placeholder="Imię i nazwisko" required>
+                <input type="text" id="a-position" placeholder="Pozycja" required>
+                <input type="number" id="a-age" placeholder="Wiek" required>
+                <input type="number" id="a-number" placeholder="Numer na koszulce" required>
+                <input type="number" id="a-matches" placeholder="Liczba meczów" required>
+                <input type="number" id="a-goals" placeholder="Liczba goli" required>
+                <button type="submit">Dodaj zawodnika do Akademii</button>
+            </form>
+            <div class="item-list" id="list-legion_academy_players"></div>
         </div>
-    </div>
 
-    <!-- MODAL UŻYTKOWNIKÓW -->
-    <div id="userModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center;">
-        <div style="background:#111; border:1px solid #ffd700; border-radius:20px; padding:30px; width:90%; max-width:500px;">
-            <h3 style="color:#ffd700; margin-bottom:20px; text-transform:uppercase;">Użytkownik</h3>
-            <div class="form-group">
-                <label class="form-label">Login</label>
-                <input type="text" id="uModalLogin" class="form-input">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Hasło</label>
-                <input type="text" id="uModalPass" class="form-input" placeholder="Zostaw puste, aby nie zmieniać">
-            </div>
-            <div class="form-group checkbox-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="permFull" onchange="toggleFullAdmin(this)"> Pełny administrator (Wszystkie uprawnienia)
-                </label>
-                <hr style="border-color:rgba(255,215,0,0.1); margin:5px 0;">
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="news"> Artykuły</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="matchcenter"> Match Center</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="squad"> Pierwsza Drużyna</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="academy"> Akademia</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="schedule"> Terminarz</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="people"> Ludzie Legionu</label>
-                <label class="checkbox-label"><input type="checkbox" class="perm-chk" value="users"> Użytkownicy</label>
-            </div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn" onclick="saveUserModal()">Zapisz użytkownika</button>
-                <button class="btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeUserModal()">Anuluj</button>
-            </div>
+        <!-- 3. Artykuły (Aktualności) -->
+        <div class="section-box">
+            <h2>Zarządzanie: Artykuły</h2>
+            <form onsubmit="addArticle(event)">
+                <input type="text" id="art-title" placeholder="Tytuł artykułu" required style="grid-column: 1 / -1;">
+                <input type="text" id="art-tags" placeholder="Tagi (np. Drużyna, Klub, Mecz)" required>
+                <input type="text" id="art-date" placeholder="Data (np. 2026-03-29 14:00)" required>
+                <textarea id="art-content" placeholder="Treść artykułu (HTML dozwolony)" required style="grid-column: 1 / -1; height: 100px;"></textarea>
+                <button type="submit">Dodaj Artykuł</button>
+            </form>
+            <div class="item-list" id="list-articles"></div>
         </div>
+
+        <!-- 4. Tabele i Ligi (Tagi) -->
+        <div class="section-box">
+            <h2>Zarządzanie Tabelami (Tagi / Ligi)</h2>
+            <form onsubmit="addTableLeague(event)">
+                <input type="text" id="league-tag" placeholder="Nazwa Ligi / Sezonu (Tag)" required style="grid-column: 1 / -1;">
+                <textarea id="league-data" placeholder="Kod HTML tabeli lub dane wierszy" required style="grid-column: 1 / -1; height: 80px;"></textarea>
+                <button type="submit">Zapisz Tabelę dla Ligi</button>
+            </form>
+            <div class="item-list" id="list-leagues"></div>
+        </div>
+
+        <!-- 5. Match Center (Mecze) -->
+        <div class="section-box">
+            <h2>Zarządzanie: Match Center (Wyniki iTerminarz)</h2>
+            <form onsubmit="addMatch(event)">
+                <input type="text" id="match-teams" placeholder="Mecz (np. Legion vs Rywal)" required>
+                <input type="text" id="match-score" placeholder="Wynik (np. 2:1 lub zapowiedź)" required>
+                <input type="text" id="match-date" placeholder="Data i godzina" required>
+                <button type="submit">Dodaj Mecz</button>
+            </form>
+            <div class="item-list" id="list-matches"></div>
+        </div>
+
     </div>
 
     <script>
-        const defaultUsers = [
-            {
-                login: "mpiotrowski",
-                pass: "Jaga1920",
-                fullAdmin: true,
-                perms: ["news", "matchcenter", "squad", "academy", "schedule", "people", "users"]
-            }
-        ];
-
-        let users = JSON.parse(localStorage.getItem('legion_admin_users')) || defaultUsers;
-        let currentUser = JSON.parse(sessionStorage.getItem('legion_current_user')) || null;
-
-        const navItems = [
-            { id: 'news', label: 'Artykuły', perm: 'news' },
-            { id: 'matchcenter', label: 'Match Center', perm: 'matchcenter' },
-            { id: 'squad', label: 'Pierwsza Drużyna', perm: 'squad' },
-            { id: 'academy', label: 'Akademia', perm: 'academy' },
-            { id: 'schedule', label: 'Terminarz', perm: 'schedule' },
-            { id: 'people', label: 'Ludzie Legionu', perm: 'people' },
-            { id: 'users', label: 'Użytkownicy', perm: 'users' },
-            { id: 'password', label: 'Zmiana Hasła', perm: 'always' }
-        ];
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (currentUser) {
-                showAdminPanel();
-            }
-        });
-
-        function handleLogin() {
-            const login = document.getElementById('loginUser').value.trim();
-            const pass = document.getElementById('loginPass').value.trim();
-            const errBox = document.getElementById('loginError');
-
-            const found = users.find(u => u.login === login && u.pass === pass);
-            if (found) {
-                currentUser = found;
-                sessionStorage.setItem('legion_current_user', JSON.stringify(found));
-                showAdminPanel();
-            } else {
-                errBox.textContent = "Błędna nazwa użytkownika lub hasło!";
-            }
+        // Uniwersalne ładowanie i renderowanie
+        function loadPanel() {
+            renderPlayers('legion_first_team');
+            renderPlayers('legion_academy_players');
+            renderArticles();
+            renderLeagues();
+            renderMatches();
         }
 
-        function handleLogout() {
-            currentUser = null;
-            sessionStorage.removeItem('legion_current_user');
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
+        // --- ZAWODNICY ---
+        function addPlayer(event, storageKey) {
+            event.preventDefault();
+            const prefix = storageKey === 'legion_first_team' ? 't-' : 'a-';
+            
+            const player = {
+                id: 'p_' + Date.now(),
+                name: document.getElementById(prefix + 'name').value,
+                position: document.getElementById(prefix + 'position').value,
+                age: document.getElementById(prefix + 'age').value,
+                number: document.getElementById(prefix + 'number').value,
+                matches: document.getElementById(prefix + 'matches').value,
+                goals: document.getElementById(prefix + 'goals').value
+            };
+
+            let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+            data.push(player);
+            localStorage.setItem(storageKey, JSON.stringify(data));
+
+            event.target.reset();
+            renderPlayers(storageKey);
         }
 
-        function showAdminPanel() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            document.getElementById('sidebarUsername').textContent = `Zalogowany: ${currentUser.login}`;
-
-            buildSidebar();
-            loadAllSections();
-
-            const firstNav = navItems.find(n => n.perm === 'always' || currentUser.fullAdmin || currentUser.perms.includes(n.perm));
-            if (firstNav) switchSection(firstNav.id);
+        function deletePlayer(storageKey, id) {
+            let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+            data = data.filter(p => p.id !== id);
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            renderPlayers(storageKey);
         }
 
-        function buildSidebar() {
-            const nav = document.getElementById('sidebarNav');
-            nav.innerHTML = '';
+        function renderPlayers(storageKey) {
+            const container = document.getElementById('list-' + storageKey);
+            if (!container) return;
+            container.innerHTML = '';
+            
+            let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+            if (data.length === 0) {
+                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak zawodników.</p>';
+                return;
+            }
 
-            navItems.forEach(item => {
-                if (item.perm === 'always' || currentUser.fullAdmin || currentUser.perms.includes(item.perm)) {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="#" id="nav-${item.id}" onclick="switchSection('${item.id}')">${item.label}</a>`;
-                    nav.appendChild(li);
-                }
+            data.forEach(p => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <span><strong>${p.name}</strong> (${p.position}) - Nr ${p.number}</span>
+                        <button class="delete-btn" onclick="deletePlayer('${storageKey}', '${p.id}')">Usuń</button>
+                    </div>
+                `;
             });
         }
 
-        function switchSection(id) {
-            document.querySelectorAll('.panel-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+        // --- ARTYKUŁY ---
+        function addArticle(event) {
+            event.preventDefault();
+            const article = {
+                id: 'art_' + Date.now(),
+                title: document.getElementById('art-title').value,
+                tags: document.getElementById('art-tags').value,
+                date: document.getElementById('art-date').value,
+                content: document.getElementById('art-content').value
+            };
 
-            const targetSec = document.getElementById(`sec-${id}`);
-            const targetNav = document.getElementById(`nav-${id}`);
-            if (targetSec) targetSec.classList.add('active');
-            if (targetNav) targetNav.classList.add('active');
+            let data = JSON.parse(localStorage.getItem('legion_news')) || [];
+            data.push(article);
+            localStorage.setItem('legion_news', JSON.stringify(data));
+
+            event.target.reset();
+            renderArticles();
         }
 
-        function showSuccess() {
-            const b = document.getElementById('successBanner');
-            b.style.display = 'block';
-            setTimeout(() => { b.style.display = 'none'; }, 3000);
+        function deleteArticle(id) {
+            let data = JSON.parse(localStorage.getItem('legion_news')) || [];
+            data = data.filter(a => a.id !== id);
+            localStorage.setItem('legion_news', JSON.stringify(data));
+            renderArticles();
         }
 
-        function loadAllSections() {
-            loadNews();
-            loadMatchCenter();
-            loadSquad();
-            loadAcademy();
-            loadSchedule();
-            loadPeople();
-            loadUsersList();
-        }
-
-        // --- ARTYKUŁY Z TAGAMI ---
-        const defaultNews = [
-            { id: "news-1", title: "Rozpoczęcie przygotowań do sezonu", date: "20.03.2026", tags: "Drużyna, Sezon", content: "<p>Drużyna rozpoczęła intensywne treningi...</p>" }
-        ];
-        function loadNews() {
-            let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
-            const container = document.getElementById('list-news');
+        function renderArticles() {
+            const container = document.getElementById('list-articles');
             container.innerHTML = '';
-            data.forEach(item => {
+            let data = JSON.parse(localStorage.getItem('legion_news')) || [];
+            
+            if (data.length === 0) {
+                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak artykułów.</p>';
+                return;
+            }
+
+            data.forEach(a => {
                 container.innerHTML += `
                     <div class="item-row">
-                        <div>
-                            <div class="item-info">${item.title}</div>
-                            <div class="item-subinfo">Data: ${item.date} | Tagi: ${item.tags || 'Brak'}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('news', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('news', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
+                        <span><strong>${a.title}</strong> [${a.tags}]</span>
+                        <button class="delete-btn" onclick="deleteArticle('${a.id}')">Usuń</button>
+                    </div>
+                `;
+            });
+        }
+
+        // --- TABELE I LIGI (TAGI) ---
+        function addTableLeague(event) {
+            event.preventDefault();
+            const tag = document.getElementById('league-tag').value.trim();
+            const content = document.getElementById('league-data').value;
+
+            let leagues = JSON.parse(localStorage.getItem('legion_leagues_tables')) || {};
+            leagues[tag] = content;
+            localStorage.setItem('legion_leagues_tables', JSON.stringify(leagues));
+
+            event.target.reset();
+            renderLeagues();
+        }
+
+        function deleteLeagueTable(tag) {
+            let leagues = JSON.parse(localStorage.getItem('legion_leagues_tables')) || {};
+            delete leagues[tag];
+            localStorage.setItem('legion_leagues_tables', JSON.stringify(leagues));
+            renderLeagues();
+        }
+
+        function renderLeagues() {
+            const container = document.getElementById('list-leagues');
+            container.innerHTML = '';
+            let leagues = JSON.parse(localStorage.getItem('legion_leagues_tables')) || {};
+            const keys = Object.keys(leagues);
+
+            if (keys.length === 0) {
+                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak zapisanych tabel ligowych.</p>';
+                return;
+            }
+
+            keys.forEach(tag => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <span><strong>Liga / Tag:</strong> ${tag}</span>
+                        <button class="delete-btn" onclick="deleteLeagueTable('${tag}')">Usuń Tabelę</button>
+                    </div>
+                `;
             });
         }
 
         // --- MATCH CENTER ---
-        const defaultMatchCenter = [
-            { id: "mc-1", matchTitle: "Legion Białystok vs Iskra Narew", score: "2 : 1", status: "Zakończony", details: "Bramki: Jan Kowalski, Piotr Nowak" }
-        ];
-        function loadMatchCenter() {
-            let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter;
-            const container = document.getElementById('list-matchcenter');
-            container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">${item.matchTitle} (${item.score})</div>
-                            <div class="item-subinfo">Status: ${item.status} | ${item.details}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('matchcenter', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('matchcenter', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
+        function addMatch(event) {
+            event.preventDefault();
+            const match = {
+                id: 'm_' + Date.now(),
+                teams: document.getElementById('match-teams').value,
+                score: document.getElementById('match-score').value,
+                date: document.getElementById('match-date').value
+            };
+
+            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
+            data.push(match);
+            localStorage.setItem('legion_matches', JSON.stringify(data));
+
+            event.target.reset();
+            renderMatches();
         }
 
-        // --- PIERWSZA DRUŻYNA ---
-        const defaultSquad = [
-            { id: "player-1", number: "1", name: "Jan Kowalski", positionKey: "gk", nationality: "Polska", birthdate: "12.05.1998" }
-        ];
-        function loadSquad() {
-            let data = JSON.parse(localStorage.getItem('legion_players')) || defaultSquad;
-            const container = document.getElementById('list-squad');
-            container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">#${item.number} ${item.name} (${item.nationality})</div>
-                            <div class="item-subinfo">Pozycja: ${item.positionKey} | Urodzenie: ${item.birthdate}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('squad', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('squad', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
+        function deleteMatch(id) {
+            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
+            data = data.filter(m => m.id !== id);
+            localStorage.setItem('legion_matches', JSON.stringify(data));
+            renderMatches();
         }
 
-        // --- AKADEMIA ---
-        const defaultAcademy = [
-            { id: "acad-1", number: "12", name: "Jakub Zalewski", positionKey: "gk", nationality: "Polska", birthdate: "14.05.2008" }
-        ];
-        function loadAcademy() {
-            let data = JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy;
-            const container = document.getElementById('list-academy');
+        function renderMatches() {
+            const container = document.getElementById('list-matches');
             container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">#${item.number} ${item.name} (${item.nationality})</div>
-                            <div class="item-subinfo">Pozycja: ${item.positionKey} | Urodzenie: ${item.birthdate}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('academy', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('academy', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
-        }
+            let data = JSON.parse(localStorage.getItem('legion_matches')) || [];
 
-        // --- TERMINARZ ---
-        const defaultSchedule = [
-            { id: "match-1", league: "Liga Okręgowa", date: "22.03.2026, 15:00", homeTeam: "Legion Białystok", awayTeam: "Iskra Narew", score: "2 : 1" }
-        ];
-        function loadSchedule() {
-            let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
-            const container = document.getElementById('list-schedule');
-            container.innerHTML = '';
-            data.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div>
-                            <div class="item-info">[${item.league}] ${item.homeTeam} vs ${item.awayTeam} (${item.score})</div>
-                            <div class="item-subinfo">Data: ${item.date}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('schedule', '${item.id}')">Edytuj</button>
-                            <button class="btn-sm btn-del" onclick="deleteItem('schedule', '${item.id}')">Usuń</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        // --- LUDZIE LEGIONU ---
-        const defaultPeople = {
-            president: { id: "p-1", name: "Mateusz", position: "Prezes Klubu" },
-            board: [
-                { id: "b-1", name: "Wojciech Nawrocki", position: "Wiceprezes" },
-                { id: "b-2", name: "Andrey Gabrusevich", position: "Wiceprezes" }
-            ]
-        };
-        function loadPeople() {
-            let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
-            const container = document.getElementById('list-people');
-            container.innerHTML = '';
-
-            if (data.president) {
-                container.innerHTML += `
-                    <div class="item-row" style="border-color:rgba(255,215,0,0.4);">
-                        <div>
-                            <div class="item-info">${data.president.name}</div>
-                            <div class="item-subinfo">Stanowisko: ${data.president.position || 'Prezes'}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openEditModal('people_pres', '${data.president.id}')">Edytuj</button>
-                        </div>
-                    </div>`;
+            if (data.length === 0) {
+                container.innerHTML = '<p style="color: #777; font-size: 0.9rem;">Brak zaplanowanych meczów / wyników.</p>';
+                return;
             }
 
-            if (data.board) {
-                data.board.forEach(item => {
-                    container.innerHTML += `
-                        <div class="item-row">
-                            <div>
-                                <div class="item-info">${item.name}</div>
-                                <div class="item-subinfo">Stanowisko: ${item.position}</div>
-                            </div>
-                            <div class="item-actions">
-                                <button class="btn-sm btn-edit" onclick="openEditModal('people_board', '${item.id}')">Edytuj</button>
-                                <button class="btn-sm btn-del" onclick="deleteItem('people_board', '${item.id}')">Usuń</button>
-                            </div>
-                        </div>`;
-                });
-            }
-        }
-
-        // --- UŻYTKOWNICY ---
-        function loadUsersList() {
-            const container = document.getElementById('list-users');
-            container.innerHTML = '';
-            users.forEach((u, index) => {
+            data.forEach(m => {
                 container.innerHTML += `
                     <div class="item-row">
-                        <div>
-                            <div class="item-info">${u.login} ${u.fullAdmin ? '(Pełny Administrator)' : ''}</div>
-                            <div class="item-subinfo">Permisje: ${u.fullAdmin ? 'Wszystkie' : u.perms.join(', ')}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn-sm btn-edit" onclick="openUserModal(${index})">Edytuj</button>
-                            ${users.length > 1 ? `<button class="btn-sm btn-del" onclick="deleteUser(${index})">Usuń</button>` : ''}
-                        </div>
-                    </div>`;
-            });
-        }
-
-        // --- LOGIKA MODALA EDYCJI TREŚCI ---
-        let currentEditing = { type: null, id: null };
-        function openEditModal(type, id) {
-            currentEditing = { type, id };
-            const modal = document.getElementById('contentModal');
-            const fields = document.getElementById('modalFields');
-            document.getElementById('modalTitle').textContent = id ? 'Edytuj element' : 'Dodaj nowy element';
-            fields.innerHTML = '';
-
-            let item = null;
-            if (id) {
-                if (type === 'news') item = (JSON.parse(localStorage.getItem('legion_news')) || defaultNews).find(x => x.id === id);
-                if (type === 'matchcenter') item = (JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter).find(x => x.id === id);
-                if (type === 'squad') item = (JSON.parse(localStorage.getItem('legion_players')) || defaultSquad).find(x => x.id === id);
-                if (type === 'academy') item = (JSON.parse(localStorage.getItem('legion_academy_players')) || defaultAcademy).find(x => x.id === id);
-                if (type === 'schedule') item = (JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule).find(x => x.id === id);
-                if (type === 'people_pres') item = (JSON.parse(localStorage.getItem('legion_people')) || defaultPeople).president;
-                if (type === 'people_board') item = (JSON.parse(localStorage.getItem('legion_people')) || defaultPeople).board.find(x => x.id === id);
-            }
-
-            if (type === 'news') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Tytuł artykułu</label><input type="text" id="mTitle" class="form-input" value="${item ? item.title : ''}"></div>
-                    <div class="form-group"><label class="form-label">Data</label><input type="text" id="mDate" class="form-input" value="${item ? item.date : new Date().toLocaleDateString()}"></div>
-                    <div class="form-group"><label class="form-label">Tagi (rozdzielone przecinkami)</label><input type="text" id="mTags" class="form-input" value="${item ? (item.tags || '') : ''}" placeholder="np. Drużyna, Zarząd"></div>
-                    <div class="form-group">
-                        <label class="form-label">Treść artykułu (z formatowaniem)</label>
-                        <div class="editor-toolbar">
-                            <button type="button" class="toolbar-btn" onclick="formatText('bold')"><b>B</b></button>
-                            <button type="button" class="toolbar-btn" onclick="formatText('italic')"><i>I</i></button>
-                            <button type="button" class="toolbar-btn" onclick="formatText('h2')">H2</button>
-                            <button type="button" class="toolbar-btn" onclick="formatText('h3')">H3</button>
-                            <button type="button" class="toolbar-btn" onclick="formatText('ul')">• Lista</button>
-                        </div>
-                        <textarea id="mContent" class="form-input" style="height:150px; border-top-left-radius:0; border-top-right-radius:0;">${item ? item.content : ''}</textarea>
+                        <span><strong>${m.teams}</strong> (${m.score}) - ${m.date}</span>
+                        <button class="delete-btn" onclick="deleteMatch('${m.id}')">Usuń</button>
                     </div>
                 `;
-            } else if (type === 'matchcenter') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Nazwa meczu (np. Legion vs Iskra)</label><input type="text" id="mMatchTitle" class="form-input" value="${item ? item.matchTitle : ''}"></div>
-                    <div class="form-group"><label class="form-label">Wynik (np. 2 : 1)</label><input type="text" id="mScore" class="form-input" value="${item ? item.score : ''}"></div>
-                    <div class="form-group"><label class="form-label">Status (np. Zakończony / Na żywo)</label><input type="text" id="mStatus" class="form-input" value="${item ? item.status : 'Zakończony'}"></div>
-                    <div class="form-group"><label class="form-label">Szczegóły / Składy / Bramki</label><textarea id="mDetails" class="form-input" style="height:100px;">${item ? item.details : ''}</textarea></div>
-                `;
-            } else if (type === 'squad' || type === 'academy') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Numer</label><input type="text" id="mNum" class="form-input" value="${item ? item.number : ''}"></div>
-                    <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
-                    <div class="form-group"><label class="form-label">Pozycja (gk, def, mid, fwd)</label><input type="text" id="mPos" class="form-input" value="${item ? item.positionKey : ''}"></div>
-                    <div class="form-group"><label class="form-label">Narodowość</label><input type="text" id="mNat" class="form-input" value="${item ? item.nationality : 'Polska'}"></div>
-                    <div class="form-group"><label class="form-label">Data urodzenia</label><input type="text" id="mBirth" class="form-input" value="${item ? item.birthdate : ''}"></div>
-                `;
-            } else if (type === 'schedule') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Liga / Turniej</label><input type="text" id="mLeague" class="form-input" value="${item ? item.league : ''}"></div>
-                    <div class="form-group"><label class="form-label">Data</label><input type="text" id="mDate" class="form-input" value="${item ? item.date : ''}"></div>
-                    <div class="form-group"><label class="form-label">Gospodarz</label><input type="text" id="mHome" class="form-input" value="${item ? item.homeTeam : ''}"></div>
-                    <div class="form-group"><label class="form-label">Gość</label><input type="text" id="mAway" class="form-input" value="${item ? item.awayTeam : ''}"></div>
-                    <div class="form-group"><label class="form-label">Wynik (np. 2 : 1 lub VS)</label><input type="text" id="mScore" class="form-input" value="${item ? item.score : 'VS'}"></div>
-                `;
-            } else if (type === 'people_pres') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
-                    <div class="form-group"><label class="form-label">Stanowisko</label><input type="text" id="mPosition" class="form-input" value="${item ? (item.position || 'Prezes Klubu') : 'Prezes Klubu'}"></div>
-                `;
-            } else if (type === 'people_board') {
-                fields.innerHTML = `
-                    <div class="form-group"><label class="form-label">Imię i Nazwisko</label><input type="text" id="mName" class="form-input" value="${item ? item.name : ''}"></div>
-                    <div class="form-group"><label class="form-label">Stanowisko</label><input type="text" id="mPosition" class="form-input" value="${item ? (item.position || 'Wiceprezes') : 'Wiceprezes'}"></div>
-                `;
-            }
-
-            modal.style.display = 'flex';
-        }
-
-        function formatText(tag) {
-            const textarea = document.getElementById('mContent');
-            if (!textarea) return;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            let replacement = '';
-
-            if (tag === 'bold') replacement = `<strong>${selectedText}</strong>`;
-            if (tag === 'italic') replacement = `<em>${selectedText}</em>`;
-            if (tag === 'h2') replacement = `<h2>${selectedText}</h2>`;
-            if (tag === 'h3') replacement = `<h3>${selectedText}</h3>`;
-            if (tag === 'ul') replacement = `<ul>\n  <li>${selectedText}</li>\n</ul>`;
-
-            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
-            textarea.focus();
-        }
-
-        function closeContentModal() {
-            document.getElementById('contentModal').style.display = 'none';
-        }
-
-        function saveModalData() {
-            const { type, id } = currentEditing;
-
-            if (type === 'news') {
-                let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
-                const title = document.getElementById('mTitle').value;
-                const date = document.getElementById('mDate').value;
-                const tags = document.getElementById('mTags').value;
-                const content = document.getElementById('mContent').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.title = title; obj.date = date; obj.tags = tags; obj.content = content;
-                } else {
-                    data.unshift({ id: 'news-' + Date.now(), title, date, tags, content });
-                }
-                localStorage.setItem('legion_news', JSON.stringify(data));
-                loadNews();
-            } else if (type === 'matchcenter') {
-                let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || defaultMatchCenter;
-                const matchTitle = document.getElementById('mMatchTitle').value;
-                const score = document.getElementById('mScore').value;
-                const status = document.getElementById('mStatus').value;
-                const details = document.getElementById('mDetails').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.matchTitle = matchTitle; obj.score = score; obj.status = status; obj.details = details;
-                } else {
-                    data.unshift({ id: 'mc-' + Date.now(), matchTitle, score, status, details });
-                }
-                localStorage.setItem('legion_matchcenter', JSON.stringify(data));
-                loadMatchCenter();
-            } else if (type === 'squad' || type === 'academy') {
-                let storageKey = type === 'squad' ? 'legion_players' : 'legion_academy_players';
-                let data = JSON.parse(localStorage.getItem(storageKey)) || (type === 'squad' ? defaultSquad : defaultAcademy);
-                
-                const num = document.getElementById('mNum').value;
-                const name = document.getElementById('mName').value;
-                const pos = document.getElementById('mPos').value;
-                const nat = document.getElementById('mNat').value;
-                const birth = document.getElementById('mBirth').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.number = num; obj.name = name; obj.positionKey = pos; obj.nationality = nat; obj.birthdate = birth;
-                } else {
-                    data.push({ id: 'item-' + Date.now(), number: num, name: name, positionKey: pos, nationality: nat, birthdate: birth });
-                }
-                localStorage.setItem(storageKey, JSON.stringify(data));
-                if (type === 'squad') loadSquad(); else loadAcademy();
-            } else if (type === 'schedule') {
-                let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
-                const league = document.getElementById('mLeague').value;
-                const date = document.getElementById('mDate').value;
-                const home = document.getElementById('mHome').value;
-                const away = document.getElementById('mAway').value;
-                const score = document.getElementById('mScore').value;
-
-                if (id) {
-                    let obj = data.find(x => x.id === id);
-                    obj.league = league; obj.date = date; obj.homeTeam = home; obj.awayTeam = away; obj.score = score;
-                } else {
-                    data.push({ id: 'match-' + Date.now(), league, date, homeTeam: home, awayTeam: away, score });
-                }
-                localStorage.setItem('legion_schedule', JSON.stringify(data));
-                loadSchedule();
-            } else if (type === 'people_pres' || type === 'people_board') {
-                let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
-                const name = document.getElementById('mName').value;
-                const position = document.getElementById('mPosition').value;
-
-                if (type === 'people_pres') {
-                    data.president.name = name;
-                    data.president.position = position;
-                } else {
-                    if (id) {
-                        let obj = data.board.find(x => x.id === id);
-                        obj.name = name;
-                        obj.position = position;
-                    } else {
-                        if (!data.board) data.board = [];
-                        data.board.push({ id: 'b-' + Date.now(), name, position });
-                    }
-                }
-                localStorage.setItem('legion_people', JSON.stringify(data));
-                loadPeople();
-            }
-
-            closeContentModal();
-            showSuccess();
-        }
-
-        function deleteItem(type, id) {
-            if (!confirm("Czy na pewno chcesz usunąć ten element?")) return;
-            if (type === 'news') {
-                let data = JSON.parse(localStorage.getItem('legion_news')) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem('legion_news', JSON.stringify(data));
-                loadNews();
-            } else if (type === 'matchcenter') {
-                let data = JSON.parse(localStorage.getItem('legion_matchcenter')) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem('legion_matchcenter', JSON.stringify(data));
-                loadMatchCenter();
-            } else if (type === 'squad' || type === 'academy') {
-                let key = type === 'squad' ? 'legion_players' : 'legion_academy_players';
-                let data = JSON.parse(localStorage.getItem(key)) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem(key, JSON.stringify(data));
-                if (type === 'squad') loadSquad(); else loadAcademy();
-            } else if (type === 'schedule') {
-                let data = JSON.parse(localStorage.getItem('legion_schedule')) || [];
-                data = data.filter(x => x.id !== id);
-                localStorage.setItem('legion_schedule', JSON.stringify(data));
-                loadSchedule();
-            } else if (type === 'people_board') {
-                let data = JSON.parse(localStorage.getItem('legion_people')) || defaultPeople;
-                data.board = data.board.filter(x => x.id !== id);
-                localStorage.setItem('legion_people', JSON.stringify(data));
-                loadPeople();
-            }
-            showSuccess();
-        }
-
-        // --- UŻYTKOWNICY ---
-        let editingUserIndex = null;
-        function openUserModal(index) {
-            editingUserIndex = index;
-            document.getElementById('userModal').style.display = 'flex';
-
-            const loginInput = document.getElementById('uModalLogin');
-            const passInput = document.getElementById('uModalPass');
-            const fullChk = document.getElementById('permFull');
-            const permChks = document.querySelectorAll('.perm-chk');
-
-            passInput.value = '';
-            if (index !== null) {
-                const u = users[index];
-                loginInput.value = u.login;
-                fullChk.checked = u.fullAdmin;
-                permChks.forEach(chk => chk.checked = u.perms.includes(chk.value));
-            } else {
-                loginInput.value = '';
-                fullChk.checked = false;
-                permChks.forEach(chk => chk.checked = false);
-            }
-            toggleFullAdmin(fullChk);
-        }
-
-        function toggleFullAdmin(chk) {
-            const permChks = document.querySelectorAll('.perm-chk');
-            permChks.forEach(c => {
-                c.disabled = chk.checked;
-                if (chk.checked) c.checked = true;
             });
         }
 
-        function closeUserModal() {
-            document.getElementById('userModal').style.display = 'none';
-        }
-
-        function saveUserModal() {
-            const login = document.getElementById('uModalLogin').value.trim();
-            const pass = document.getElementById('uModalPass').value.trim();
-            const fullAdmin = document.getElementById('permFull').checked;
-            
-            let perms = [];
-            document.querySelectorAll('.perm-chk').forEach(c => {
-                if (c.checked) perms.push(c.value);
-            });
-
-            if (!login) {
-                alert("Podaj login użytkownika!");
-                return;
-            }
-
-            if (editingUserIndex !== null) {
-                users[editingUserIndex].login = login;
-                if (pass) users[editingUserIndex].pass = pass;
-                users[editingUserIndex].fullAdmin = fullAdmin;
-                users[editingUserIndex].perms = perms;
-            } else {
-                if (!pass) {
-                    alert("Nowy użytkownik musi mieć hasło!");
-                    return;
-                }
-                users.push({ login, pass, fullAdmin, perms });
-            }
-
-            localStorage.setItem('legion_admin_users', JSON.stringify(users));
-            closeUserModal();
-            loadUsersList();
-            showSuccess();
-        }
-
-        function deleteUser(index) {
-            if (!confirm("Czy na pewno chcesz usunąć tego użytkownika?")) return;
-            users.splice(index, 1);
-            localStorage.setItem('legion_admin_users', JSON.stringify(users));
-            loadUsersList();
-            showSuccess();
-        }
-
-        function changePassword() {
-            const oldP = document.getElementById('oldPass').value;
-            const newP = document.getElementById('newPass').value;
-
-            if (oldP !== currentUser.pass) {
-                alert("Stare hasło jest niepoprawne!");
-                return;
-            }
-            if (!newP) {
-                alert("Nowe hasło nie może być puste!");
-                return;
-            }
-
-            currentUser.pass = newP;
-            const idx = users.findIndex(u => u.login === currentUser.login);
-            if (idx !== -1) {
-                users[idx].pass = newP;
-                localStorage.setItem('legion_admin_users', JSON.stringify(users));
-                sessionStorage.setItem('legion_current_user', JSON.stringify(currentUser));
-            }
-
-            document.getElementById('oldPass').value = '';
-            document.getElementById('newPass').value = '';
-            showSuccess();
-        }
+        window.addEventListener('DOMContentLoaded', loadPanel);
     </script>
 </body>
 </html>
