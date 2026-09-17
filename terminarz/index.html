@@ -291,7 +291,7 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – Terminarz w siatce 3 kolumnowej */
+        /* Główna treść strony – Terminarz w sztywnej siatce zabezpieczonej przed mieszaniem */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
@@ -311,11 +311,12 @@
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Siatka 3 kolumny */
+        /* Siatka 3 kolumny ze stałym dopasowaniem wysokości wierszy */
         .schedule-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
+            align-content: start;
         }
 
         @media (max-width: 1024px) {
@@ -339,11 +340,13 @@
             padding: 25px 20px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             gap: 15px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .match-card::before {
@@ -398,6 +401,7 @@
             font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
+            word-break: break-word;
         }
 
         .score-box {
@@ -460,7 +464,7 @@
         <h1 class="section-title" data-translate="section_title">Terminarz i Wyniki</h1>
 
         <div class="schedule-grid" id="schedule-container">
-            <!-- Renderowane dynamicznie w siatce -->
+            <!-- Renderowane dynamicznie -->
         </div>
     </main>
 
@@ -495,20 +499,20 @@
             { id: "match-2", league: "Liga Okręgowa", date: "29.03.2026, 16:30", homeTeam: "KS Wasilków", awayTeam: "Legion Białystok", score: "0 : 0" }
         ];
 
-        // Inteligentne parsowanie daty z uwzględnieniem roku, miesiąca i dnia (obsługa braku roku domyślnie na rok bieżący)
+        // Niezawodny algorytm parsowania daty do wartości liczbowej (timestamp) dla poprawnego sortowania
         function parseDate(dateStr) {
-            if (!dateStr) return new Date(0);
+            if (!dateStr) return 0;
             const cleanStr = dateStr.split(',')[0].trim(); // np. "11.09" lub "25.10.2026"
             const parts = cleanStr.split('.');
             
             let day = parseInt(parts[0], 10) || 1;
-            let month = parseInt(parts[1], 10) - 1 || 0; // miesiące w JS Date są 0-11
+            let month = parseInt(parts[1], 10) || 1;
             let year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
 
-            // Jeśli rok wpisano dwucyfrowo, poprawiamy
             if (year < 100) year += 2000;
 
-            return new Date(year, month, day);
+            // Zwracamy unikalną wartość liczbową w formacie RRRRMMDD dla perfekcyjnego sortowania
+            return year * 10000 + month * 100 + day;
         }
 
         function renderSchedule() {
@@ -517,7 +521,7 @@
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // Dokładne sortowanie malejące: od najnowszych do najstarszych dat
+            // Sortowanie malejące: od największej wartości (najnowsza data) do najmniejszej (najstarsza data)
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
             data.forEach(item => {
