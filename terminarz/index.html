@@ -556,10 +556,10 @@
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // Sortowanie od najnowszych do najstarszych
+            // KROK KLUCZOWY: Sortowanie malejące (b - a) ustawia najświeższe/najbliższe daty (np. listopad 2026) na samej górze
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
-            // Generowanie unikalnych przycisków tagów (w tym Mecz towarzyski, II Liga BLS itd.)
+            // Generowanie unikalnych przycisków tagów
             const leagues = [...new Set(data.map(item => item.league || 'Mecz ligowy'))];
             
             let filtersHTML = `<button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="filterByLeague('all')">Wszystkie mecze</button>`;
