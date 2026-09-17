@@ -290,6 +290,94 @@
             background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
         }
+
+        /* Główna treść strony */
+        main {
+            margin-top: 130px;
+            padding: 20px 5% 80px 5%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
+        }
+
+        /* Styl Tabeli Wyników */
+        .table-container {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.75), rgba(10, 10, 10, 0.85));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        html[dir="rtl"] table {
+            text-align: right;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        tr:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        tr.highlight-team {
+            background: rgba(255, 215, 0, 0.12);
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        td.pos {
+            font-weight: 800;
+            color: #ffd700;
+            width: 60px;
+            text-align: center;
+        }
+
+        td.pts {
+            font-weight: 800;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        td.stats {
+            text-align: center;
+            color: #cccccc;
+        }
     </style>
 </head>
 <body>
@@ -305,7 +393,7 @@
                     <li><a href="aktualnosci" data-translate="news">Aktualności</a></li>
                     <li><a href="druzyna" data-translate="team">Pierwsza drużyna</a></li>
                     <li><a href="akademia" data-translate="academy">Akademia</a></li>
-                    <li><a href="terminarz" data-translate="schedule">Terminarz</a></li>
+                    <li><a href="tabela" data-translate="table">Tabela</a></li>
                     
                     <li class="has-submenu">
                         <a href="#" data-translate="club">Klub ›</a>
@@ -337,57 +425,137 @@
         </div>
     </header>
 
+    <main>
+        <h1 class="section-title" data-translate="table_title">Tabela Wyników</h1>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">#</th>
+                        <th data-translate="th_team">Drużyna</th>
+                        <th style="text-align: center;" data-translate="th_m">M</th>
+                        <th style="text-align: center;" data-translate="th_pkt">Pkt</th>
+                        <th style="text-align: center;" data-translate="th_bramki">Bramki</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pos">1</td>
+                        <td>KS LIDER</td>
+                        <td class="stats">12</td>
+                        <td class="pts">31</td>
+                        <td class="stats">45 : 15</td>
+                    </tr>
+                    <tr class="highlight-team">
+                        <td class="pos">2</td>
+                        <td>Legion Białystok</td>
+                        <td class="stats">12</td>
+                        <td class="pts">28</td>
+                        <td class="stats">38 : 18</td>
+                    </tr>
+                    <tr>
+                        <td class="pos">3</td>
+                        <td>EXTreme team</td>
+                        <td class="stats">12</td>
+                        <td class="pts">25</td>
+                        <td class="stats">30 : 22</td>
+                    </tr>
+                    <tr>
+                        <td class="pos">4</td>
+                        <td>Sparta Białystok</td>
+                        <td class="stats">12</td>
+                        <td class="pts">19</td>
+                        <td class="stats">24 : 26</td>
+                    </tr>
+                    <tr>
+                        <td class="pos">5</td>
+                        <td>Iskra Narew</td>
+                        <td class="stats">12</td>
+                        <td class="pts">12</td>
+                        <td class="stats">18 : 35</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
     <script>
         const translations = {
             pl: {
                 news: "Aktualności",
                 team: "Pierwsza drużyna",
                 academy: "Akademia",
-                schedule: "Terminarz",
+                table: "Tabela",
                 club: "Klub ›",
-                history: "Historia",
+                history: "История",
                 about: "O klubie",
-                people: "Ludzie Legionu"
+                people: "Ludzie Legionu",
+                table_title: "Tabela Wyników",
+                th_team: "Drużyna",
+                th_m: "M",
+                th_pkt: "Pkt",
+                th_bramki: "Bramki"
             },
             en: {
                 news: "News",
                 team: "First Team",
                 academy: "Academy",
-                schedule: "Schedule",
+                table: "Standings",
                 club: "Club ›",
                 history: "History",
                 about: "About Club",
-                people: "Legion People"
+                people: "Legion People",
+                table_title: "Standings",
+                th_team: "Team",
+                th_m: "P",
+                th_pkt: "Pts",
+                th_bramki: "Goals"
             },
             es: {
                 news: "Noticias",
                 team: "Primer Equipo",
                 academy: "Academia",
-                schedule: "Calendario",
+                table: "Clasificación",
                 club: "Club ›",
                 history: "Historia",
                 about: "Sobre el Club",
-                people: "Gente del Legion"
+                people: "Gente del Legion",
+                table_title: "Clasificación",
+                th_team: "Equipo",
+                th_m: "PJ",
+                th_pkt: "Pts",
+                th_bramki: "Goles"
             },
             ru: {
                 news: "Новости",
                 team: "Первая команда",
                 academy: "Академия",
-                schedule: "Расписание",
+                table: "Таблица",
                 club: "Клуб ›",
                 history: "История",
                 about: "О клубе",
-                people: "Люди Легиона"
+                people: "Люди Легиона",
+                table_title: "Таблица результатов",
+                th_team: "Команда",
+                th_m: "И",
+                th_pkt: "О",
+                th_bramki: "Голы"
             },
             ar: {
                 news: "الأخبار",
                 team: "الفريق الأول",
                 academy: "الأكاديمية",
-                schedule: "الجدول",
+                table: "الترتيب",
                 club: "النادي ›",
                 history: "التاريخ",
                 about: "عن النادي",
-                people: "أعضاء النادي"
+                people: "أعضاء النادي",
+                table_title: "جدول الترتيب",
+                th_team: "الفريق",
+                th_m: "لعب",
+                th_pkt: "نقاط",
+                th_bramki: "الأهداف"
             }
         };
 
