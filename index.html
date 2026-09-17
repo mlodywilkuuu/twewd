@@ -1,452 +1,119 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legion Białystok</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1e293b',
+                            accent: '#eab308',
+                        }
+                    }
+                }
+            }
         }
-
-        body {
-            background-color: #080808;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Animowane tło */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #050505, #111111, #1a1504);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Górny pasek nawigacyjny z efektem szkła */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 75px;
-            background: rgba(12, 12, 12, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 4%;
-            z-index: 1000;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        /* Styl przycisku menu (hamburger) i rozwijanej listy */
-        .menu-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .menu-toggle-btn {
-            background: rgba(25, 25, 25, 0.6);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .menu-toggle-btn:hover {
-            background: rgba(255, 215, 0, 0.15);
-            border-color: rgba(255, 215, 0, 0.4);
-        }
-
-        .side-menu-dropdown {
-            position: absolute;
-            left: 0;
-            top: calc(100% + 12px);
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            list-style: none;
-            padding: 12px 0;
-            min-width: 260px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            transition-delay: 0.2s;
-        }
-
-        html[dir="rtl"] .side-menu-dropdown {
-            left: auto;
-            right: 0;
-        }
-
-        .menu-dropdown:hover .side-menu-dropdown,
-        .side-menu-dropdown:hover {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-            transition-delay: 0s;
-        }
-
-        .side-menu-dropdown li {
-            position: relative;
-        }
-
-        .side-menu-dropdown li a {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 22px;
-            color: #dddddd;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-
-        html[dir="rtl"] .side-menu-dropdown li a {
-            border-left: none;
-            border-right: 3px solid transparent;
-        }
-
-        .side-menu-dropdown li a:hover {
-            background: rgba(255, 215, 0, 0.08);
-            color: #ffd700;
-            border-left-color: #ffd700;
-            padding-left: 26px;
-        }
-
-        html[dir="rtl"] .side-menu-dropdown li a:hover {
-            border-right-color: #ffd700;
-            padding-left: 22px;
-            padding-right: 26px;
-        }
-
-        .side-menu-dropdown li a::after {
-            content: '›';
-            font-size: 1.2rem;
-            color: #666;
-            transition: color 0.2s;
-        }
-
-        html[dir="rtl"] .side-menu-dropdown li a::after {
-            content: '‹';
-        }
-
-        .side-menu-dropdown li a:hover::after {
-            color: #ffd700;
-        }
-
-        /* Podmenu dla zakładki Klub */
-        .submenu-club {
-            position: absolute;
-            left: 100%;
-            top: 0;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            list-style: none;
-            padding: 10px 0;
-            min-width: 200px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-        }
-
-        html[dir="rtl"] .submenu-club {
-            left: auto;
-            right: 100%;
-            transform: translateX(-10px);
-        }
-
-        .has-submenu:hover .submenu-club {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(0);
-        }
-
-        /* Klikalne logo kierujące na stronę główną */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .logo-container img {
-            height: 50px;
-            width: auto;
-            object-fit: contain;
-            transition: transform 0.2s ease;
-        }
-
-        .logo-container:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Rozwijane menu językowe z flagami po prawej stronie */
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .lang-btn {
-            background: rgba(25, 25, 25, 0.6);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .lang-btn:hover {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        .lang-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 10px;
-            list-style: none;
-            padding: 8px 0;
-            min-width: 150px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
-            transition-delay: 0.25s;
-        }
-
-        .lang-dropdown:hover .lang-menu,
-        .lang-menu:hover {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-            transition-delay: 0s;
-        }
-
-        .lang-menu li a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            color: #cccccc;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .lang-menu li a:hover {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
-        }
-
-        /* Główna treść strony */
-        main {
-            margin-top: 150px;
-            padding: 20px 5%;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #aaaaaa;
-            margin-bottom: 40px;
-        }
-    </style>
+    </script>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-brand-accent selection:text-slate-950">
 
-    <div class="bg-animation"></div>
+    <!-- HEADER / MENU -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- LOGO / NAZWA KLUBU -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center font-black text-slate-950 text-xl">
+                        LB
+                    </div>
+                    <a href="#home" class="text-xl font-bold tracking-wider uppercase">
+                        Legion <span class="text-brand-accent">Białystok</span>
+                    </a>
+                </div>
 
-    <header>
-        <div class="header-left">
-            <!-- Rozwijane menu boczne (hamburger) -->
-            <div class="menu-dropdown">
-                <button class="menu-toggle-btn">☰</button>
-                <ul class="side-menu-dropdown">
-                    <li><a href="aktualnosci" data-translate="news">Aktualności</a></li>
-                    <li><a href="druzyna" data-translate="team">Pierwsza drużyna</a></li>
-                    <li><a href="akademia" data-translate="academy">Akademia</a></li>
-                    <li><a href="tabela" data-translate="table">Tabela</a></li>
-                    
-                    <li class="has-submenu">
-                        <a href="#" data-translate="club">Klub ›</a>
-                        <ul class="submenu-club">
-                            <li><a href="historia" data-translate="history">Historia</a></li>
-                            <li><a href="o-klubie" data-translate="about">O klubie</a></li>
-                            <li><a href="ludzie-legionu" data-translate="people">Ludzie Legionu</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <!-- NAWIGACJA DESKTOP -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-sm font-medium hover:text-brand-accent transition-colors">Start</a>
+                    <a href="#o-nas" class="text-sm font-medium hover:text-brand-accent transition-colors">O nas</a>
+                    <a href="#terminarz" class="text-sm font-medium hover:text-brand-accent transition-colors">Terminarz</a>
+                    <a href="#kadra" class="text-sm font-medium hover:text-brand-accent transition-colors">Kadra</a>
+                    <a href="#kontakt" class="text-sm font-medium hover:text-brand-accent transition-colors">Kontakt</a>
+                </nav>
+
+                <!-- PRZYCISK CTA -->
+                <div class="hidden md:block">
+                    <a href="#kontakt" class="px-4 py-2 text-sm font-semibold bg-brand-accent text-slate-950 rounded-lg hover:bg-yellow-400 transition-all shadow-lg shadow-yellow-500/10">
+                        Dołącz do nas
+                    </a>
+                </div>
+
+                <!-- PRZYCISK MENU MOBILNEGO -->
+                <div class="flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
-
-            <!-- Logo Legionu Białystok przekierowujące na główną -->
-            <a href="index.html" class="logo-container">
-                <img src="8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
-            </a>
         </div>
 
-        <!-- Rozwijane menu z flagami po prawej stronie -->
-        <div class="lang-dropdown">
-            <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
-            <ul class="lang-menu">
-                <li><a href="#" onclick="setLanguage('pl', '🇵🇱 Polski')">🇵🇱 Polski</a></li>
-                <li><a href="#" onclick="setLanguage('en', '🇬🇧 English')">🇬🇧 English</a></li>
-                <li><a href="#" onclick="setLanguage('es', '🇪🇸 Español')">🇪🇸 Español</a></li>
-                <li><a href="#" onclick="setLanguage('ru', '🇷🇺 Русский')">🇷🇺 Русский</a></li>
-                <li><a href="#" onclick="setLanguage('ar', '🇸🇦 العربية')">🇸🇦 العربية</a></li>
-            </ul>
+        <!-- MENU MOBILNE -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800 hover:text-brand-accent">Start</a>
+            <a href="#o-nas" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800 hover:text-brand-accent">O nas</a>
+            <a href="#terminarz" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800 hover:text-brand-accent">Terminarz</a>
+            <a href="#kadra" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800 hover:text-brand-accent">Kadra</a>
+            <a href="#kontakt" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800 hover:text-brand-accent">Kontakt</a>
+            <div class="pt-2">
+                <a href="#kontakt" class="w-full block text-center px-4 py-2 text-sm font-semibold bg-brand-accent text-slate-950 rounded-lg">
+                    Dołącz do nas
+                </a>
+            </div>
         </div>
     </header>
 
-    <main>
-        <h1 class="hero-title" data-translate="welcome_title">Witaj w Legionie Białystok</h1>
-        <p class="hero-subtitle" data-translate="welcome_subtitle">Oficjalny serwis internetowy klubu</p>
+    <!-- SEKCJE STRONY -->
+    <main class="pt-20">
+        <section id="home" class="min-h-screen flex items-center justify-center border-b border-slate-900">
+            <h1 class="text-4xl font-black tracking-wider">Sekcja START</h1>
+        </section>
+        <section id="o-nas" class="min-h-screen flex items-center justify-center border-b border-slate-900">
+            <h1 class="text-4xl font-black tracking-wider">Sekcja O NAS</h1>
+        </section>
+        <section id="terminarz" class="min-h-screen flex items-center justify-center border-b border-slate-900">
+            <h1 class="text-4xl font-black tracking-wider">Sekcja TERMINARZ</h1>
+        </section>
+        <section id="kadra" class="min-h-screen flex items-center justify-center border-b border-slate-900">
+            <h1 class="text-4xl font-black tracking-wider">Sekcja KADRA</h1>
+        </section>
+        <section id="kontakt" class="min-h-screen flex items-center justify-center">
+            <h1 class="text-4xl font-black tracking-wider">Sekcja KONTAKT</h1>
+        </section>
     </main>
 
+    <!-- SKRYPT MENU -->
     <script>
-        const translations = {
-            pl: {
-                news: "Aktualności",
-                team: "Pierwsza drużyna",
-                academy: "Akademia",
-                table: "Tabela",
-                club: "Klub ›",
-                history: "Historia",
-                about: "O klubie",
-                people: "Ludzie Legionu",
-                welcome_title: "Witaj w Legionie Białystok",
-                welcome_subtitle: "Oficjalny serwis internetowy klubu"
-            },
-            en: {
-                news: "News",
-                team: "First Team",
-                academy: "Academy",
-                table: "Standings",
-                club: "Club ›",
-                history: "History",
-                about: "About Club",
-                people: "Legion People",
-                welcome_title: "Welcome to Legion Białystok",
-                welcome_subtitle: "Official club website"
-            },
-            es: {
-                news: "Noticias",
-                team: "Primer Equipo",
-                academy: "Academia",
-                table: "Clasificación",
-                club: "Club ›",
-                history: "Historia",
-                about: "Sobre el Club",
-                people: "Gente del Legion",
-                welcome_title: "Bienvenido a Legion Białystok",
-                welcome_subtitle: "Sitio web oficial del club"
-            },
-            ru: {
-                news: "Новости",
-                team: "Первая команда",
-                academy: "Академия",
-                table: "Таблица",
-                club: "Клуб ›",
-                history: "История",
-                about: "О клубе",
-                people: "Люди Легиона",
-                welcome_title: "Добро пожаловать в Легион Белосток",
-                welcome_subtitle: "Официальный сайт клуба"
-            },
-            ar: {
-                news: "الأخبار",
-                team: "الفريق الأول",
-                academy: "الأكاديمية",
-                table: "الترتيب",
-                club: "النادي ›",
-                history: "التاريخ",
-                about: "عن النادي",
-                people: "أعضاء النادي",
-                welcome_title: "مرحباً بكم في ليغيون بياويستوك",
-                welcome_subtitle: "الموقع الرسمي للنادي"
-            }
-        };
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
 
-        function setLanguage(lang, label) {
-            document.getElementById('current-lang-btn').innerHTML = label;
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-            if (lang === 'ar') {
-                document.documentElement.dir = 'rtl';
-            } else {
-                document.documentElement.dir = 'ltr';
-            }
-
-            const elements = document.querySelectorAll('[data-translate]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
+        const mobileLinks = menu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
             });
-        }
+        });
     </script>
-
 </body>
 </html>
