@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O Klubie - Legion Białystok</title>
+    <title>O klubie - Legion Białystok</title>
     <style>
         * {
             margin: 0;
@@ -291,11 +291,11 @@
             color: #ffd700;
         }
 
-        /* Główna treść strony – O Klubie */
+        /* Główna treść strony – O klubie */
         main {
             margin-top: 130px;
             padding: 20px 5% 80px 5%;
-            max-width: 1200px;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -306,66 +306,37 @@
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-align: center;
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Siatka sekcji informacyjnych */
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        /* Kafelki informacji */
-        .about-card {
+        .content-card {
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.7), rgba(10, 10, 10, 0.8));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 35px 30px;
+            padding: 35px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ffd700, transparent);
-            opacity: 0;
-            transition: opacity 0.35s ease;
-        }
-
-        .about-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 215, 0, 0.45);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.1);
-        }
-
-        .about-card:hover::before {
-            opacity: 1;
-        }
-
-        .about-card-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #ffd700;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-        }
-
-        .about-card-text {
-            font-size: 1rem;
             color: #cccccc;
             line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .content-card h2 {
+            color: #ffd700;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .content-card h2:first-child {
+            margin-top: 0;
+        }
+
+        .content-card p {
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -375,14 +346,13 @@
 
     <header>
         <div class="header-left">
-            <!-- Rozwijane menu boczne -->
             <div class="menu-dropdown">
                 <button class="menu-toggle-btn">☰</button>
                 <ul class="side-menu-dropdown">
                     <li><a href="../aktualnosci" data-translate="news">Aktualności</a></li>
                     <li><a href="../druzyna" data-translate="team">Pierwsza drużyna</a></li>
                     <li><a href="../akademia" data-translate="academy">Akademia</a></li>
-                    <li><a href="../terminarz" data-translate="schedule">Terminarz</a></li>
+                    <li><a href="../tabela" data-translate="table">Tabela</a></li>
                     
                     <li class="has-submenu">
                         <a href="#" data-translate="club">Klub ›</a>
@@ -395,13 +365,11 @@
                 </ul>
             </div>
 
-            <!-- Logo kierujące na główną -->
             <a href="../index.html" class="logo-container">
                 <img src="../8216b4e4-580b-47c1-956b-318888b98a1f-removebg-preview.png" alt="Legion Białystok Logo">
             </a>
         </div>
 
-        <!-- Przełącznik języków -->
         <div class="lang-dropdown">
             <button class="lang-btn" id="current-lang-btn">🇵🇱 Polski</button>
             <ul class="lang-menu">
@@ -417,99 +385,60 @@
     <main>
         <h1 class="section-title" data-translate="section_title">O Klubie</h1>
 
-        <!-- Siatka informacyjna z obsługą localStorage (pod panel administracyjny) -->
-        <div class="about-grid" id="about-container">
-            <!-- Renderowane dynamicznie przez skrypt -->
+        <div class="content-card">
+            <h2 data-translate="about_h1">Misja i Wizja</h2>
+            <p data-translate="about_p1">Legion Białystok to coś więcej niż klub piłkarski. To społeczność skupiona wokół wspólnej pasji, dążąca do ciągłego rozwoju, profesjonalizmu oraz promocji aktywności fizycznej w regionie.</p>
+            
+            <h2 data-translate="about_h2">Wartości</h2>
+            <p data-translate="about_p2">W naszej działalności kierujemy się zasadami fair play, szacunkiem, zaangażowaniem oraz dbałością o najwyższe standardy szkoleniowe i organizacyjne.</p>
         </div>
     </main>
 
     <script>
         const translations = {
             pl: {
-                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", schedule: "Terminarz", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
+                news: "Aktualności", team: "Pierwsza drużyna", academy: "Akademia", table: "Tabela", club: "Klub ›", history: "Historia", about: "O klubie", people: "Ludzie Legionu",
                 section_title: "O Klubie",
-                sections: {
-                    "sec-1": { title: "Kim jesteśmy?", text: "Legion Białystok to klub sportowy z pasją, tworzony przez społeczność zjednoczoną wokół miłości do piłki nożnej i walki do ostatniej minuty." },
-                    "sec-2": { title: "Nasze cele", text: "Dążymy do ciągłego rozwoju sportowego, budowania silnej akademii dla młodzieży oraz godnego reprezentowania Białegostoku na arenie sportowej." },
-                    "sec-3": { title: "Wartości i Zasady", text: "Szacunek, determinacja, fair play oraz wzajemne wsparcie to fundamenty, na których opiera się każdy zawodnik i działacz naszego klubu." }
-                }
+                about_h1: "Misja i Wizja",
+                about_p1: "Legion Białystok to coś więcej niż klub piłkarski. To społeczność skupiona wokół wspólnej pasji, dążąca do ciągłego rozwoju, profesjonalizmu oraz promocji aktywności fizycznej w regionie.",
+                about_h2: "Wartości",
+                about_p2: "W naszej działalności kierujemy się zasadami fair play, szacunkiem, zaangażowaniem oraz dbałością o najwyższe standardy szkoleniowe i organizacyjne."
             },
             en: {
-                news: "News", team: "First Team", academy: "Academy", schedule: "Schedule", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
-                section_title: "About Club",
-                sections: {
-                    "sec-1": { title: "Who we are?", text: "Legion Białystok is a passionate sports club created by a community united around the love for football and fighting until the last minute." },
-                    "sec-2": { title: "Our Goals", text: "We strive for continuous sports development, building a strong youth academy, and proudly representing Białystok in sports arenas." },
-                    "sec-3": { title: "Values & Principles", text: "Respect, determination, fair play, and mutual support are the foundations upon which every player and official of our club stands." }
-                }
+                news: "News", team: "First Team", academy: "Academy", table: "Standings", club: "Club ›", history: "History", about: "About Club", people: "Legion People",
+                section_title: "About the Club",
+                about_h1: "Mission and Vision",
+                about_p1: "Legion Białystok is more than just a football club. It is a community focused on a shared passion, striving for continuous development, professionalism, and the promotion of physical activity.",
+                about_h2: "Values",
+                about_p2: "In our activities, we are guided by fair play, respect, dedication, and maintaining the highest training and organizational standards."
             },
             es: {
-                news: "Noticias", team: "Primer Equipo", academy: "Academia", schedule: "Calendario", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
+                news: "Noticias", team: "Primer Equipo", academy: "Academia", table: "Clasificación", club: "Club ›", history: "Historia", about: "Sobre el Club", people: "Gente del Legion",
                 section_title: "Sobre el Club",
-                sections: {
-                    "sec-1": { title: "¿Quiénes somos?", text: "Legion Białystok es un club deportivo apasionado creado por una comunidad unida por el amor al fútbol y la lucha hasta el último minuto." },
-                    "sec-2": { title: "Nuestros Objetivos", text: "Aspiramos al desarrollo deportivo continuo, construyendo una sólida academia juvenil y representando con orgullo a Białystok." },
-                    "sec-3": { title: "Valores y Principios", text: "El respeto, la determinación, el juego limpio y el apoyo mutuo son los cimientos sobre los que se apoya cada miembro del club." }
-                }
+                about_h1: "Misión y Visión",
+                about_p1: "Legion Białystok es más que un club de fútbol. Es una comunidad enfocada en una pasión compartida, que busca el desarrollo continuo y la profesionalidad.",
+                about_h2: "Valores",
+                about_p2: "En nuestras actividades nos guiamos por el juego limpio, el respeto, la dedicación y el mantenimiento de los más altos estándares."
             },
             ru: {
-                news: "Новости", team: "Первая команда", academy: "Академия", schedule: "Расписание", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
-                section_title: "О Клубе",
-                sections: {
-                    "sec-1": { title: "Кто мы?", text: "«Легион Белосток» — это спортивный клуб с характером, созданный сообществом, объединенным любовью к футболу и борьбой до последней минуты." },
-                    "sec-2": { title: "Наши цели", text: "Мы стремимся к постоянному спортивному развитию, созданию сильной молодежной академии и достойному представлению Белостока." },
-                    "sec-3": { title: "Ценности и принципы", text: "Уважение, решительность, честная игра и взаимопомощь — это фундамент, на котором держится каждый игрок и сотрудник клуба." }
-                }
+                news: "Новости", team: "Первая команда", academy: "Академия", table: "Таблица", club: "Клуб ›", history: "История", about: "О клубе", people: "Люди Легиона",
+                section_title: "О клубе",
+                about_h1: "Миссия и видение",
+                about_p1: "Легион Белосток — это больше, чем просто футбольный клуб. Это сообщество, объединенное общей страстью, стремящееся к развитию.",
+                about_h2: "Ценности",
+                about_p2: "В своей деятельности мы руководствуемся принципами честной игры, уважения, преданности делу и поддержания высоких стандартов."
             },
             ar: {
-                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", table: "الترتيب", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
                 section_title: "عن النادي",
-                sections: {
-                    "sec-1": { title: "من نحن؟", text: "نادي ليجيون بياويستوك هو نادي رياضي شغوف يضم مجتمعاً متحداً حول حب كرة القدم والقتال حتى الدقيقة الأخيرة." },
-                    "sec-2": { title: "أهدافنا", text: "نسعى جاهدين للتطور الرياضي المستمر، وبناء أكاديمية قوية للشباب، وتمثيل بياويستوك بكل فخر." },
-                    "sec-3": { title: "القيم والمبادئ", text: "الاحترام، الإزمام، اللعب النظيف والدعم المتبادل هي الأسس التي يقوم عليها كل لاعب ومسؤول في نادينا." }
-                }
+                about_h1: "الرسالة والرؤية",
+                about_p1: "ليغيون بياويستوك هوมากกว่า مجرد نادي كرة قدم. إنه مجتمع تركز حول شغف مشترك، ويسعى للتطوير المستمر والاحتراف.",
+                about_h2: "القيم",
+                about_p2: "في أنشطتنا، نسترشد باللعب النظيف والاحترام والتفاني والحفاظ على أعلى معايير التدريب والتنظيم."
             }
         };
 
-        let currentLang = 'pl';
-
-        const defaultSections = [
-            { id: "sec-1" },
-            { id: "sec-2" },
-            { id: "sec-3" }
-        ];
-
-        function renderAbout() {
-            const container = document.getElementById('about-container');
-            container.innerHTML = '';
-
-            let savedSections = JSON.parse(localStorage.getItem('legion_about')) || defaultSections;
-            const langData = translations[currentLang] || translations['pl'];
-            const tSections = langData.sections || {};
-
-            savedSections.forEach(item => {
-                const secData = tSections[item.id] || {
-                    title: item.title || "",
-                    text: item.text || ""
-                };
-
-                const card = document.createElement('div');
-                card.className = 'about-card';
-                card.id = item.id;
-                card.setAttribute('data-about-id', item.id);
-
-                card.innerHTML = `
-                    <div class="about-card-title">${secData.title}</div>
-                    <div class="about-card-text">${secData.text}</div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
         function setLanguage(lang, label) {
-            currentLang = lang;
             document.getElementById('current-lang-btn').innerHTML = label;
 
             if (lang === 'ar') {
@@ -525,13 +454,7 @@
                     el.textContent = translations[lang][key];
                 }
             });
-
-            renderAbout();
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderAbout();
-        });
     </script>
 
 </body>
