@@ -294,8 +294,8 @@
         /* Główna treść strony – Aktualności */
         main {
             margin-top: 130px;
-            padding: 20px 5% 80px 5%;
-            max-width: 1000px;
+            padding: 20px 4% 80px 4%;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -306,16 +306,57 @@
             color: #ffd700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             text-align: center;
             text-shadow: 0 2px 15px rgba(255, 215, 0, 0.25);
         }
 
-        /* Lista artykułów */
-        .news-list {
+        /* Pasek filtrów / tagów */
+        .filters-bar {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .filter-btn {
+            background: rgba(25, 25, 25, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: #cccccc;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Siatka 4 kolumny */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
+            align-content: start;
+        }
+
+        @media (max-width: 1200px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .news-card {
@@ -324,11 +365,16 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 20px;
-            padding: 30px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 15px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .news-card::before {
@@ -357,9 +403,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #888888;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            padding-bottom: 8px;
         }
 
         .news-date {
@@ -370,30 +417,29 @@
         .news-tags {
             background: rgba(255, 215, 0, 0.1);
             color: #ffd700;
-            padding: 4px 10px;
-            border-radius: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
             border: 1px solid rgba(255, 215, 0, 0.2);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
         .news-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 15px;
             letter-spacing: 0.5px;
         }
 
         .news-content {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #cccccc;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        .news-content h2 { color: #ffd700; font-size: 1.3rem; margin: 15px 0 10px 0; }
-        .news-content h3 { color: #ffffff; font-size: 1.1rem; margin: 12px 0 8px 0; }
-        .news-content ul { margin-left: 20px; margin-bottom: 10px; }
+        .news-content h2 { color: #ffd700; font-size: 1.1rem; margin: 10px 0 6px 0; }
+        .news-content h3 { color: #ffffff; font-size: 1rem; margin: 8px 0 4px 0; }
+        .news-content ul { margin-left: 15px; margin-bottom: 8px; }
         .news-content strong { color: #ffd700; }
     </style>
 </head>
@@ -442,7 +488,12 @@
     <main>
         <h1 class="section-title" data-translate="section_title">Aktualności</h1>
 
-        <div class="news-list" id="news-container">
+        <!-- Pasek filtrów / tagów -->
+        <div class="filters-bar" id="filters-container">
+            <button class="filter-btn active" onclick="filterByTag('all')">Wszystkie</button>
+        </div>
+
+        <div class="news-grid" id="news-container">
             <!-- Renderowane dynamicznie -->
         </div>
     </main>
@@ -466,30 +517,80 @@
                 section_title: "Новости"
             },
             ar: {
-                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", table: "الترتيب", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
+                news: "الأخبار", team: "الفريق الأول", academy: "الأكاديمية", schedule: "الجدول", table: "الترتيب", club: "النادي ›", history: "التاريخ", about: "عن النادي", people: "أعضاء النادي",
                 section_title: "الأخبار"
             }
         };
 
         let currentLang = 'pl';
+        let currentTag = 'all';
 
         const defaultNews = [
-            { 
-                id: "news-1", 
-                title: "Rozpoczęcie przygotowań do sezonu", 
-                date: "20.03.2026", 
-                tags: "Drużyna, Sezon", 
-                content: "<p>Drużyna rozpoczęła intensywne treningi przed nadchodzącymi rozgrywkami...</p>" 
-            }
+            { id: "news-1", title: "Rozpoczęcie przygotowań do sezonu", date: "2026-03-20 15:30", tags: "Drużyna", content: "<p>Drużyna rozpoczęła intensywne treningi...</p>" },
+            { id: "news-2", title: "Nowy sponsor strategiczny", date: "2026-03-15 12:00", tags: "Klub", content: "<p>Z przyjemnością ogłaszamy nawiązanie współpracy...</p>" },
+            { id: "news-3", title: "Rekrutacja do Akademii", date: "2026-03-10 10:00", tags: "Akademia", content: "<p>Ruszyły zapisy dla nowych roczników...</p>" },
+            { id: "news-4", title: "Wygrana w sparingu", date: "2026-03-05 18:45", tags: "Mecz", content: "<p>Świetne spotkanie i wysokie zwycięstwo...</p>" }
         ];
+
+        // Parser dat uwzględniający rok, miesiąc, dzień i godzinę (dla idealnego sortowania)
+        function parseDate(dateStr) {
+            if (!dateStr) return 0;
+            const cleanStr = dateStr.trim();
+
+            if (cleanStr.includes('-')) {
+                const parts = cleanStr.split(/[- :]/);
+                let year = parseInt(parts[0], 10) || 2026;
+                let month = parseInt(parts[1], 10) - 1 || 0;
+                let day = parseInt(parts[2], 10) || 1;
+                let hour = parseInt(parts[3], 10) || 0;
+                let minute = parseInt(parts[4], 10) || 0;
+                return new Date(year, month, day, hour, minute).getTime();
+            } 
+            
+            if (cleanStr.includes('.')) {
+                const parts = cleanStr.split('.');
+                let day = parseInt(parts[0], 10) || 1;
+                let month = parseInt(parts[1], 10) - 1 || 0;
+                let year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
+                if (year < 100) year += 2000;
+                return new Date(year, month, day).getTime();
+            }
+
+            return new Date(cleanStr).getTime() || 0;
+        }
 
         function renderNews() {
             const container = document.getElementById('news-container');
+            const filtersContainer = document.getElementById('filters-container');
             container.innerHTML = '';
 
             let data = JSON.parse(localStorage.getItem('legion_news')) || defaultNews;
 
+            // Sortowanie malejące po dacie: najnowsze na górze
+            data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+
+            // Zbieranie unikalnych tagów
+            const allTagsSet = new Set();
             data.forEach(item => {
+                if (item.tags) {
+                    item.tags.split(',').forEach(t => allTagsSet.add(t.trim()));
+                }
+            });
+            const tagsList = [...allTagsSet];
+
+            // Generowanie przycisków filtrów tagów
+            let filtersHTML = `<button class="filter-btn ${currentTag === 'all' ? 'active' : ''}" onclick="filterByTag('all')">Wszystkie</button>`;
+            tagsList.forEach(tag => {
+                filtersHTML += `<button class="filter-btn ${currentTag === tag ? 'active' : ''}" onclick="filterByTag('${tag}')">${tag}</button>`;
+            });
+            filtersContainer.innerHTML = filtersHTML;
+
+            // Filtrowanie po wybranym tagu
+            const filteredData = currentTag === 'all' 
+                ? data 
+                : data.filter(item => item.tags && item.tags.split(',').map(t => t.trim()).includes(currentTag));
+
+            filteredData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'news-card';
                 card.id = item.id;
@@ -505,6 +606,11 @@
 
                 container.appendChild(card);
             });
+        }
+
+        function filterByTag(tag) {
+            currentTag = tag;
+            renderNews();
         }
 
         function setLanguage(lang, label) {
