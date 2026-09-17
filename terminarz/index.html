@@ -540,23 +540,37 @@
         let currentFilter = 'all';
 
         const defaultSchedule = [
-            { id: "match-1", league: "II Liga BLS", date: "25.10.2026", homeTeam: "KS LIDER", awayTeam: "Legion Białystok", score: "9 : 2" },
-            { id: "match-2", league: "II Liga BLS", date: "15.09.2026", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" }
+            { id: "match-1", league: "II Liga BLS", date: "2026-02-15 17:30", homeTeam: "KS LIDER", awayTeam: "Legion Białystok", score: "9 : 2" },
+            { id: "match-2", league: "II Liga BLS", date: "2025-10-19 17:30", homeTeam: "EXTreme team", awayTeam: "Legion Białystok", score: "5 : 0" }
         ];
 
-        // Bezbłędny parser dat konwertujący tekst na unikalny znacznik liczbowy
+        // Ulepszony parser obsługujący formaty typu "2026-02-15 17:30" oraz "25.10.2026"
         function parseDate(dateStr) {
             if (!dateStr) return 0;
-            const cleanStr = dateStr.split(',')[0].trim();
-            const parts = cleanStr.split('.');
+            const cleanStr = dateStr.trim();
+
+            // Format ISO: RRRR-MM-DD HH:mm lub RRRR-MM-DD
+            if (cleanStr.includes('-')) {
+                const parts = cleanStr.split(/[- :]/);
+                let year = parseInt(parts[0], 10) || 2026;
+                let month = parseInt(parts[1], 10) - 1 || 0;
+                let day = parseInt(parts[2], 10) || 1;
+                let hour = parseInt(parts[3], 10) || 0;
+                let minute = parseInt(parts[4], 10) || 0;
+                return new Date(year, month, day, hour, minute).getTime();
+            } 
             
-            let day = parseInt(parts[0], 10) || 1;
-            let month = parseInt(parts[1], 10) || 1;
-            let year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
+            // Format z kropkami: DD.MM.RRRR
+            if (cleanStr.includes('.')) {
+                const parts = cleanStr.split('.');
+                let day = parseInt(parts[0], 10) || 1;
+                let month = parseInt(parts[1], 10) - 1 || 0;
+                let year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
+                if (year < 100) year += 2000;
+                return new Date(year, month, day).getTime();
+            }
 
-            if (year < 100) year += 2000;
-
-            return new Date(year, month - 1, day).getTime();
+            return new Date(cleanStr).getTime() || 0;
         }
 
         function renderSchedule() {
@@ -566,7 +580,7 @@
 
             let data = JSON.parse(localStorage.getItem('legion_schedule')) || defaultSchedule;
 
-            // Sortowanie malejące: od najnowszego (np. wrzesień 2026) do najstarszego (np. czerwiec 2026)
+            // Sortowanie malejące: od najnowszego do najstarszego (np. luty 2026 -> styczeń 2026 -> grudzień 2025 itd.)
             data.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
             // Generowanie przycisków tagów
